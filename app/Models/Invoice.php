@@ -27,6 +27,11 @@ class Invoice extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function road()
+    {
+        return $this->belongsTo(Road::class);
+    }
+
     public function form(): BelongsTo
     {
         return $this->belongsTo(VisaForm::class);
