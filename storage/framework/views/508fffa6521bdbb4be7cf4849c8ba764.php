@@ -142,7 +142,10 @@ unset($__errorArgs, $__bag); ?>
                                     <?php if(isset($invoice)): ?>
                                         <select class="form-control" name="road_id" id="">
                                             <?php $__currentLoopData = $roads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $road): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($road->id); ?>" <?php echo e($road->id == $invoice->road_id ? 'selected' : ""); ?>><?php echo e($road->name); ?></option>
+                                                <option value="<?php echo e($road->id); ?>"
+                                                    <?php echo e($road->id == $invoice->road_id ? 'selected' : ''); ?>><?php echo e($road->name); ?>
+
+                                                </option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     <?php else: ?>
@@ -237,24 +240,25 @@ unset($__errorArgs, $__bag); ?>
                                                 </table>
                                             </td>
                                         </tr>
-                                        
-
-                                        
 
 
+
+
+
                                         
-                                          
+                                        
                                         <?php
                                             $total_pay = 0;
                                         ?>
                                         <?php $__currentLoopData = $payables; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pay): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        
+                                            
                                             <?php
                                                 $total_pay += $pay->pay;
                                             ?>
                                             <tr class="border-top border-top-dashed mt-2">
                                                 <td colspan="2" class="text-end">
-                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)</h6>
+                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)
+                                                    </h6>
                                                 </td>
                                                 <td colspan="3" class="p-0">
                                                     <table
@@ -263,11 +267,11 @@ unset($__errorArgs, $__bag); ?>
                                                             <tr class="border-top border-top-dashed">
                                                                 <th scope="row"></th>
                                                                 <td>
-                                                                  
+
                                                                     <input type="number" name=""
                                                                         value="<?php echo e($pay->pay); ?>"
-                                                                        class="form-control bg-light border-0" 
-                                                                        placeholder="0" readonly />
+                                                                        class="form-control bg-light border-0" placeholder="0"
+                                                                        readonly />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -288,8 +292,8 @@ unset($__errorArgs, $__bag); ?>
                                                             <td>
                                                                 <input type="number" name=""
                                                                     value="<?php echo e($total_pay); ?>"
-                                                                    class="form-control bg-light border-0"
-                                                                    placeholder="0" readonly />
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -334,8 +338,8 @@ unset($__errorArgs, $__bag); ?>
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="pay"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -353,10 +357,9 @@ unset($__errorArgs, $__bag); ?>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
                                                             <td>
-                                                                <input type="number" name="due"
+                                                                <input type="number" name="due" id="due_amount"
                                                                     value="<?php echo e($invoice->total_amount - $total_pay); ?>"
-                                                                    class="form-control bg-light border-0" 
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -464,7 +467,8 @@ unset($__errorArgs, $__bag); ?>
                                             ?>
                                             <tr class="border-top border-top-dashed mt-2">
                                                 <td colspan="2" class="text-end">
-                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)</h6>
+                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)
+                                                    </h6>
                                                 </td>
                                                 <td colspan="3" class="p-0">
                                                     <table
@@ -518,7 +522,7 @@ unset($__errorArgs, $__bag); ?>
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="discount"
-                                                                    class="form-control bg-light border-0" id="cart-total"
+                                                                    class="form-control bg-light border-0" id=""
                                                                     placeholder="0" />
                                                             </td>
                                                         </tr>
@@ -543,8 +547,8 @@ unset($__errorArgs, $__bag); ?>
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="pay"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment_save" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -563,8 +567,9 @@ unset($__errorArgs, $__bag); ?>
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="due"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="due_amount_save" placeholder="0" />
+
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -602,6 +607,9 @@ unset($__errorArgs, $__bag); ?>
             });
             $('#cart-total').val(total.toFixed(2)).trigger('input');
             $('#invoice-total').val(total.toFixed(2));
+
+            $('#due_amount_save').val(total.toFixed(2));
+
         }
 
         $(document).ready(function() {
@@ -630,6 +638,62 @@ unset($__errorArgs, $__bag); ?>
             tr.appendTo('#newlink');
             calculateTotal();
         }
+    </script>
+
+
+    
+    <script>
+     $(document).ready(function() {
+    $('#receive_payment_save').on('keyup', function() {
+        // Get the due amount
+        var dueAmount = parseFloat($('#due_amount_save').val());
+        console.log("due amount save:", dueAmount);
+
+        // Get the received payment
+        var receivedPayment = parseFloat($(this).val());
+        console.log("received payment save:", receivedPayment);
+
+        // Check for NaN values
+        if (isNaN(dueAmount) || isNaN(receivedPayment)) {
+            console.log("Invalid input. Please enter valid numbers.");
+            return; // Exit the function if input values are not valid
+        }
+
+        // Calculate the remaining due amount
+        var remainingDue = dueAmount - receivedPayment;
+
+        // Update the remaining due amount field
+        $('#due_amount_save').val(remainingDue.toFixed(2)); // Assuming you want to display 2 decimal places
+    });
+});
+
+
+    </script>
+
+    
+    <script>
+        $(document).ready(function() {
+
+
+            $('#receive_payment').on('input', function() {
+
+                // Get the received payment
+                var receivedPayment = parseFloat($(this).val());
+            var dueAmount = parseFloat($('#due_amount').val());
+                // Get the due amount
+
+                console.log("due amount", dueAmount);
+
+                // Calculate the remaining due amount
+                var remainingDue = dueAmount - receivedPayment;
+
+
+
+                // Update the remaining due amount field
+                $('#due_amount').val(remainingDue.toFixed(
+                    2)); // Assuming you want to display 2 decimal places
+            });
+        });
     </script>
 <?php $__env->stopPush(); ?>
 

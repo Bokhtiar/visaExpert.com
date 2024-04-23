@@ -47,6 +47,7 @@ class CustomerInvoiceController extends Controller
                 'amount.*' => 'required|numeric',
                 'total_amount' => 'nullable|numeric',
                 'road_id' => 'nullable|numeric',
+                'discount' => 'nullable : numeric'
             ]);
 
             $invoice = Invoice::create($validatedData);
@@ -114,6 +115,7 @@ class CustomerInvoiceController extends Controller
         $validatedData = $request->validate([
             'status' => 'required|string',
             'road_id' => 'nullable|numeric',
+            'discount' => 'nullable : numeric'
         ]);
 
         $invoice->update($validatedData);

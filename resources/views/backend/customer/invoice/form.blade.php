@@ -115,7 +115,9 @@
                                     @isset($invoice)
                                         <select class="form-control" name="road_id" id="">
                                             @foreach ($roads as $road)
-                                                <option value="{{ $road->id }}" {{ $road->id == $invoice->road_id ? 'selected' : "" }}>{{ $road->name }}</option>
+                                                <option value="{{ $road->id }}"
+                                                    {{ $road->id == $invoice->road_id ? 'selected' : '' }}>{{ $road->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     @else
@@ -212,24 +214,25 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                        
 
-                                        
+
+
 
 
                                         {{-- new added --}}
-                                          {{-- percentage --}}
+                                        {{-- percentage --}}
                                         @php
                                             $total_pay = 0;
                                         @endphp
                                         @foreach ($payables as $pay)
-                                        {{-- {{ dd($pay->pay) }} --}}
+                                            {{-- {{ dd($pay->pay) }} --}}
                                             @php
                                                 $total_pay += $pay->pay;
                                             @endphp
                                             <tr class="border-top border-top-dashed mt-2">
                                                 <td colspan="2" class="text-end">
-                                                    <h6>Pay {{ $loop->index + 1 }} ({{$pay->created_at->format('Y-m-d')}})</h6>
+                                                    <h6>Pay {{ $loop->index + 1 }} ({{ $pay->created_at->format('Y-m-d') }})
+                                                    </h6>
                                                 </td>
                                                 <td colspan="3" class="p-0">
                                                     <table
@@ -238,11 +241,11 @@
                                                             <tr class="border-top border-top-dashed">
                                                                 <th scope="row"></th>
                                                                 <td>
-                                                                  
+
                                                                     <input type="number" name=""
                                                                         value="{{ $pay->pay }}"
-                                                                        class="form-control bg-light border-0" 
-                                                                        placeholder="0" readonly />
+                                                                        class="form-control bg-light border-0" placeholder="0"
+                                                                        readonly />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -263,8 +266,8 @@
                                                             <td>
                                                                 <input type="number" name=""
                                                                     value="{{ $total_pay }}"
-                                                                    class="form-control bg-light border-0"
-                                                                    placeholder="0" readonly />
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -309,8 +312,8 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="pay"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -328,10 +331,9 @@
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
                                                             <td>
-                                                                <input type="number" name="due"
+                                                                <input type="number" name="due" id="due_amount"
                                                                     value="{{ $invoice->total_amount - $total_pay }}"
-                                                                    class="form-control bg-light border-0" 
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -438,7 +440,8 @@
                                             @endphp
                                             <tr class="border-top border-top-dashed mt-2">
                                                 <td colspan="2" class="text-end">
-                                                    <h6>Pay {{ $loop->index + 1 }} ({{$pay->created_at->format('Y-m-d')}})</h6>
+                                                    <h6>Pay {{ $loop->index + 1 }} ({{ $pay->created_at->format('Y-m-d') }})
+                                                    </h6>
                                                 </td>
                                                 <td colspan="3" class="p-0">
                                                     <table
@@ -492,7 +495,7 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="discount"
-                                                                    class="form-control bg-light border-0" id="cart-total"
+                                                                    class="form-control bg-light border-0" id=""
                                                                     placeholder="0" />
                                                             </td>
                                                         </tr>
@@ -517,8 +520,8 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="pay"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment_save" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -537,8 +540,9 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="due"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="due_amount_save" placeholder="0" />
+
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -576,6 +580,9 @@
             });
             $('#cart-total').val(total.toFixed(2)).trigger('input');
             $('#invoice-total').val(total.toFixed(2));
+
+            $('#due_amount_save').val(total.toFixed(2));
+
         }
 
         $(document).ready(function() {
@@ -604,5 +611,61 @@
             tr.appendTo('#newlink');
             calculateTotal();
         }
+    </script>
+
+
+    {{-- revice ammount and due amont save --}}
+    <script>
+     $(document).ready(function() {
+    $('#receive_payment_save').on('keyup', function() {
+        // Get the due amount
+        var dueAmount = parseFloat($('#due_amount_save').val());
+        console.log("due amount save:", dueAmount);
+
+        // Get the received payment
+        var receivedPayment = parseFloat($(this).val());
+        console.log("received payment save:", receivedPayment);
+
+        // Check for NaN values
+        if (isNaN(dueAmount) || isNaN(receivedPayment)) {
+            console.log("Invalid input. Please enter valid numbers.");
+            return; // Exit the function if input values are not valid
+        }
+
+        // Calculate the remaining due amount
+        var remainingDue = dueAmount - receivedPayment;
+
+        // Update the remaining due amount field
+        $('#due_amount_save').val(remainingDue.toFixed(2)); // Assuming you want to display 2 decimal places
+    });
+});
+
+
+    </script>
+
+    {{-- revice ammount and due amont update --}}
+    <script>
+        $(document).ready(function() {
+
+
+            $('#receive_payment').on('input', function() {
+
+                // Get the received payment
+                var receivedPayment = parseFloat($(this).val());
+            var dueAmount = parseFloat($('#due_amount').val());
+                // Get the due amount
+
+                console.log("due amount", dueAmount);
+
+                // Calculate the remaining due amount
+                var remainingDue = dueAmount - receivedPayment;
+
+
+
+                // Update the remaining due amount field
+                $('#due_amount').val(remainingDue.toFixed(
+                    2)); // Assuming you want to display 2 decimal places
+            });
+        });
     </script>
 @endpush
