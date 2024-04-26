@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Frontend\SearchCustomerFormRequest;
+use App\Models\Customer;
 use App\Models\VisaForm;
 use App\Models\VisaType;
 use Illuminate\Contracts\View\View;
@@ -26,8 +27,12 @@ class FrontendController extends Controller
         return response()->json(['documents' => $requiredDocuments]);
     }
 
-    public function searchCustomerForm(SearchCustomerFormRequest $request): View
+    public function searchCustomerForm(SearchCustomerFormRequest $request)
     {
+        $customer_uniqu_id = $request->all();
+        $customer = Customer::where('unique_id', $customer_uniqu_id['user_id'])->first();
+        
+        if ($customer->search_active == 1) {
         $keyword = $request->input('user_id');
 
 
@@ -38,5 +43,10 @@ class FrontendController extends Controller
             ->get();
 
         return view('frontend.search-result', compact('forms', 'keyword'));
+        }else{
+
+             session()->flash('success', "Your are disable, please contact to admin");
+             return back();
+        }
     }
 }
