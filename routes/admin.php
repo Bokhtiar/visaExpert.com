@@ -32,9 +32,11 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
     Route::delete('/{customer}', 'destroy')->name('destroy');
     Route::patch('/{customer}/update-visa-status', 'updateVisaStatus')->name('updateVisaStatus');
     Route::patch('/{customer}/forms/{form}/documents/{document}/update-status', 'updateDocumentStatus')->name('updateDocumentStatus');
-
-
     Route::get('/print/pdf/{docs}', 'print')->name('print.pdf');
+
+
+    // customer
+    Route::get('/search-active/{id}', 'search_active')->name('search-active');
 
 
 });

@@ -52,6 +52,7 @@
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
                                                     <th scope="col">Payment Status</th>
+                                                    <th scope="col">Search Active</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
@@ -85,19 +86,33 @@
                                                                 @if ($invoice->status == 'Paid')
                                                                     <span class="btn btn-success btn-sm">Paid</span>
                                                                 @elseif($invoice->status == 'Due')
-                                                                    <a class="btn btn-danger btn-sm"
-                                                                        href="{{ route('admin.customers-invoices.create', $customer->id) }}">
+                                                                    <a class="btn btn-info btn-sm"
+                                                                        href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
 
                                                                         Pay
                                                                     </a>
-                                                                    <span class="btn btn-sm btn-info">
+                                                                    <span class="">
+                                                                        <a class="btn btn-danger btn-sm"
+                                                                            href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
 
-                                                                        Due
+                                                                            Due
+                                                                        </a>
+
                                                                     </span>
                                                                 @endif
                                                             @else
                                                                 <span class="">Paynment not initiat</span>
                                                             @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($customer->search_active == 1)
+                                                                <a class="btn btn-primary"
+                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">Enable</a>
+                                                            @else
+                                                                <a class="btn btn-danger"
+                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">Disable</a>
+                                                            @endif
+
                                                         </td>
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
@@ -131,6 +146,7 @@
                                                                 @endcan
                                                             </div>
                                                         </td>
+
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -160,11 +176,9 @@
     <script src="{{ asset('backend/assets/js/pages/datatables.init.js') }}"></script>
 
     <script>
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
-        table.page.len(100).draw(); // Set the default pagination limit to 100
-    });
-</script>
-
+        $(document).ready(function() {
+            var table = $('#example').DataTable();
+            table.page.len(100).draw(); // Set the default pagination limit to 100
+        });
+    </script>
 @endpush
-

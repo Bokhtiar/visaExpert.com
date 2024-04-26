@@ -50,6 +50,7 @@
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
                                                     <th scope="col">Payment Status</th>
+                                                    <th scope="col">Search Active</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
@@ -83,19 +84,33 @@
                                                                 <?php if($invoice->status == 'Paid'): ?>
                                                                     <span class="btn btn-success btn-sm">Paid</span>
                                                                 <?php elseif($invoice->status == 'Due'): ?>
-                                                                    <a class="btn btn-danger btn-sm"
-                                                                        href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>">
+                                                                    <a class="btn btn-info btn-sm"
+                                                                        href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
 
                                                                         Pay
                                                                     </a>
-                                                                    <span class="btn btn-sm btn-info">
+                                                                    <span class="">
+                                                                        <a class="btn btn-danger btn-sm"
+                                                                            href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
 
-                                                                        Due
+                                                                            Due
+                                                                        </a>
+
                                                                     </span>
                                                                 <?php endif; ?>
                                                             <?php else: ?>
                                                                 <span class="">Paynment not initiat</span>
                                                             <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($customer->search_active == 1): ?>
+                                                                <a class="btn btn-primary"
+                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">Enable</a>
+                                                            <?php else: ?>
+                                                                <a class="btn btn-danger"
+                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">Disable</a>
+                                                            <?php endif; ?>
+
                                                         </td>
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
@@ -129,6 +144,7 @@
                                                                 <?php endif; ?>
                                                             </div>
                                                         </td>
+
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                     <tr>
@@ -158,13 +174,11 @@
     <script src="<?php echo e(asset('backend/assets/js/pages/datatables.init.js')); ?>"></script>
 
     <script>
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
-        table.page.len(100).draw(); // Set the default pagination limit to 100
-    });
-</script>
-
+        $(document).ready(function() {
+            var table = $('#example').DataTable();
+            table.page.len(100).draw(); // Set the default pagination limit to 100
+        });
+    </script>
 <?php $__env->stopPush(); ?>
-
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/customer/index.blade.php ENDPATH**/ ?>

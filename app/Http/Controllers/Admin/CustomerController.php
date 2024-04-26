@@ -366,4 +366,19 @@ class CustomerController extends Controller
         view('backend.customer.print', compact('docs'));
         return redirect()->back();
     }
+
+
+    public function search_active($id)
+    {
+        $customer = Customer::find($id);
+        if ($customer->search_active == 1) {
+            $customer->search_active = 0;
+            $customer->save();
+            return redirect()->back();
+        }else{
+            $customer->search_active = 1;
+            $customer->save();
+            return redirect()->back();
+        }
+    }
 }
