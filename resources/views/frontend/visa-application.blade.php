@@ -10,7 +10,7 @@
             <div class="row">
                 <div>
                     <img src="{{ asset('backend/assets/images/home-bg.jpg') }}" alt="homepage-banner"
-                         class="img-fluid w-100 h-100 object-fit-cover">
+                        class="img-fluid w-100 h-100 object-fit-cover">
                 </div>
             </div>
         </div>
@@ -30,16 +30,16 @@
                             </p>
 
                             @session('success')
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>{{ $value }}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>{{ $value }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
                                         aria-label="Close"></button>
-                            </div>
+                                </div>
                             @endsession
 
 
                             <form id="visaForm" action="{{ route('application.forms.store') }}" method="POST"
-                                  enctype="multipart/form-data">
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
@@ -49,38 +49,34 @@
                                     <div class="col-lg-9 custom-message">
                                         <select
                                             class="form-select form-select-lg mb-3 @error('visa_type_id') is-invalid @enderror"
-                                            id="visa_type_id"
-                                            name="visa_type_id">
+                                            id="visa_type_id" name="visa_type_id">
                                             <option selected disabled>Choose a type</option>
-                                            @foreach($visaType as $type)
+                                            @foreach ($visaType as $type)
                                                 <option value="{{ $type->id }}">
                                                     {{ ucfirst($type->title) }}
                                                 </option>
                                             @endforeach
                                         </select>
                                         @error('visa_type_id')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
-                                        <label for="name" class="col-form-label">Name<span
-                                                class="text-danger">*</span> :</label>
+                                        <label for="name" class="col-form-label">Name<span class="text-danger">*</span>
+                                            :</label>
                                     </div>
                                     <div class="col-lg-9 custom-message">
                                         <input type="text"
-                                               class="form-control form-control-lg mb-3 @error('name') is-invalid @enderror"
-                                               id="name"
-                                               name="name"
-                                               placeholder="Enter your full name"
-                                        >
+                                            class="form-control form-control-lg mb-3 @error('name') is-invalid @enderror"
+                                            id="name" name="name" placeholder="Enter your full name">
                                         @error('name')
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                <strong>{{ $message }}</strong>
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -91,15 +87,12 @@
                                     </div>
                                     <div class="col-lg-9 custom-message">
                                         <input type="number"
-                                               class="form-control form-control-lg mb-3 @error('phone') is-invalid @enderror"
-                                               id="phone"
-                                               name="phone"
-                                               placeholder="01xxxxxxxxx"
-                                        >
+                                            class="form-control form-control-lg mb-3 @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone" placeholder="01xxxxxxxxx">
                                         @error('phone')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
@@ -134,9 +127,9 @@
 
         <section class="container">
             <video width="" style="width: 100%" height="400" controls>
-        <source src="{{ asset('frontend/demo.mp4') }}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+                <source src="{{ asset('frontend/demo.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </section>
 
     </section>
@@ -144,19 +137,19 @@
 
 @push('js')
     <script>
-        $(document).ready(function () {
-            $('#visa_type_id').change(function () {
+        $(document).ready(function() {
+            $('#visa_type_id').change(function() {
                 let visa_type_id = $(this).val();
 
                 $.ajax({
                     url: '/get-required-documents/' + visa_type_id,
                     type: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         let requiredDocumentsDisplay = $('#requiredDocumentsDisplay');
                         if (response.documents) {
                             requiredDocumentsDisplay.empty();
                             let documents = response.documents.split(', ');
-                            documents.forEach(function (document, index) {
+                            documents.forEach(function(document, index) {
                                 let documentInput = $('<input/>', {
                                     type: 'text',
                                     class: 'form-control',
@@ -197,17 +190,18 @@
 
                             $('#requiredDocumentsSection').show();
                         } else {
-                            requiredDocumentsDisplay.text("No documents found for this visa type.");
+                            requiredDocumentsDisplay.text(
+                                "No documents found for this visa type.");
                             $('#requiredDocumentsSection').hide();
                         }
                     },
-                    error: function () {
+                    error: function() {
                         console.log('Error loading documents');
                     }
                 });
             });
 
-            $('#visaForm').submit(function (e) {
+            $('#visaForm').submit(function(e) {
                 e.preventDefault();
 
                 let formData = new FormData(this);
@@ -218,17 +212,17 @@
                     // headers: {
                     //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     // },
-                   
-         
+
+
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         location.reload();
                         $('.alert-success').text(response.message).show();
                         $('#visaForm')[0].reset();
                     },
-                    error: function (error) {
+                    error: function(error) {
                         if (error.status === 422) {
 
                             $('.invalid-feedback').remove();
@@ -236,12 +230,14 @@
 
                             let errors = error.responseJSON.errors;
 
-                            $.each(errors, function (field, messages) {
+                            $.each(errors, function(field, messages) {
                                 let inputField = $('#' + field);
 
                                 let errorMessage = messages[0];
 
-                                inputField.closest('.custom-message').append('<div class="invalid-feedback">' + errorMessage + '</div>');
+                                inputField.closest('.custom-message').append(
+                                    '<div class="invalid-feedback">' +
+                                    errorMessage + '</div>');
 
                                 inputField.addClass('is-invalid');
                             });
@@ -252,6 +248,5 @@
                 });
             });
         });
-
     </script>
 @endpush

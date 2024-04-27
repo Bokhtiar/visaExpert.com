@@ -8,7 +8,7 @@
             <div class="row">
                 <div>
                     <img src="<?php echo e(asset('backend/assets/images/home-bg.jpg')); ?>" alt="homepage-banner"
-                         class="img-fluid w-100 h-100 object-fit-cover">
+                        class="img-fluid w-100 h-100 object-fit-cover">
                 </div>
             </div>
         </div>
@@ -31,11 +31,11 @@
 if (session()->has($__sessionArgs[0])) :
 if (isset($value)) { $__sessionPrevious[] = $value; }
 $value = session()->get($__sessionArgs[0]); ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong><?php echo e($value); ?></strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong><?php echo e($value); ?></strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
                                         aria-label="Close"></button>
-                            </div>
+                                </div>
                             <?php unset($value);
 if (isset($__sessionPrevious) && !empty($__sessionPrevious)) { $value = array_pop($__sessionPrevious); }
 if (isset($__sessionPrevious) && empty($__sessionPrevious)) { unset($__sessionPrevious); }
@@ -44,7 +44,7 @@ unset($__sessionArgs); ?>
 
 
                             <form id="visaForm" action="<?php echo e(route('application.forms.store')); ?>" method="POST"
-                                  enctype="multipart/form-data">
+                                enctype="multipart/form-data">
                                 <?php echo csrf_field(); ?>
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
@@ -61,8 +61,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                            id="visa_type_id"
-                                            name="visa_type_id">
+                                            id="visa_type_id" name="visa_type_id">
                                             <option selected disabled>Choose a type</option>
                                             <?php $__currentLoopData = $visaType; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($type->id); ?>">
@@ -76,10 +75,10 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="invalid-feedback">
-                                            <?php echo e($message); ?>
+                                            <div class="invalid-feedback">
+                                                <?php echo e($message); ?>
 
-                                        </div>
+                                            </div>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -88,12 +87,12 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
-                                        <label for="name" class="col-form-label">Name<span
-                                                class="text-danger">*</span> :</label>
+                                        <label for="name" class="col-form-label">Name<span class="text-danger">*</span>
+                                            :</label>
                                     </div>
                                     <div class="col-lg-9 custom-message">
                                         <input type="text"
-                                               class="form-control form-control-lg mb-3 <?php $__errorArgs = ['name'];
+                                            class="form-control form-control-lg mb-3 <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -101,18 +100,15 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                               id="name"
-                                               name="name"
-                                               placeholder="Enter your full name"
-                                        >
+                                            id="name" name="name" placeholder="Enter your full name">
                                         <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="invalid-feedback">
-                                            <strong><?php echo e($message); ?></strong>
-                                        </div>
+                                            <div class="invalid-feedback">
+                                                <strong><?php echo e($message); ?></strong>
+                                            </div>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -126,7 +122,7 @@ unset($__errorArgs, $__bag); ?>
                                     </div>
                                     <div class="col-lg-9 custom-message">
                                         <input type="number"
-                                               class="form-control form-control-lg mb-3 <?php $__errorArgs = ['phone'];
+                                            class="form-control form-control-lg mb-3 <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -134,19 +130,16 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                               id="phone"
-                                               name="phone"
-                                               placeholder="01xxxxxxxxx"
-                                        >
+                                            id="phone" name="phone" placeholder="01xxxxxxxxx">
                                         <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="invalid-feedback">
-                                            <?php echo e($message); ?>
+                                            <div class="invalid-feedback">
+                                                <?php echo e($message); ?>
 
-                                        </div>
+                                            </div>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -184,9 +177,9 @@ unset($__errorArgs, $__bag); ?>
 
         <section class="container">
             <video width="" style="width: 100%" height="400" controls>
-        <source src="<?php echo e(asset('frontend/demo.mp4')); ?>" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+                <source src="<?php echo e(asset('frontend/demo.mp4')); ?>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </section>
 
     </section>
@@ -194,19 +187,19 @@ unset($__errorArgs, $__bag); ?>
 
 <?php $__env->startPush('js'); ?>
     <script>
-        $(document).ready(function () {
-            $('#visa_type_id').change(function () {
+        $(document).ready(function() {
+            $('#visa_type_id').change(function() {
                 let visa_type_id = $(this).val();
 
                 $.ajax({
                     url: '/get-required-documents/' + visa_type_id,
                     type: 'GET',
-                    success: function (response) {
+                    success: function(response) {
                         let requiredDocumentsDisplay = $('#requiredDocumentsDisplay');
                         if (response.documents) {
                             requiredDocumentsDisplay.empty();
                             let documents = response.documents.split(', ');
-                            documents.forEach(function (document, index) {
+                            documents.forEach(function(document, index) {
                                 let documentInput = $('<input/>', {
                                     type: 'text',
                                     class: 'form-control',
@@ -247,17 +240,18 @@ unset($__errorArgs, $__bag); ?>
 
                             $('#requiredDocumentsSection').show();
                         } else {
-                            requiredDocumentsDisplay.text("No documents found for this visa type.");
+                            requiredDocumentsDisplay.text(
+                                "No documents found for this visa type.");
                             $('#requiredDocumentsSection').hide();
                         }
                     },
-                    error: function () {
+                    error: function() {
                         console.log('Error loading documents');
                     }
                 });
             });
 
-            $('#visaForm').submit(function (e) {
+            $('#visaForm').submit(function(e) {
                 e.preventDefault();
 
                 let formData = new FormData(this);
@@ -268,17 +262,17 @@ unset($__errorArgs, $__bag); ?>
                     // headers: {
                     //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     // },
-                   
-         
+
+
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         location.reload();
                         $('.alert-success').text(response.message).show();
                         $('#visaForm')[0].reset();
                     },
-                    error: function (error) {
+                    error: function(error) {
                         if (error.status === 422) {
 
                             $('.invalid-feedback').remove();
@@ -286,12 +280,14 @@ unset($__errorArgs, $__bag); ?>
 
                             let errors = error.responseJSON.errors;
 
-                            $.each(errors, function (field, messages) {
+                            $.each(errors, function(field, messages) {
                                 let inputField = $('#' + field);
 
                                 let errorMessage = messages[0];
 
-                                inputField.closest('.custom-message').append('<div class="invalid-feedback">' + errorMessage + '</div>');
+                                inputField.closest('.custom-message').append(
+                                    '<div class="invalid-feedback">' +
+                                    errorMessage + '</div>');
 
                                 inputField.addClass('is-invalid');
                             });
@@ -302,7 +298,6 @@ unset($__errorArgs, $__bag); ?>
                 });
             });
         });
-
     </script>
 <?php $__env->stopPush(); ?>
 

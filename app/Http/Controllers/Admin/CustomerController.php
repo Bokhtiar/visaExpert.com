@@ -98,16 +98,17 @@ class CustomerController extends Controller
     public function show(Customer $customer): View
     {
 
-        // dd($customer);
+        //dd($customer);
         $this->authorize('view', CustomerController::class);
         $visaStatuses = VisaStatus::collection();
 
-
+       
 
         $customer = Customer::with('forms.visaType')
             ->with('forms.invoice')
             ->with('forms.documents')
             ->findOrFail($customer->id);
+
 
       
 
@@ -379,6 +380,89 @@ class CustomerController extends Controller
             $customer->search_active = 1;
             $customer->save();
             return redirect()->back();
+        }
+    }
+
+
+
+    public function documentuploadadmin($id)
+    {
+        $customer_service_type = VisaForm::where('customer_id', $id)->first();
+      
+        $customer_visa = VisaType::find($customer_service_type->visa_type_id);
+        
+        $documents = $customer_visa->required_documents;
+       
+        $customer_form_id = $customer_service_type->id;
+       
+        $customer_id = $id;
+        return view('backend.customer.file-upload', compact('documents', 'customer_form_id', 'customer_id'));
+    }
+
+
+    public function singleDocumentStore(Request $request){
+        try {
+          
+            if ($request->hasFile('doc')) {
+                $file = $request->file('doc');
+                $destinationPath = public_path('uploads/visa-forms/documents/');
+                $titles = $request->input('title');
+
+
+                if ($file->isValid()) {
+                    $extension = $file->getClientOriginalExtension();
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fileName = $originalName . '-' . uniqid() . '.' . $extension;
+                    $file->move($destinationPath, $fileName);
+
+                    Document::create([
+                        'form_id' => $request->customer_form_id,
+                        'title' => $request->title,
+                        'documents' => $fileName,
+                        'document_type' => $extension,
+                        'status' => "In review..."
+                    ]); 
+                }
+            }
+            return redirect()->back()->with('success', 'Document update successfully');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            throw $th;
+            
+        }
+    }
+
+    public function singleDocumentUpdate(Request $request, $id)
+    {
+        try {
+            if ($request->hasFile('doc')) {
+                $file = $request->file('doc');
+                $destinationPath = public_path('uploads/visa-forms/documents/');
+                $titles = $request->input('title');
+
+
+                if ($file->isValid()) {
+                    $extension = $file->getClientOriginalExtension();
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fileName = $originalName . '-' . uniqid() . '.' . $extension;
+                    $file->move($destinationPath, $fileName);
+
+                    $documents = Document::find($id);
+                    $documents->update([
+                        'form_id' => $request->customer_form_id,
+                        'title' => $request->title,
+                        'documents' => $fileName,
+                        'document_type' => $extension,
+                        'status' => "In review..."
+                    ]);
+                }
+            }else{
+                return redirect()->back();
+            }
+            return redirect()->back()->with('success', 'Document update successfully');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            throw $th;
         }
     }
 }

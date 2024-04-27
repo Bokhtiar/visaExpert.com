@@ -47,4 +47,16 @@ class VisaForm extends Model
     {
         return $this->hasMany(Document::class, 'form_id', 'id');
     }
+
+
+    // document exist ot not
+    public static function exitDocument($file, $form_id){
+        
+       $exist = Document::where('form_id', $form_id)->where('title',$file)->first();
+      
+       if ($exist) {
+        return $exist;
+       }
+
+    }
 }

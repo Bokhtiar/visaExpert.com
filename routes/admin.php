@@ -34,7 +34,11 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
     Route::patch('/{customer}/forms/{form}/documents/{document}/update-status', 'updateDocumentStatus')->name('updateDocumentStatus');
     Route::get('/print/pdf/{docs}', 'print')->name('print.pdf');
 
-
+    // documents - upload
+    Route::get('/documents-upload/{id}', 'documentuploadadmin')->name('documents-upload');
+    Route::post('/single/document/store', 'singleDocumentStore')->name('single.document.store');
+    Route::put('/single/document/update/{id}', 'singleDocumentUpdate')->name('single.document.update');
+    
     // customer
     Route::get('/search-active/{id}', 'search_active')->name('search-active');
 

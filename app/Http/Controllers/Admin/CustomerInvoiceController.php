@@ -85,11 +85,10 @@ class CustomerInvoiceController extends Controller
        
     }
 
-    public function show(Invoice $invoice): View
+    public function show(Invoice $invoice)
     {
         $this->authorize('create-invoice', CustomerInvoiceController::class);
         $invoice->load('customer');
-
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->get();
 

@@ -34,35 +34,35 @@
                 </div>
             </div>
 
-            @if (count($parent_customers) >1)
-                
-          
-            <h5>Relavent Customer List: </h5>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">SL</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($parent_customers as $cus)
-                        <tr>
-                            <th scope="row">{{ $loop->index + 1 }}</th>
-                            <td>{{ $cus->name }}</td>
-                            <td>{{ $cus->phone }}</td>
-                            <td>
-                                <a href="{{ route('admin.customers.show', $cus->id) }}"
-                                    class="btn btn-clr-red waves-effect waves-light"> Show</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @if (count($parent_customers) > 1)
 
-              @endif
+
+                <h5>Relavent Customer List: </h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">SL</th>
+                            <th scope="col">Customer</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($parent_customers as $cus)
+                            <tr>
+                                <th scope="row">{{ $loop->index + 1 }}</th>
+                                <td>{{ $cus->name }}</td>
+                                <td>{{ $cus->phone }}</td>
+                                <td>
+                                    <a href="{{ route('admin.customers.show', $cus->id) }}"
+                                        class="btn btn-clr-red waves-effect waves-light"> Show</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            @endif
 
 
 
@@ -411,9 +411,8 @@
 
 
                                     </div>
-                                    <a href="{{ route('admin.customers.offline') }}" class="btn btn-clr-red">
-                                        Create New Customer (Offline mood)
-                                    </a>
+                                     <a href="{{ route('admin.customers.add-more', $customer->id) }}"
+                                                class="btn btn-clr-red">Add More Customer</a>
                                 </div>
                                 <!--end Service tab-pane-->
                                 <div class="tab-pane" id="personalInformation" role="tabpanel">
@@ -461,8 +460,7 @@
                                                 </div>
                                             @endforeach
 
-                                            <a href="{{ route('admin.customers.add-more', $customer->id) }}"
-                                                class="btn btn-clr-red">Add More Customer</a>
+                                           
                                         </div>
                                         <form id="updateCustomerForm"
                                             action="{{ route('admin.customers.update', $customer->id) }}" method="POST"
@@ -543,6 +541,20 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                       
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="card-title mb-0 flex-grow-1">Documents update</h5>
+                                            <div class="flex-shrink-0">
+                                                <div>
+                                                    <a href="{{ route('admin.customers.documents-upload', $customer->id) }}"
+                                                        class="btn btn-clr-red waves-effect waves-light">
+                                                        <i class="ri-file-add-line align-bottom me-1"></i>
+                                                        Upload Documetns
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="table-responsive">
                                             <table class="table table-borderless align-middle table-nowrap mb-0">
                                                 <thead>
