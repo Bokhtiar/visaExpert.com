@@ -180,6 +180,15 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
+
+
+        <section class="container">
+            <video width="" style="width: 100%" height="400" controls>
+        <source src="<?php echo e(asset('frontend/demo.mp4')); ?>" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+        </section>
+
     </section>
 <?php $__env->stopSection(); ?>
 
