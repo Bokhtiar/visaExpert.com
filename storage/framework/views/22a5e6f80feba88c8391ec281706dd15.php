@@ -46,45 +46,7 @@ unset($__sessionArgs); ?>
                             <form id="visaForm" action="<?php echo e(route('application.forms.store')); ?>" method="POST"
                                 enctype="multipart/form-data">
                                 <?php echo csrf_field(); ?>
-                                <div class="row mb-3">
-                                    <div class="col-lg-3">
-                                        <label for="visa_type_id" class="col-form-label">Visa Type<span
-                                                class="text-danger">*</span> :</label>
-                                    </div>
-                                    <div class="col-lg-9 custom-message">
-                                        <select
-                                            class="form-select form-select-lg mb-3 <?php $__errorArgs = ['visa_type_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                            id="visa_type_id" name="visa_type_id">
-                                            <option selected disabled>Choose a type</option>
-                                            <?php $__currentLoopData = $visaType; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($type->id); ?>">
-                                                    <?php echo e(ucfirst($type->title)); ?>
 
-                                                </option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
-                                        <?php $__errorArgs = ['visa_type_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                            <div class="invalid-feedback">
-                                                <?php echo e($message); ?>
-
-                                            </div>
-                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                    </div>
-                                </div>
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
                                         <label for="name" class="col-form-label">Name<span class="text-danger">*</span>
@@ -146,6 +108,47 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-3">
+                                        <label for="visa_type_id" class="col-form-label">Visa Type<span
+                                                class="text-danger">*</span> :</label>
+                                    </div>
+                                    <div class="col-lg-9 custom-message">
+                                        <select
+                                            class="form-select form-select-lg mb-3 <?php $__errorArgs = ['visa_type_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            id="visa_type_id" name="visa_type_id">
+                                            <option selected disabled>Choose a type</option>
+                                            <?php $__currentLoopData = $visaType; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($type->id); ?>">
+                                                    <?php echo e(ucfirst($type->title)); ?>
+
+                                                </option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                        <?php $__errorArgs = ['visa_type_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback">
+                                                <?php echo e($message); ?>
+
+                                            </div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+                                </div>
+
                                 <div class="row mt-5 mb-3">
                                     <div class="col-xxl-12">
                                         <div class="card">
@@ -178,8 +181,48 @@ unset($__errorArgs, $__bag); ?>
         <section class="container">
             <video width="" style="width: 100%" height="400" controls>
                 <source src="<?php echo e(asset('frontend/demo.mp4')); ?>" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
+        </section>
+
+        <section class="container my-5 bg-muted">
+            <div class="row">
+                
+                <div class="col-sm-12 col-md-5 col-lg-5 ">
+
+                    <div class="card" style=" height: 300px ;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; ">
+                        <div class="card-body" style="margin-top: 80px">
+                            <div class="d-flex justify-content-between">
+                                <strong>Helpline:</strong>
+                                <span>+8801703 605660</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <strong>Email:</strong>
+                                <span> helpline@visaxpert.net</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <strong>Website:</strong>
+                                <span> https://visaxpert.net/</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <strong>Location:</strong>
+                                <p class="mx-1  " style="font-size: 13px;"> Rahim Tower,Subhanighat,Sylhet-3100 Bangladesh.
+                                    New Tech India Visa (নিউ টেক ইন্ডিয়া ভিসা)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="col-sm-12 col-md-7 col-lg-7">
+                    <div style="width: 100%"><iframe width="100%" height="300" frameborder="0" scrolling="no"
+                            marginheight="0" marginwidth="0"
+                            src="https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=en&amp;q=New%20Tech%20India%20Visa+(My%20Business%20Name)&amp;t=k&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a
+                                href="https://www.gps.ie/">gps trackers</a></iframe></div>
+                </div>
+            </div>
         </section>
 
     </section>
