@@ -22,7 +22,7 @@ class CustomerInvoiceController extends Controller
 {
     public function create(Customer $customer): View
     {
-        
+        $customerList = Customer::where('parent_customer_id', $customer->id)->get();   
         $this->authorize('create-invoice', CustomerInvoiceController::class);
         $paymentStatus = PaymentStatus::collection();
 
@@ -30,12 +30,12 @@ class CustomerInvoiceController extends Controller
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id',$customer->id)->get();
 
-        return view('backend.customer.invoice.form', compact('paymentStatus', 'customer', 'services', 'roads', 'payables'));
+        return view('backend.customer.invoice.form', compact('paymentStatus', 'customerList', 'customer', 'services', 'roads', 'payables'));
     }
 
     public function store(Request $request): RedirectResponse
     {
-       
+  
         try {
             $this->authorize('create-invoice', CustomerInvoiceController::class);
             $validatedData = $request->validate([
@@ -44,6 +44,7 @@ class CustomerInvoiceController extends Controller
                 'invoice_number' => 'nullable|string',
                 'status' => 'required|string',
                 'items.*' => 'required|string',
+                'qty.*' => 'required|string',
                 'amount.*' => 'required|numeric',
                 'total_amount' => 'nullable|numeric',
                 'road_id' => 'nullable|numeric',
@@ -51,11 +52,13 @@ class CustomerInvoiceController extends Controller
             ]);
 
             $invoice = Invoice::create($validatedData);
-
+            //dd($validatedData['qty'][0]);
             foreach ($validatedData['items'] as $key => $itemName) {
+                // dd($validatedData['qty'][$key]);
                 $item = new InvoiceItem();
                 $item->invoice_id = $invoice->id;
                 $item->item = $itemName;
+                $item->qty =$validatedData['qty'][$key];
                 $item->amount = $validatedData['amount'][$key];
                 $item->save();
             }
@@ -97,14 +100,15 @@ class CustomerInvoiceController extends Controller
 
     public function edit(Invoice $invoice): View
     {
-
+       // dd($invoice);
+        $customerList = Customer::where('parent_customer_id', $invoice->customer_id)->get();  
         $this->authorize('edit-invoice', CustomerInvoiceController::class);
         $paymentStatus = PaymentStatus::collection();
 
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->where('invoice_id', $invoice->id)->get();
 
-        return view('backend.customer.invoice.form', compact('invoice', 'paymentStatus','roads', 'payables'));
+        return view('backend.customer.invoice.form', compact('invoice', 'customerList', 'paymentStatus','roads', 'payables'));
     }
 
     public function update(Request $request, Invoice $invoice): RedirectResponse

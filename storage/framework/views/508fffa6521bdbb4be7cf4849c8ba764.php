@@ -18,6 +18,27 @@
         </div>
     </div>
 
+    <h5>Relavent Customer List: </h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">SL</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $__currentLoopData = $customerList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <th scope="row"><?php echo e($loop->index + 1); ?></th>
+                    <td><?php echo e($cus->name); ?> <span class=""
+                            style="color: red"><?php echo e($cus->id == $cus->parent_customer_id ? '(Owner)' : ''); ?></span> </td>
+                    <td><?php echo e($cus->phone); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </tbody>
+    </table>
+
     <div class="row justify-content-center">
         <div class="col-xxl-9">
             <div class="card">
@@ -174,8 +195,8 @@ unset($__errorArgs, $__bag); ?>
                                         readonly="readonly">
                                 </div>
                                 <div class="mb-2">
-                                    <input type="text" class="form-control bg-light border-0" data-plugin="cleave-phone"
-                                        id="billingPhoneno"
+                                    <input type="text" class="form-control bg-light border-0"
+                                        data-plugin="cleave-phone" id="billingPhoneno"
                                         value="<?php echo e(isset($invoice) ? $invoice->customer->phone : $customer->phone); ?>"
                                         readonly="readonly">
                                     <div class="invalid-feedback">
@@ -194,6 +215,7 @@ unset($__errorArgs, $__bag); ?>
                                         <tr class="table-active">
                                             <th scope="col" style="width: 50px;">#</th>
                                             <th scope="col">Details</th>
+                                            <th scope="col">Qty</th>
                                             <th scope="col" class="text-end">Amount (BDT)</th>
                                         </tr>
                                     </thead>
@@ -207,6 +229,7 @@ unset($__errorArgs, $__bag); ?>
 
                                                     </span>
                                                 </td>
+                                                <td><?php echo e($invoiceItem->qty); ?></td>
                                                 <td class="text-end">
                                                     <?php echo e($invoiceItem->amount); ?>
 
@@ -311,10 +334,10 @@ unset($__errorArgs, $__bag); ?>
                                                     <tbody>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
-                                                            <td> 
-                                                                <input type="text" name="discount" value="<?php echo e($invoice->discount); ?>"
-                                                                    class="form-control bg-light border-0"
-                                                                    placeholder="0" />
+                                                            <td>
+                                                                <input type="text" name="discount"
+                                                                    value="<?php echo e($invoice->discount); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -326,9 +349,9 @@ unset($__errorArgs, $__bag); ?>
 
 
 
-                                      
 
-                                       
+
+
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
                                                 <h6>Received:</h6>
@@ -348,11 +371,11 @@ unset($__errorArgs, $__bag); ?>
                                                 </table>
                                             </td>
                                         </tr>
-                                   
+
 
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
-                                               
+
                                             </td>
                                             <td colspan="3" class="p-0">
                                                 <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
@@ -360,7 +383,7 @@ unset($__errorArgs, $__bag); ?>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
                                                             <td>
-                                                                <input type="hidden" name="due" 
+                                                                <input type="hidden" name="due"
                                                                     value="<?php echo e($invoice->total_amount - $total_pay); ?>"
                                                                     class="form-control bg-light border-0" placeholder="0" />
                                                             </td>
@@ -389,6 +412,11 @@ unset($__errorArgs, $__bag); ?>
                                             <th scope="col">
                                                 Details
                                             </th>
+
+                                            <th scope="col">
+                                                Qty
+                                            </th>
+
                                             <th scope="col" class="text-end" style="width: 150px;">Amount (BDT)</th>
                                             <th scope="col" class="text-end" style="width: 105px;"></th>
                                         </tr>
@@ -411,6 +439,9 @@ unset($__errorArgs, $__bag); ?>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="qty[]" id="">
                                             </td>
                                             <td class="text-end">
                                                 <div>
@@ -568,8 +599,7 @@ unset($__errorArgs, $__bag); ?>
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="hidden" name="due" value="0"
-                                                                    class="form-control bg-light border-0"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0" placeholder="0" />
 
                                                             </td>
                                                         </tr>
@@ -610,8 +640,8 @@ unset($__errorArgs, $__bag); ?>
             $('#invoice-total').val(total.toFixed(2));
 
             $('#due_amount_save').val(total.toFixed(2));
-
         }
+
 
         $(document).ready(function() {
             calculateTotal();
@@ -643,30 +673,31 @@ unset($__errorArgs, $__bag); ?>
 
 
     <script>
-    $(document).ready(function() {
-        $('#receive_payment_save').on('keyup', function() {
-            // Get the due amount
-            var dueAmount = parseFloat($('#due_amount_save').val());
-            console.log("due amount save:", dueAmount);
+        $(document).ready(function() {
+            $('#receive_payment_save').on('keyup', function() {
+                // Get the due amount
+                var dueAmount = parseFloat($('#due_amount_save').val());
+                console.log("due amount save:", dueAmount);
 
-            // Get the received payment
-            var receivedPayment = parseFloat($(this).val());
-            console.log("received payment save:", receivedPayment);
+                // Get the received payment
+                var receivedPayment = parseFloat($(this).val());
+                console.log("received payment save:", receivedPayment);
 
-            // Check for NaN values
-            if (isNaN(dueAmount) || isNaN(receivedPayment)) {
-                console.log("Invalid input. Please enter valid numbers.");
-                return; // Exit the function if input values are not valid
-            }
+                // Check for NaN values
+                if (isNaN(dueAmount) || isNaN(receivedPayment)) {
+                    console.log("Invalid input. Please enter valid numbers.");
+                    return; // Exit the function if input values are not valid
+                }
 
-            // Calculate the remaining due amount
-            var remainingDue = dueAmount - receivedPayment;
+                // Calculate the remaining due amount
+                var remainingDue = dueAmount - receivedPayment;
 
-            // Update the remaining due amount field
-            $('#due_amount_save').val(remainingDue.toFixed(2)); // Assuming you want to display 2 decimal places
+                // Update the remaining due amount field
+                $('#due_amount_save').val(remainingDue.toFixed(
+                    2)); // Assuming you want to display 2 decimal places
+            });
         });
-    });
-</script>
+    </script>
 
 
     
@@ -694,6 +725,8 @@ unset($__errorArgs, $__bag); ?>
             });
         });
     </script>
+
+  
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/customer/invoice/form.blade.php ENDPATH**/ ?>
