@@ -27,10 +27,14 @@ class CustomerController extends Controller
     {
         $this->authorize('index', CustomerController::class);
 
-        return view('backend.customer.index')
-            ->withCustomers(
-                Customer::with('forms')->get()
-            );
+        // return view('backend.customer.index')
+        //     ->withCustomers(
+        //         Customer::with('forms')->get()
+        //     );
+        // parent_customer_id
+        $customers = Customer::whereColumn('id', 'parent_customer_id')->get();
+        return view('backend.customer.index', compact('customers'));
+
     }
 
     /*offline customer create*/

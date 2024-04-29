@@ -31,22 +31,21 @@ class FrontendController extends Controller
     {
         $customer_uniqu_id = $request->all();
         $customer = Customer::where('unique_id', $customer_uniqu_id['user_id'])->first();
-        
+
         if ($customer->search_active == 1) {
-        $keyword = $request->input('user_id');
+            $keyword = $request->input('user_id');
 
+            $forms = VisaForm::with(['customer', 'documents', 'invoice', 'visaType'])
+                ->whereHas('customer', function ($customer) use ($keyword) {
+                    $customer->where('unique_id', $keyword);
+                })
+                ->get();
 
-        $forms = VisaForm::with(['customer', 'documents', 'invoice', 'visaType'])
-            ->whereHas('customer', function ($customer) use ($keyword) {
-                $customer->where('unique_id', $keyword);
-            })
-            ->get();
+            return view('frontend.search-result', compact('forms', 'keyword'));
+        } else {
 
-        return view('frontend.search-result', compact('forms', 'keyword'));
-        }else{
-
-             session()->flash('success', "Your are disable, please contact to admin");
-             return back();
+            session()->flash('success', "Your are disable, please contact to admin");
+            return back();
         }
     }
 }

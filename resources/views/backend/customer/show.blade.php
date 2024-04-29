@@ -51,7 +51,7 @@
                         @foreach ($parent_customers as $cus)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
-                                <td>{{ $cus->name }}</td>
+                                <td>{{ $cus->name }} <span class="" style="color: red">{{ $cus->id == $cus->parent_customer_id ? '(Owner)' : "" }}</span> </td>
                                 <td>{{ $cus->phone }}</td>
                                 <td>
                                     <a href="{{ route('admin.customers.show', $cus->id) }}"
@@ -154,11 +154,14 @@
                                     </a>
                                 </li>
                                 @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
-                                    <li class="nav-item">
+                                    @if ($customer->id == $customer->parent_customer_id)
+                                        <li class="nav-item">
                                         <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill" role="tab">
                                             Generated & Updated Bill/Invoices
                                         </a>
                                     </li>
+                                    @endif 
+                                    
                                 @endcan
                             </ul>
                         </div>

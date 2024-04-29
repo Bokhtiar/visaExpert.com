@@ -35,7 +35,7 @@ class CustomerController extends Controller
                 'unique_id' => $customerCount == 0 ? 1 : $customerCount + 1,
                 'name' => $request->input('name'),
                 'phone' => $request->input('phone'),
-                'parent_customer_id' => Customer::latest()->value('id') + 1,
+                'parent_customer_id' => Customer::latest()->value('id') + 1, //customer_id and parent_customer_id are same beacuse, another customer belongs or not,
             ]);
 
             $visaForm = $visaFormService->createVisaForm($customer, $request);
@@ -74,7 +74,7 @@ class CustomerController extends Controller
                 'unique_id' => str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT),
                 'name' => $request->input('name'),
                 'phone' => $request->input('phone'),
-                'parent_customer_id' => Customer::latest()->value('id') + 1,
+                'parent_customer_id' => Customer::latest()->value('id') + 1, //customer_id and parent_customer_id are same beacuse, another customer belongs or not,
             ]);
 
             $visaForm = $visaFormService->createVisaForm($customer, $request);

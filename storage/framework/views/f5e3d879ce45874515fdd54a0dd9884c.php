@@ -51,7 +51,7 @@
                         <?php $__currentLoopData = $parent_customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <th scope="row"><?php echo e($loop->index + 1); ?></th>
-                                <td><?php echo e($cus->name); ?></td>
+                                <td><?php echo e($cus->name); ?> <span class="" style="color: red"><?php echo e($cus->id == $cus->parent_customer_id ? '(Owner)' : ""); ?></span> </td>
                                 <td><?php echo e($cus->phone); ?></td>
                                 <td>
                                     <a href="<?php echo e(route('admin.customers.show', $cus->id)); ?>"
@@ -159,11 +159,14 @@
                                     </a>
                                 </li>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
-                                    <li class="nav-item">
+                                    <?php if($customer->id == $customer->parent_customer_id): ?>
+                                        <li class="nav-item">
                                         <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill" role="tab">
                                             Generated & Updated Bill/Invoices
                                         </a>
                                     </li>
+                                    <?php endif; ?>
+                                    
                                 <?php endif; ?>
                             </ul>
                         </div>
