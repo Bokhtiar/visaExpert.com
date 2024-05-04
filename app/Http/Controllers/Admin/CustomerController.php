@@ -59,7 +59,7 @@ class CustomerController extends Controller
 
             $customer = Customer::create([
                 //'unique_id' => str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT),
-                'unique_id' => $customerCount == 0 ? 1 : $customerCount + 1,
+                'unique_id' => Customer::latest()->value('id') + 1,
                 'name' => $parent_customer->name,
                 'phone' => $parent_customer->phone,
                 'parent_customer_id' => $id,
