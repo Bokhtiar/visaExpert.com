@@ -115,12 +115,12 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <span>{{ config('app.name') }}</span>
+                                <span><?php echo e(config('app.name')); ?></span>
                             </td>
 
                             <td>
-                                User ID #: <b>{{ $invoice->customer->unique_id }}</b><br />
-                                Created: {{ $invoice->created_at->format('d M Y') }}<br />
+                                User ID #: <b><?php echo e($invoice->customer->unique_id); ?></b><br />
+                                Created: <?php echo e($invoice->created_at->format('d M Y')); ?><br />
                             </td>
                         </tr>
                     </table>
@@ -136,15 +136,18 @@
                             </td>
                             <td class="my-design">
                                 Payment Status:<br />
-                                {{ $invoice->status }}
+                                <?php echo e($invoice->status); ?>
+
                             </td>
                             <td class="my-design">
                                 Total (BDT):<br />
-                                {{ $invoice->total_amount }}
+                                <?php echo e($invoice->total_amount); ?>
+
                             </td>
                             <td class="my-design">
-                                {{ $invoice->customer->name }}<br />
-                                {{ $invoice->customer->phone }}
+                                <?php echo e($invoice->customer->name); ?><br />
+                                <?php echo e($invoice->customer->phone); ?>
+
                             </td>
                         </tr>
                     </table>
@@ -157,25 +160,25 @@
                 <td>Price</td>
                 <td>Amount</td>
             </tr>
-            @foreach ($invoice->items as $item)
+            <?php $__currentLoopData = $invoice->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="item">
-                    <td>{{ $item->item }}</td>
-                    <td>{{ $item->qty }}</td>
-                    <td>{{  $item->qty .'X'. $item->amount / $item->qty  }} </td>
-                    <td>{{ $item->amount }}</td>
+                    <td><?php echo e($item->item); ?></td>
+                    <td><?php echo e($item->qty); ?></td>
+                    <td><?php echo e($item->qty .'X'. $item->amount / $item->qty); ?> </td>
+                    <td><?php echo e($item->amount); ?></td>
                 </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             <tr class="total">
                 <td></td>
                 <td></td>
                 <td></td>
 
-                <td>Total(BDT): {{ $invoice->total_amount }}</td>
+                <td>Total(BDT): <?php echo e($invoice->total_amount); ?></td>
             </tr>
         </table> 
 
-        <p class="" style="font-size: 11px; line-height: 10px;">
+        <p class="" style="font-size: 12px; line-height: 10px;">
             <Strong> Note:</Strong> Customer must check the file/task before receiving because after delivery the task
             authority will not take any responsibility and risk. The invoice will be valueless after 3 days from the
             issuing date and customer must collect the work before expiry the invoice.
@@ -184,3 +187,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/customer/invoice/pdf.blade.php ENDPATH**/ ?>
