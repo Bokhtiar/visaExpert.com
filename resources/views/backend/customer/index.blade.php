@@ -106,11 +106,15 @@
                                                         </td>
                                                         <td>
                                                             @if ($customer->search_active == 1)
-                                                                <a class="btn btn-primary"
-                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">Enable</a>
+                                                                <a class=""
+                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">
+                                                                     <img src="{{ asset('backend/assets/images/active.png') }}" height="30px" alt="">
+                                                                </a>
                                                             @else
-                                                                <a class="btn btn-danger"
-                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">Disable</a>
+                                                                <a class=""
+                                                                    href="{{ route('admin.customers.search-active', $customer->id) }}">
+                                                                  <img src="{{ asset('backend/assets/images/inactive.png') }}" height="30px" alt="">
+                                                                </a>
                                                             @endif
 
                                                         </td>

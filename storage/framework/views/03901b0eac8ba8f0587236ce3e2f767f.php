@@ -104,11 +104,15 @@
                                                         </td>
                                                         <td>
                                                             <?php if($customer->search_active == 1): ?>
-                                                                <a class="btn btn-primary"
-                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">Enable</a>
+                                                                <a class=""
+                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">
+                                                                     <img src="<?php echo e(asset('backend/assets/images/active.png')); ?>" height="30px" alt="">
+                                                                </a>
                                                             <?php else: ?>
-                                                                <a class="btn btn-danger"
-                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">Disable</a>
+                                                                <a class=""
+                                                                    href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">
+                                                                  <img src="<?php echo e(asset('backend/assets/images/inactive.png')); ?>" height="30px" alt="">
+                                                                </a>
                                                             <?php endif; ?>
 
                                                         </td>
