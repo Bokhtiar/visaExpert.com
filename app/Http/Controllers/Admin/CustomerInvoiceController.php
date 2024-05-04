@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CustomerInvoiceController extends Controller
 {
@@ -47,7 +48,7 @@ class CustomerInvoiceController extends Controller
                 'qty.*' => 'required|string',
                 'amount.*' => 'required|numeric',
                 'total_amount' => 'nullable|numeric',
-                'road_id' => 'nullable|numeric',
+                'road_id' => 'required|numeric',
                 'discount' => 'nullable : numeric'
             ]);
 
@@ -59,19 +60,30 @@ class CustomerInvoiceController extends Controller
                 $item->invoice_id = $invoice->id;
                 $item->item = $itemName;
                 $item->qty =$validatedData['qty'][$key];
-                $item->amount = $validatedData['amount'][$key];
+                $item->amount = $validatedData['amount'][$key] * $validatedData['qty'][$key];
                 $item->save();
             }
 
             $invoice->update(['total_amount' => $invoice->items()->sum('amount')]);
+
+            
 
             /** payment log */
             PaymentLog::create([
                 'invoice_id' => $invoice->id,   
                 'customer_id' => $request->customer_id,
                 'pay' => $request->pay,
-                'due' => $request->due
+                'due' => $invoice->items()->sum('amount') - $request->pay,  
             ]);
+
+            // payment status
+            $invoice_item_amount = PaymentLog::where('invoice_id', $invoice->id)->latest()->first();
+
+            if ($invoice_item_amount->due <= 0) {
+                $invoice->update(['status' => 'Paid']);
+            } else {
+                $invoice->update(['status' => 'Due']);
+            }
 
             logActivity(
                 (Auth::user()->name . ' created an invoice.'),
@@ -83,7 +95,7 @@ class CustomerInvoiceController extends Controller
             return redirect()->route('admin.customers.index')->with('success', 'Invoice created successfully.');
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            return back()->with('success', $th->getMessage());
         }
        
     }
@@ -113,23 +125,33 @@ class CustomerInvoiceController extends Controller
 
     public function update(Request $request, Invoice $invoice): RedirectResponse
     {
-    
+
         $this->authorize('edit-invoice', CustomerInvoiceController::class);
         $validatedData = $request->validate([
             'status' => 'required|string',
-            'road_id' => 'nullable|numeric',
+            'road_id' => 'required|numeric',
             'discount' => 'nullable : numeric'
         ]);
 
         $invoice->update($validatedData);
 
+        $due = PaymentLog::where('invoice_id', $invoice->id)->latest()->first();
         /** payment log */
         PaymentLog::create([
             'invoice_id' => $invoice->id,
             'customer_id' => $request->customer_id,
             'pay' => $request->pay,
-            'due' => $request->due
-        ]);
+            'due'=> $due->due - $request->pay,  
+        ]);         
+
+        // payment status
+        $invoice_item_amount = PaymentLog::where('invoice_id', $invoice->id)->latest()->first();
+
+        if ($invoice_item_amount->due <= 0) {
+            $invoice->update(['status' => 'Paid']);
+        } else {
+            $invoice->update(['status' => 'Due']);
+        }
 
         logActivity(
             (Auth::user()->name.' updated an invoice.'),

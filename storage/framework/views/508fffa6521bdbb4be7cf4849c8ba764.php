@@ -81,69 +81,8 @@
                                         data-time="true" readonly disabled>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <label for="choices-payment-status">Payment Status</label>
-                                <div class="input-light">
-                                    <?php if(isset($invoice)): ?>
-                                        <select class="form-control bg-light border-0 <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                            name="status" id="choices-payment-status" required="">
-                                            <?php $__currentLoopData = $paymentStatus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($status); ?>"
-                                                    <?php echo e($invoice->status == $status ? 'selected' : ''); ?>>
-                                                    <?php echo e($status); ?>
-
-                                                </option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
-                                        <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                            <div class="invalid-feedback">
-                                                <strong><?php echo e($message); ?></strong>
-                                            </div>
-                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                    <?php else: ?>
-                                        <select class="form-control bg-light border-0 <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                            name="status" id="choices-payment-status" required="">
-                                            <option selected disabled>Select Payment Status</option>
-                                            <?php $__currentLoopData = $paymentStatus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($status); ?>"><?php echo e($status); ?></option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
-                                        <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                            <div class="invalid-feedback">
-                                                <strong><?php echo e($message); ?></strong>
-                                            </div>
-                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
+                            
+                            <input type="hidden" name="status" value="Due" id="">
                             <div class="col-lg-3 col-sm-6">
                                 <div>
                                     <label for="cart-total">Total Amount</label>
@@ -161,7 +100,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div>
                                     <label for="cart-total">By Road</label>
                                     <?php if(isset($invoice)): ?>
-                                        <select class="form-control" name="road_id" id="">
+                                        <select class="form-control" name="road_id"  id="">
                                             <?php $__currentLoopData = $roads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $road): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($road->id); ?>"
                                                     <?php echo e($road->id == $invoice->road_id ? 'selected' : ''); ?>><?php echo e($road->name); ?>
@@ -170,7 +109,7 @@ unset($__errorArgs, $__bag); ?>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     <?php else: ?>
-                                        <select class="form-control" name="road_id" id="">
+                                        <select class="form-control" name="road_id" required id="">
                                             <option value="">Select by road</option>
                                             <?php $__currentLoopData = $roads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $road): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($road->id); ?>"><?php echo e($road->name); ?></option>
@@ -324,10 +263,31 @@ unset($__errorArgs, $__bag); ?>
                                             </td>
                                         </tr>
 
+                                           <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Due amount:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name=""
+                                                                    value="<?php echo e($invoice->total_amount -  $total_pay); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
                                         
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
-                                                <h6>Discount (%) :</h6>
+                                                <h6>Discount (%) : </h6>
                                             </td>
                                             <td colspan="3" class="p-0">
                                                 <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
@@ -492,57 +452,7 @@ unset($__errorArgs, $__bag); ?>
 
 
                                         
-                                        <?php
-                                            $total_pay = 0;
-                                        ?>
-                                        <?php $__currentLoopData = $payables; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pay): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php
-                                                $total_pay += $pay->pay;
-                                            ?>
-                                            <tr class="border-top border-top-dashed mt-2">
-                                                <td colspan="2" class="text-end">
-                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)
-                                                    </h6>
-                                                </td>
-                                                <td colspan="3" class="p-0">
-                                                    <table
-                                                        class="table table-borderless table-sm table-nowrap align-middle mb-0">
-                                                        <tbody>
-                                                            <tr class="border-top border-top-dashed">
-                                                                <th scope="row"></th>
-                                                                <td>
-                                                                    <input type="number" name=""
-                                                                        value="<?php echo e($pay->pay); ?>"
-                                                                        class="form-control bg-light border-0" id="cart-total"
-                                                                        placeholder="0" readonly />
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                        <tr class="border-top border-top-dashed mt-2">
-                                            <td colspan="2" class="text-end">
-                                                <h6>Total Paid:</h6>
-                                            </td>
-                                            <td colspan="3" class="p-0">
-                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
-                                                    <tbody>
-                                                        <tr class="border-top border-top-dashed">
-                                                            <th scope="row"></th>
-                                                            <td>
-                                                                <input type="number" name=""
-                                                                    value="<?php echo e($total_pay); ?>"
-                                                                    class="form-control bg-light border-0" id="cart-total"
-                                                                    placeholder="0" readonly />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
+                                        
 
                                         
                                         <tr class="border-top border-top-dashed mt-2">

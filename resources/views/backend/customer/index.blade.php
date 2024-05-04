@@ -78,7 +78,7 @@
                                                                 $invoice = App\Models\Invoice::where(
                                                                     'customer_id',
                                                                     $customer->id,
-                                                                )->first();
+                                                                )->latest()->first();
 
                                                             @endphp
 

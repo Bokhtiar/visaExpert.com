@@ -83,7 +83,7 @@
                                         data-time="true" readonly disabled>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
+                            {{-- <div class="col-lg-3 col-sm-6">
                                 <label for="choices-payment-status">Payment Status</label>
                                 <div class="input-light">
                                     @isset($invoice)
@@ -116,7 +116,8 @@
                                         @enderror
                                     @endisset
                                 </div>
-                            </div>
+                            </div> --}}
+                            <input type="hidden" name="status" value="Due" id="">
                             <div class="col-lg-3 col-sm-6">
                                 <div>
                                     <label for="cart-total">Total Amount</label>
@@ -134,7 +135,7 @@
                                 <div>
                                     <label for="cart-total">By Road</label>
                                     @isset($invoice)
-                                        <select class="form-control" name="road_id" id="">
+                                        <select class="form-control" name="road_id"  id="">
                                             @foreach ($roads as $road)
                                                 <option value="{{ $road->id }}"
                                                     {{ $road->id == $invoice->road_id ? 'selected' : '' }}>{{ $road->name }}
@@ -142,7 +143,7 @@
                                             @endforeach
                                         </select>
                                     @else
-                                        <select class="form-control" name="road_id" id="">
+                                        <select class="form-control" name="road_id" required id="">
                                             <option value="">Select by road</option>
                                             @foreach ($roads as $road)
                                                 <option value="{{ $road->id }}">{{ $road->name }}</option>
@@ -298,10 +299,31 @@
                                             </td>
                                         </tr>
 
+                                           <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Due amount:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name=""
+                                                                    value="{{ $invoice->total_amount -  $total_pay }}"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
                                         {{-- percentage --}}
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
-                                                <h6>Discount (%) :</h6>
+                                                <h6>Discount (%) : </h6>
                                             </td>
                                             <td colspan="3" class="p-0">
                                                 <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
@@ -465,7 +487,7 @@
 
 
                                         {{-- percentage --}}
-                                        @php
+                                        {{-- @php
                                             $total_pay = 0;
                                         @endphp
                                         @foreach ($payables as $pay)
@@ -515,7 +537,7 @@
                                                     </tbody>
                                                 </table>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
 
                                         {{-- percentage --}}
                                         <tr class="border-top border-top-dashed mt-2">
