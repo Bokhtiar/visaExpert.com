@@ -228,6 +228,7 @@ class CustomerController extends Controller
 
     public function updateVisaStatus(Request $request, Customer $customer): RedirectResponse
     {
+   
         try {
 
 
@@ -301,7 +302,7 @@ class CustomerController extends Controller
             if ($form) {
                 $form->update([
                     'visa_status' => $validatedData['visa_status'],
-
+                    'note' => $request->note,
                     'type_remarks1' => $request->type_remarks1,
                     'application_id' => $request->application_id,
                     'web_file_app_id' => $pdf_url,

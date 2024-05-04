@@ -21,8 +21,9 @@ class StaffDutySalaryController extends Controller
         ]);
     }
 
-    public function store(StaffDutySalaryRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
+       
         $this->authorize('create', StaffDutySalary::class);
         $staffDuty = StaffDutySalary::create([
             'name' => $request->name,
@@ -41,7 +42,7 @@ class StaffDutySalaryController extends Controller
 
     public function edit(StaffDutySalary $staffDutySalary): View
     {
-        $this->authorize('edit', StaffDutySalary::class);
+        //$this->authorize('edit', StaffDutySalary::class);
         $staffDutySalaries = StaffDutySalary::query()->paginate(10);
 
         return view('backend.staff-duty-salary.index', compact('staffDutySalary', 'staffDutySalaries'));
@@ -49,7 +50,7 @@ class StaffDutySalaryController extends Controller
 
     public function update(Request $request, StaffDutySalary $staffDutySalary): RedirectResponse
     {
-        $this->authorize('edit', StaffDutySalary::class);
+        //$this->authorize('edit', StaffDutySalary::class);
         $staffDutySalary->update([
             'name' => $request->name,
             'duty_finger_in' => $request->duty_finger_in,

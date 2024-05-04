@@ -43,7 +43,7 @@ class DailyOfficeExpenseController extends Controller
 
     public function edit(DailyOfficeExpense $dailyOfficeExpense): View
     {
-        $this->authorize('edit', DailyOfficeExpense::class);
+        //$this->authorize('edit', DailyOfficeExpense::class);
         $expenses = DailyOfficeExpense::query()->paginate(10);
 
         return view('backend.daily-office-expense.index', compact('dailyOfficeExpense', 'expenses'));
@@ -51,7 +51,7 @@ class DailyOfficeExpenseController extends Controller
 
     public function update(Request $request, DailyOfficeExpense $dailyOfficeExpense): RedirectResponse
     {
-        $this->authorize('edit', DailyOfficeExpense::class);
+        //$this->authorize('edit', DailyOfficeExpense::class);
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|string|max:255',
@@ -72,7 +72,7 @@ class DailyOfficeExpenseController extends Controller
     public function destroy(DailyOfficeExpense $dailyOfficeExpense): RedirectResponse
     {
         try {
-            $this->authorize('delete', DailyOfficeExpense::class);
+           // $this->authorize('delete', DailyOfficeExpense::class);
             $dailyOfficeExpense->delete();
 
             logActivity(

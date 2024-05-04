@@ -178,7 +178,7 @@
             </tr>
         </table> 
 
-        <p class="" style="font-size: 12px; line-height: 10px;">
+        <p class="" style="font-size: 11px; line-height: 10px;">
             <Strong> Note:</Strong> Customer must check the file/task before receiving because after delivery the task
             authority will not take any responsibility and risk. The invoice will be valueless after 3 days from the
             issuing date and customer must collect the work before expiry the invoice.

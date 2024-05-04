@@ -30,7 +30,9 @@ class ServiceController extends Controller
 
     public function edit(Service $service): View
     {
-        $this->authorize('update', Service::class);
+        //dd($service);
+       // $this->authorize('update', Service::class);
+        //dd($service);
 
         return view('backend.service.form', compact('service'));
     }
@@ -58,7 +60,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service): RedirectResponse
     {
-        $this->authorize('update', Service::class);
+        //$this->authorize('update', Service::class);
         $validated = $request->validate([
             'title' => 'required|string|unique:services,title,'.$service->id,
             'agent_amount' => 'nullable|string|max:255',
@@ -80,7 +82,7 @@ class ServiceController extends Controller
     public function destroy(Service $service): RedirectResponse
     {
         try {
-            $this->authorize('delete', Service::class);
+           // $this->authorize('delete', Service::class);
             $service->delete();
 
             logActivity(

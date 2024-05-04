@@ -92,9 +92,10 @@
                                     #{{ $customer->unique_id }}
                                 </div>
                             </div>
+
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-grow-1">
-                                    <h5 class="card-title mb-0">Visa Status : </h5>
+                                    <h5 class="card-title mb-0">Work Status : </h5>
                                 </div>
                                 <div class="flex-shrink-1 custom-badge-style">
                                     {!! displayVisaStatusBadge($customer->forms[0]->visa_status) !!}
@@ -192,12 +193,21 @@
                                             </div>
                                         </div>
 
+                                        <div class="row mb-3">
+                                            <div class="col-lg-3">
+                                                <label for="note" class="form-label">Note   :</label>
+                                            </div>
+                                            <div class="col-lg-9">
+                                                {{ $customer->forms[0]->note }}
+                                            </div>
+                                        </div>
+
 
 
 
                                         <div class="row mb-3">
                                             <div class="col-lg-3">
-                                                <label for="nameInput" class="form-label">Visa Status :</label>
+                                                <label for="nameInput" class="form-label">Work Status :</label>
                                             </div>
                                             <div class="col-lg-9">
                                                 <div id="mainContent">
@@ -221,6 +231,18 @@
                                                     </select>
 
                                                     <!--new code added start here-->
+                                                    <div class="row mb-3">
+                                                        <div class="col-lg-3">
+                                                            <label for="note" class="form-label">Note
+                                                                :</label>
+                                                        </div> 
+                                                        <div class="col-lg-9">
+                                                            <input type="text" name="note" id="note"
+                                                                class="form-control"
+                                                                value="{{ $customer->forms[0]->note }}">
+                                                        </div>
+                                                    </div>
+
                                                     <div class="row mb-3">
                                                         <div class="col-lg-3">
                                                             <label for="type_remarks1" class="form-label">Type Remarks

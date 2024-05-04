@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        $this->authorize('edit', $user);
+        //$this->authorize('edit', $user);
         $roles = Role::all();
 
         return view('backend.user.form', compact('roles', 'user'));
