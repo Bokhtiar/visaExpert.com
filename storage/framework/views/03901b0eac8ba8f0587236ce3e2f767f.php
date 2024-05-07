@@ -47,6 +47,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
+                                                    <th scope="col">Owner</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
                                                     <th scope="col">Payment Status</th>
@@ -54,14 +55,15 @@
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody> 
                                                 <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium text-center"><?php echo e($key + 1); ?></td>
 
 
                                                         <td>#<?php echo e($customer->unique_id); ?></td>
-                                                        <td><?php echo e(ucfirst($customer->name)); ?></td>
+                                                        <td><?php echo e($customer->name .'('.App\Models\Customer::countChaild($customer->id).')'); ?>  </td>
+                                                        <td><?php echo e($customer->customer ? $customer->customer->name : ""); ?></td>
                                                         <td>
                                                             <a href="https://wa.me/+88<?php echo e($customer->phone); ?>">
                                                                 <img height="40" width="40"

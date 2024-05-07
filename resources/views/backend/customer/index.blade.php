@@ -49,6 +49,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
+                                                    <th scope="col">Owner</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
                                                     <th scope="col">Payment Status</th>
@@ -56,14 +57,15 @@
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody> 
                                                 @forelse($customers as $key=>$customer)
                                                     <tr>
                                                         <td class="fw-medium text-center">{{ $key + 1 }}</td>
 
 
                                                         <td>#{{ $customer->unique_id }}</td>
-                                                        <td>{{ ucfirst($customer->name) }}</td>
+                                                        <td>{{ $customer->name .'('.App\Models\Customer::countChaild($customer->id).')' }}  </td>
+                                                        <td>{{ $customer->customer ? $customer->customer->name : "" }}</td>
                                                         <td>
                                                             <a href="https://wa.me/+88{{ $customer->phone }}">
                                                                 <img height="40" width="40"
