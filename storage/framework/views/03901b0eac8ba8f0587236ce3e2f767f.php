@@ -48,6 +48,7 @@
                                                     <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Owner</th>
+                                                    <th scope="col">Work Status</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
                                                     <th scope="col">Payment Status</th>
@@ -64,6 +65,7 @@
                                                         <td>#<?php echo e($customer->unique_id); ?></td>
                                                         <td><?php echo e($customer->name .'('.App\Models\Customer::countChaild($customer->id).')'); ?>  </td>
                                                         <td><?php echo e($customer->customer ? $customer->customer->name : ""); ?></td>
+                                                        <td><?php echo e(App\Models\VisaForm::customerListStatus($customer->id)); ?></td>
                                                         <td>
                                                             <a href="https://wa.me/+88<?php echo e($customer->phone); ?>">
                                                                 <img height="40" width="40"

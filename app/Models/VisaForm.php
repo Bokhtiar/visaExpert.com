@@ -59,4 +59,10 @@ class VisaForm extends Model
        }
 
     }
+
+    public static function customerListStatus($id)
+    {
+        $status = VisaForm::where('customer_id', $id)->first('visa_status');
+        return $status ? $status->visa_status : "";
+    }
 }
