@@ -323,7 +323,7 @@
                                         {{-- percentage --}}
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
-                                                <h6>Discount (%) : </h6>
+                                                <h6>Discount (Taka) : </h6>
                                             </td>
                                             <td colspan="3" class="p-0">
                                                 <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
@@ -360,7 +360,7 @@
                                                             <td>
                                                                 <input type="number" name="pay"
                                                                     class="form-control bg-light border-0"
-                                                                    id="receive_payment" placeholder="0" />
+                                                                    id="receive_payment" placeholder="0" required />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -542,7 +542,7 @@
                                         {{-- percentage --}}
                                         <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
-                                                <h6>Discount (%) :</h6>
+                                                <h6>Discount (Taka) :</h6>
                                             </td>
                                             <td colspan="3" class="p-0">
                                                 <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
@@ -577,7 +577,7 @@
                                                             <td>
                                                                 <input type="number" name="pay"
                                                                     class="form-control bg-light border-0"
-                                                                    id="receive_payment_save" placeholder="0" />
+                                                                    id="receive_payment_save" placeholder="0" required />
                                                             </td>
                                                         </tr>
                                                     </tbody>

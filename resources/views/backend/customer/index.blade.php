@@ -87,23 +87,29 @@
                                                             @endphp
 
                                                             @if ($invoice)
+                                                                @php
+                                                                   $discount =  App\Models\PaymentLog::where('due', $invoice->discount)->first();
+                                                                @endphp
+                                                                @if ($discount)
+                                                                     <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span class="btn btn-success btn-sm">Paid</span></a>
+                                                                @else 
                                                                 @if ($invoice->status == 'Paid')
                                                                     <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span class="btn btn-success btn-sm">Paid</span></a>
                                                                 @elseif($invoice->status == 'Due')
                                                                     <a class="btn btn-info btn-sm"
                                                                         href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
-
                                                                         Pay
                                                                     </a>
                                                                     <span class="">
                                                                         <a class="btn btn-danger btn-sm"
                                                                             href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
-
                                                                             Due
                                                                         </a>
 
                                                                     </span>
                                                                 @endif
+                                                                     @endif
+                                                                
                                                             @else
                                                                 <span class="">Paynment not initiat</span>
                                                             @endif
