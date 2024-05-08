@@ -208,7 +208,7 @@
                                                 <label for="note" class="form-label">Note :</label>
                                             </div>
                                             <div class="col-lg-9">
-                                                <?php echo e($customer->forms[0]->note); ?>
+                                                <?php echo $customer->forms[0]->note; ?>
 
                                             </div>
                                         </div>
@@ -250,9 +250,9 @@
                                                                 :</label>
                                                         </div>
                                                         <div class="col-lg-9">
-                                                            <input type="text" name="note" id="note"
-                                                                class="form-control"
-                                                                value="<?php echo e($customer->forms[0]->note); ?>">
+                                                            
+                                                                <textarea name="note" class="ckeditor-classic"
+                                          id="description"><?php echo $customer->forms[0]->note ? $customer->forms[0]->note : ''; ?></textarea>
                                                         </div>
                                                     </div>
 
@@ -299,7 +299,7 @@
                                                                 <a class="text-success"
                                                                     href="<?php echo e(asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id)); ?>"
                                                                     download="<?php echo e($customer->forms[0]->web_file_app_id); ?>">
-                                                                    PDF
+                                                                    Download
                                                                 </a>
                                                             </span>
                                                         </div>
@@ -333,7 +333,7 @@
                                                                 <a class="text-success"
                                                                     href="<?php echo e(asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id)); ?>"
                                                                     download="<?php echo e($customer->forms[0]->image); ?>">
-                                                                    PDF
+                                                                    Download
                                                                 </a>
                                                             </span>
                                                         </div>
@@ -382,9 +382,8 @@
                                                     :</label>
                                             </div>
                                             <div class="col-lg-9">
-                                                <a href="<?php echo e(asset('public/' . $customer->forms[0]->web_file_app_id)); ?>"
-                                                    target="_blank"><?php echo e($customer->name); ?> PDF</a> <br>
 
+                                                    <span><?php echo e($customer->name); ?> PDF</span> <br>
 
 
                                                 <span class="text-success cursor-pointer"
@@ -393,7 +392,7 @@
                                                 <a class="text-success"
                                                     href="<?php echo e(asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id)); ?>"
                                                     download="<?php echo e($customer->forms[0]->web_file_app_id); ?>">
-                                                    PDF
+                                                    Download
                                                 </a>
 
 
@@ -421,7 +420,7 @@
                                                 <a class="text-success"
                                                     href="<?php echo e(asset('uploads/visa-forms/documents/' . $customer->forms[0]->image)); ?>"
                                                     download="<?php echo e($customer->forms[0]->image); ?>">
-                                                    PDF
+                                                    Download
                                                 </a>
 
                                             </div>
@@ -729,7 +728,7 @@
                                                                     <a class="text-success"
                                                                         href="<?php echo e(asset('uploads/visa-forms/documents/' . $document->documents)); ?>"
                                                                         download="<?php echo e($document->documents); ?>">
-                                                                        PDF
+                                                                        Download
                                                                     </a>
                                                                 </td>
 
@@ -1107,6 +1106,13 @@
     <script src="<?php echo e(asset('backend/assets/libs/glightbox/js/glightbox.min.js')); ?>"></script>
 
     <script src="<?php echo e(asset('backend/assets/js/pages/gallery.init.js')); ?>"></script>
+
+
+    <!-- ckeditor -->
+    <script src="<?php echo e(asset('backend/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js')); ?>"></script>
+    <!-- init js -->
+    <script src="<?php echo e(asset('backend/assets/js/pages/form-editor.init.js')); ?>"></script>
+
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/customer/show.blade.php ENDPATH**/ ?>

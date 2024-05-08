@@ -201,7 +201,7 @@
                                                 <label for="note" class="form-label">Note :</label>
                                             </div>
                                             <div class="col-lg-9">
-                                                {{ $customer->forms[0]->note }}
+                                                {!! $customer->forms[0]->note !!}
                                             </div>
                                         </div>
 
@@ -240,9 +240,11 @@
                                                                 :</label>
                                                         </div>
                                                         <div class="col-lg-9">
-                                                            <input type="text" name="note" id="note"
+                                                            {{-- <input type="text" name="note" id="note"
                                                                 class="form-control"
-                                                                value="{{ $customer->forms[0]->note }}">
+                                                                value="{{ $customer->forms[0]->note }}"> --}}
+                                                                <textarea name="note" class="ckeditor-classic"
+                                          id="description">{!! $customer->forms[0]->note ? $customer->forms[0]->note : '' !!}</textarea>
                                                         </div>
                                                     </div>
 
@@ -289,7 +291,7 @@
                                                                 <a class="text-success"
                                                                     href="{{ asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id) }}"
                                                                     download="{{ $customer->forms[0]->web_file_app_id }}">
-                                                                    PDF
+                                                                    Download
                                                                 </a>
                                                             </span>
                                                         </div>
@@ -323,7 +325,7 @@
                                                                 <a class="text-success"
                                                                     href="{{ asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id) }}"
                                                                     download="{{ $customer->forms[0]->image }}">
-                                                                    PDF
+                                                                    Download
                                                                 </a>
                                                             </span>
                                                         </div>
@@ -370,9 +372,8 @@
                                                     :</label>
                                             </div>
                                             <div class="col-lg-9">
-                                                <a href="{{ asset('public/' . $customer->forms[0]->web_file_app_id) }}"
-                                                    target="_blank">{{ $customer->name }} PDF</a> <br>
 
+                                                    <span>{{ $customer->name }} PDF</span> <br>
 
 
                                                 <span class="text-success cursor-pointer"
@@ -381,7 +382,7 @@
                                                 <a class="text-success"
                                                     href="{{ asset('uploads/visa-forms/documents/' . $customer->forms[0]->web_file_app_id) }}"
                                                     download="{{ $customer->forms[0]->web_file_app_id }}">
-                                                    PDF
+                                                    Download
                                                 </a>
 
 
@@ -408,7 +409,7 @@
                                                 <a class="text-success"
                                                     href="{{ asset('uploads/visa-forms/documents/' . $customer->forms[0]->image) }}"
                                                     download="{{ $customer->forms[0]->image }}">
-                                                    PDF
+                                                    Download
                                                 </a>
 
                                             </div>
@@ -728,7 +729,7 @@
                                                                     <a class="text-success"
                                                                         href="{{ asset('uploads/visa-forms/documents/' . $document->documents) }}"
                                                                         download="{{ $document->documents }}">
-                                                                        PDF
+                                                                        Download
                                                                     </a>
                                                                 </td>
 
@@ -1102,4 +1103,11 @@
     <script src="{{ asset('backend/assets/libs/glightbox/js/glightbox.min.js') }}"></script>
 
     <script src="{{ asset('backend/assets/js/pages/gallery.init.js') }}"></script>
+
+
+    <!-- ckeditor -->
+    <script src="{{ asset('backend/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
+    <!-- init js -->
+    <script src="{{ asset('backend/assets/js/pages/form-editor.init.js') }}"></script>
+
 @endpush
