@@ -88,7 +88,7 @@
 
                                                             @if ($invoice)
                                                                 @if ($invoice->status == 'Paid')
-                                                                    <span class="btn btn-success btn-sm">Paid</span>
+                                                                    <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span class="btn btn-success btn-sm">Paid</span></a>
                                                                 @elseif($invoice->status == 'Due')
                                                                     <a class="btn btn-info btn-sm"
                                                                         href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
@@ -97,7 +97,7 @@
                                                                     </a>
                                                                     <span class="">
                                                                         <a class="btn btn-danger btn-sm"
-                                                                            href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
+                                                                            href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
 
                                                                             Due
                                                                         </a>

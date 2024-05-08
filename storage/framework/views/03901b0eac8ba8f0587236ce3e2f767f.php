@@ -86,7 +86,7 @@
 
                                                             <?php if($invoice): ?>
                                                                 <?php if($invoice->status == 'Paid'): ?>
-                                                                    <span class="btn btn-success btn-sm">Paid</span>
+                                                                    <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span class="btn btn-success btn-sm">Paid</span></a>
                                                                 <?php elseif($invoice->status == 'Due'): ?>
                                                                     <a class="btn btn-info btn-sm"
                                                                         href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
@@ -95,7 +95,7 @@
                                                                     </a>
                                                                     <span class="">
                                                                         <a class="btn btn-danger btn-sm"
-                                                                            href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
+                                                                            href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
 
                                                                             Due
                                                                         </a>
