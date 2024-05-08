@@ -114,6 +114,22 @@ class CustomerController extends Controller
             ->findOrFail($customer->id);
 
 
+
+
+
+        $customer_service_type = VisaForm::where('customer_id', $customer->id)->first();
+
+        $customer_visa = VisaType::find($customer_service_type->visa_type_id);
+
+        $documents = $customer_visa->required_documents;
+
+        $customer_form_id = $customer_service_type->id;
+
+        $customer_id = $customer->id;
+       // return view('backend.customer.file-upload', compact('documents', 'customer_form_id', 'customer_id'));
+
+
+
       
 
 
@@ -129,7 +145,7 @@ class CustomerController extends Controller
 
 
         $passport = Passport::where('customer_id', $customer->id)->get();
-        return view('backend.customer.show', compact('customer', 'passport', 'visaStatuses', 'parent_customers'));
+        return view('backend.customer.show', compact('customer', 'passport', 'visaStatuses', 'parent_customers','documents', 'customer_form_id', 'customer_id'));
     }
 
     public function update(Customer $customer, Request $request): RedirectResponse

@@ -51,7 +51,9 @@
                         <?php $__currentLoopData = $parent_customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <th scope="row"><?php echo e($loop->index + 1); ?></th>
-                                <td><?php echo e($cus->name); ?> <span class="" style="color: red"><?php echo e($cus->id == $cus->parent_customer_id ? '(Owner)' : ""); ?></span> </td>
+                                <td><?php echo e($cus->name); ?> <span class=""
+                                        style="color: red"><?php echo e($cus->id == $cus->parent_customer_id ? '(Owner)' : ''); ?></span>
+                                </td>
                                 <td><?php echo e($cus->phone); ?></td>
                                 <td>
                                     <a href="<?php echo e(route('admin.customers.show', $cus->id)); ?>"
@@ -162,12 +164,13 @@
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
                                     <?php if($customer->id == $customer->parent_customer_id): ?>
                                         <li class="nav-item">
-                                        <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill" role="tab">
-                                            Generated & Updated Bill/Invoices
-                                        </a>
-                                    </li>
-                                    <?php endif; ?> 
-                                    
+                                            <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill"
+                                                role="tab">
+                                                Generated & Updated Bill/Invoices
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+
                                 <?php endif; ?>
                             </ul>
                         </div>
@@ -202,7 +205,7 @@
 
                                         <div class="row mb-3">
                                             <div class="col-lg-3">
-                                                <label for="note" class="form-label">Note   :</label>
+                                                <label for="note" class="form-label">Note :</label>
                                             </div>
                                             <div class="col-lg-9">
                                                 <?php echo e($customer->forms[0]->note); ?>
@@ -245,7 +248,7 @@
                                                         <div class="col-lg-3">
                                                             <label for="note" class="form-label">Note
                                                                 :</label>
-                                                        </div> 
+                                                        </div>
                                                         <div class="col-lg-9">
                                                             <input type="text" name="note" id="note"
                                                                 class="form-control"
@@ -452,8 +455,8 @@
 
 
                                     </div>
-                                     <a href="<?php echo e(route('admin.customers.add-more', $customer->id)); ?>"
-                                                class="btn btn-clr-red">Add More Customer</a>
+                                    <a href="<?php echo e(route('admin.customers.add-more', $customer->id)); ?>"
+                                        class="btn btn-clr-red">Add More Customer</a>
                                 </div>
                                 <!--end Service tab-pane-->
                                 <div class="tab-pane" id="personalInformation" role="tabpanel">
@@ -505,7 +508,7 @@
                                                 </div>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                           
+
                                         </div>
                                         <form id="updateCustomerForm"
                                             action="<?php echo e(route('admin.customers.update', $customer->id)); ?>" method="POST"
@@ -572,20 +575,117 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       
+
                                         <div class="d-flex align-items-center">
                                             <h5 class="card-title mb-0 flex-grow-1">Documents update</h5>
                                             <div class="flex-shrink-0">
-                                                <div>
-                                                    <a href="<?php echo e(route('admin.customers.documents-upload', $customer->id)); ?>"
-                                                        class="btn btn-clr-red waves-effect waves-light">
-                                                        <i class="ri-file-add-line align-bottom me-1"></i>
-                                                        Upload Documetns
-                                                    </a>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xxl-12">
+                                                    <div class="card">
+                                                        
+                                                        <div class="card-body">
+
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">SL</th>
+                                                                        <th scope="col">Title</th>
+                                                                        <th scope="col">Document</th>
+                                                                        <th scope="col">View</th>
+                                                                        <th scope="col">Upload</th>
+                                                                        <th scope="col">Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <?php $__currentLoopData = json_decode($documents, true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <?php
+                                                                        $exist = App\Models\VisaForm::exitDocument(
+                                                                            $file,
+                                                                            $customer_form_id,
+                                                                        );
+
+                                                                    ?>
+
+                                                                    <?php if($exist): ?>
+                                                                        <form
+                                                                            action="<?php echo e(route('admin.customers.single.document.update', $exist->id)); ?>"
+                                                                            method="POST" enctype="multipart/form-data">
+                                                                            <?php echo method_field('PUT'); ?>
+                                                                        <?php else: ?>
+                                                                            <form
+                                                                                action="<?php echo e(route('admin.customers.single.document.store')); ?>"
+                                                                                method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                    <?php endif; ?>
+
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <tr>
+                                                                        <th scope="row"><?php echo e($loop->index + 1); ?></th>
+                                                                        <td>
+                                                                            <?php echo e($exist ? $exist->title : $file); ?>
+
+                                                                        </td>
+                                                                        <td> <?php echo e($exist ? $exist->documents : ''); ?></td>
+
+                                                                        <?php if($exist): ?>
+                                                                            <?php if($exist->document_type != 'pdf'): ?>
+                                                                                <td>
+                                                                                    <a class="image-popup"
+                                                                                        href="<?php echo e(asset('uploads/visa-forms/documents/' . $exist->documents)); ?>"
+                                                                                        title="<?php echo e($exist->title); ?>">
+                                                                                        View
+                                                                                    </a>
+                                                                                </td>
+                                                                            <?php else: ?>
+                                                                                <td>
+                                                                                    <a href="<?php echo e(asset('uploads/visa-forms/documents/' . $exist->documents)); ?>"
+                                                                                        target="_blank">
+                                                                                        View PDF
+                                                                                    </a>
+                                                                                </td>
+                                                                            <?php endif; ?>
+                                                                        <?php else: ?>
+                                                                            <td></td>
+                                                                        <?php endif; ?>
+                                                                        <td>
+                                                                            <input type="file" name="doc"
+                                                                                id="">
+                                                                        </td>
+
+                                                                        <input type="hidden" name="customer_form_id"
+                                                                            value="<?php echo e($customer_form_id); ?>"
+                                                                            id="">
+                                                                        <input type="hidden" name="customer_id"
+                                                                            value="<?php echo e($customer_id); ?>" id="">
+                                                                        <input type="hidden" name="title"
+                                                                            value="<?php echo e($file); ?>" id="">
+                                                                        <td>
+                                                                            <?php if($exist): ?>
+                                                                                <input type="submit" name=""
+                                                                                    class="btn btn-success" value="update"
+                                                                                    id="">
+                                                                            <?php else: ?>
+                                                                                <input type="submit" name=""
+                                                                                    class="btn btn-info" value="submit"
+                                                                                    id="">
+                                                                            <?php endif; ?>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    </form>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="table-responsive">
                                             <table class="table table-borderless align-middle table-nowrap mb-0">
                                                 <thead>

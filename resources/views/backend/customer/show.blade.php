@@ -51,7 +51,9 @@
                         @foreach ($parent_customers as $cus)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
-                                <td>{{ $cus->name }} <span class="" style="color: red">{{ $cus->id == $cus->parent_customer_id ? '(Owner)' : "" }}</span> </td>
+                                <td>{{ $cus->name }} <span class=""
+                                        style="color: red">{{ $cus->id == $cus->parent_customer_id ? '(Owner)' : '' }}</span>
+                                </td>
                                 <td>{{ $cus->phone }}</td>
                                 <td>
                                     <a href="{{ route('admin.customers.show', $cus->id) }}"
@@ -157,12 +159,13 @@
                                 @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
                                     @if ($customer->id == $customer->parent_customer_id)
                                         <li class="nav-item">
-                                        <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill" role="tab">
-                                            Generated & Updated Bill/Invoices
-                                        </a>
-                                    </li>
-                                    @endif 
-                                    
+                                            <a class="nav-link text-dark" data-bs-toggle="tab" href="#generatedBill"
+                                                role="tab">
+                                                Generated & Updated Bill/Invoices
+                                            </a>
+                                        </li>
+                                    @endif
+
                                 @endcan
                             </ul>
                         </div>
@@ -195,7 +198,7 @@
 
                                         <div class="row mb-3">
                                             <div class="col-lg-3">
-                                                <label for="note" class="form-label">Note   :</label>
+                                                <label for="note" class="form-label">Note :</label>
                                             </div>
                                             <div class="col-lg-9">
                                                 {{ $customer->forms[0]->note }}
@@ -235,7 +238,7 @@
                                                         <div class="col-lg-3">
                                                             <label for="note" class="form-label">Note
                                                                 :</label>
-                                                        </div> 
+                                                        </div>
                                                         <div class="col-lg-9">
                                                             <input type="text" name="note" id="note"
                                                                 class="form-control"
@@ -436,8 +439,8 @@
 
 
                                     </div>
-                                     <a href="{{ route('admin.customers.add-more', $customer->id) }}"
-                                                class="btn btn-clr-red">Add More Customer</a>
+                                    <a href="{{ route('admin.customers.add-more', $customer->id) }}"
+                                        class="btn btn-clr-red">Add More Customer</a>
                                 </div>
                                 <!--end Service tab-pane-->
                                 <div class="tab-pane" id="personalInformation" role="tabpanel">
@@ -485,7 +488,7 @@
                                                 </div>
                                             @endforeach
 
-                                           
+
                                         </div>
                                         <form id="updateCustomerForm"
                                             action="{{ route('admin.customers.update', $customer->id) }}" method="POST"
@@ -566,20 +569,122 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                       
+
                                         <div class="d-flex align-items-center">
                                             <h5 class="card-title mb-0 flex-grow-1">Documents update</h5>
                                             <div class="flex-shrink-0">
-                                                <div>
+                                                {{-- <div>
                                                     <a href="{{ route('admin.customers.documents-upload', $customer->id) }}"
                                                         class="btn btn-clr-red waves-effect waves-light">
                                                         <i class="ri-file-add-line align-bottom me-1"></i>
                                                         Upload Documetns
                                                     </a>
+                                                </div> --}}
+                                            </div>
+                                        </div>
+                                        {{-- document create update --}}
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xxl-12">
+                                                    <div class="card">
+                                                        
+                                                        <div class="card-body">
+
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">SL</th>
+                                                                        <th scope="col">Title</th>
+                                                                        <th scope="col">Document</th>
+                                                                        <th scope="col">View</th>
+                                                                        <th scope="col">Upload</th>
+                                                                        <th scope="col">Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                @foreach (json_decode($documents, true) as $file)
+                                                                    @php
+                                                                        $exist = App\Models\VisaForm::exitDocument(
+                                                                            $file,
+                                                                            $customer_form_id,
+                                                                        );
+
+                                                                    @endphp
+
+                                                                    @if ($exist)
+                                                                        <form
+                                                                            action="{{ route('admin.customers.single.document.update', $exist->id) }}"
+                                                                            method="POST" enctype="multipart/form-data">
+                                                                            @method('PUT')
+                                                                        @else
+                                                                            <form
+                                                                                action="{{ route('admin.customers.single.document.store') }}"
+                                                                                method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                    @endif
+
+                                                                    @csrf
+                                                                    <tr>
+                                                                        <th scope="row">{{ $loop->index + 1 }}</th>
+                                                                        <td>
+                                                                            {{ $exist ? $exist->title : $file }}
+                                                                        </td>
+                                                                        <td> {{ $exist ? $exist->documents : '' }}</td>
+
+                                                                        @if ($exist)
+                                                                            @if ($exist->document_type != 'pdf')
+                                                                                <td>
+                                                                                    <a class="image-popup"
+                                                                                        href="{{ asset('uploads/visa-forms/documents/' . $exist->documents) }}"
+                                                                                        title="{{ $exist->title }}">
+                                                                                        View
+                                                                                    </a>
+                                                                                </td>
+                                                                            @else
+                                                                                <td>
+                                                                                    <a href="{{ asset('uploads/visa-forms/documents/' . $exist->documents) }}"
+                                                                                        target="_blank">
+                                                                                        View PDF
+                                                                                    </a>
+                                                                                </td>
+                                                                            @endif
+                                                                        @else
+                                                                            <td></td>
+                                                                        @endif
+                                                                        <td>
+                                                                            <input type="file" name="doc"
+                                                                                id="">
+                                                                        </td>
+
+                                                                        <input type="hidden" name="customer_form_id"
+                                                                            value="{{ $customer_form_id }}"
+                                                                            id="">
+                                                                        <input type="hidden" name="customer_id"
+                                                                            value="{{ $customer_id }}" id="">
+                                                                        <input type="hidden" name="title"
+                                                                            value="{{ $file }}" id="">
+                                                                        <td>
+                                                                            @if ($exist)
+                                                                                <input type="submit" name=""
+                                                                                    class="btn btn-success" value="update"
+                                                                                    id="">
+                                                                            @else
+                                                                                <input type="submit" name=""
+                                                                                    class="btn btn-info" value="submit"
+                                                                                    id="">
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    </form>
+                                                                @endforeach
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        {{-- document view --}}
                                         <div class="table-responsive">
                                             <table class="table table-borderless align-middle table-nowrap mb-0">
                                                 <thead>
