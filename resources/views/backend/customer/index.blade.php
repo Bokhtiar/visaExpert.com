@@ -39,7 +39,7 @@
                                     </a>
 
 
-                    
+
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -58,16 +58,18 @@
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody> 
+                                            <tbody>
                                                 @forelse($customers as $key=>$customer)
                                                     <tr>
                                                         <td class="fw-medium text-center">{{ $key + 1 }}</td>
 
 
                                                         <td>#{{ $customer->unique_id }}</td>
-                                                        <td>{{ $customer->name .'('.App\Models\Customer::countChaild($customer->id).')' }}  </td>
-                                                        <td>{{ $customer->customer ? $customer->customer->name : "" }}</td>
-                                                        <td>{{ App\Models\VisaForm::customerListStatus($customer->id) }}</td>
+                                                        <td>{{ $customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')' }}
+                                                        </td>
+                                                        <td>{{ $customer->customer ? $customer->customer->name : '' }}</td>
+                                                        <td>{{ App\Models\VisaForm::customerListStatus($customer->id) }}
+                                                        </td>
                                                         <td>
                                                             <a href="https://wa.me/+88{{ $customer->phone }}">
                                                                 <img height="40" width="40"
@@ -82,34 +84,44 @@
                                                                 $invoice = App\Models\Invoice::where(
                                                                     'customer_id',
                                                                     $customer->id,
-                                                                )->latest()->first();
+                                                                )
+                                                                    ->latest()
+                                                                    ->first();
 
                                                             @endphp
 
                                                             @if ($invoice)
                                                                 @php
-                                                                   $discount =  App\Models\PaymentLog::where('due', $invoice->discount)->first();
+                                                                    $discount = App\Models\PaymentLog::where(
+                                                                        'invoice_id',
+                                                                        $invoice->id,
+                                                                    )
+                                                                        ->where('due', $invoice->discount)
+                                                                        ->first();
                                                                 @endphp
                                                                 @if ($discount)
-                                                                     <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span class="btn btn-success btn-sm">Paid</span></a>
-                                                                @else 
-                                                                @if ($invoice->status == 'Paid')
-                                                                    <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span class="btn btn-success btn-sm">Paid</span></a>
-                                                                @elseif($invoice->status == 'Due')
-                                                                    <a class="btn btn-info btn-sm"
-                                                                        href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
-                                                                        Pay
-                                                                    </a>
-                                                                    <span class="">
-                                                                        <a class="btn btn-danger btn-sm"
-                                                                            href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
-                                                                            Due
+                                                                    <a
+                                                                        href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span
+                                                                            class="btn btn-success btn-sm">Paid</span></a>
+                                                                @else
+                                                                    @if ($invoice->status == 'Paid')
+                                                                        <a
+                                                                            href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span
+                                                                                class="btn btn-success btn-sm">Paid</span></a>
+                                                                    @elseif($invoice->status == 'Due')
+                                                                        <a class="btn btn-info btn-sm"
+                                                                            href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
+                                                                            Pay
                                                                         </a>
+                                                                        <span class="">
+                                                                            <a class="btn btn-danger btn-sm"
+                                                                                href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
+                                                                                Due
+                                                                            </a>
 
-                                                                    </span>
+                                                                        </span>
+                                                                    @endif
                                                                 @endif
-                                                                     @endif
-                                                                
                                                             @else
                                                                 <span class="">Paynment not initiat</span>
                                                             @endif
@@ -118,12 +130,14 @@
                                                             @if ($customer->search_active == 1)
                                                                 <a class=""
                                                                     href="{{ route('admin.customers.search-active', $customer->id) }}">
-                                                                     <img src="{{ asset('backend/assets/images/active.png') }}" height="30px" alt="">
+                                                                    <img src="{{ asset('backend/assets/images/active.png') }}"
+                                                                        height="30px" alt="">
                                                                 </a>
                                                             @else
                                                                 <a class=""
                                                                     href="{{ route('admin.customers.search-active', $customer->id) }}">
-                                                                  <img src="{{ asset('backend/assets/images/inactive.png') }}" height="30px" alt="">
+                                                                    <img src="{{ asset('backend/assets/images/inactive.png') }}"
+                                                                        height="30px" alt="">
                                                                 </a>
                                                             @endif
 

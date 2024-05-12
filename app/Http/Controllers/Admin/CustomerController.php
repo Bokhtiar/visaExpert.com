@@ -54,15 +54,15 @@ class CustomerController extends Controller
 
 
         DB::beginTransaction();
-        $customerCount = Customer::count();
+        $customerCount = Customer::latest()->first();
         try {
 
             $customer = Customer::create([
                 //'unique_id' => str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT),
-                'unique_id' => Customer::latest()->value('id') + 1,
+                'unique_id' => $customerCount == null ? 1 : $customerCount->id  + 1,
                 'name' => $parent_customer->name,
                 'phone' => $parent_customer->phone,
-                'parent_customer_id' => $id,
+                'parent_customer_id' => $customerCount == null ? 1 : $customerCount->id  + 1,
             ]);
 
             $visaForm = $customer->forms()->create([

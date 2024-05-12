@@ -37,7 +37,7 @@
                                     </a>
 
 
-                    
+
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -56,16 +56,20 @@
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody> 
+                                            <tbody>
                                                 <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium text-center"><?php echo e($key + 1); ?></td>
 
 
                                                         <td>#<?php echo e($customer->unique_id); ?></td>
-                                                        <td><?php echo e($customer->name .'('.App\Models\Customer::countChaild($customer->id).')'); ?>  </td>
-                                                        <td><?php echo e($customer->customer ? $customer->customer->name : ""); ?></td>
-                                                        <td><?php echo e(App\Models\VisaForm::customerListStatus($customer->id)); ?></td>
+                                                        <td><?php echo e($customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')'); ?>
+
+                                                        </td>
+                                                        <td><?php echo e($customer->customer ? $customer->customer->name : ''); ?></td>
+                                                        <td><?php echo e(App\Models\VisaForm::customerListStatus($customer->id)); ?>
+
+                                                        </td>
                                                         <td>
                                                             <a href="https://wa.me/+88<?php echo e($customer->phone); ?>">
                                                                 <img height="40" width="40"
@@ -80,34 +84,44 @@
                                                                 $invoice = App\Models\Invoice::where(
                                                                     'customer_id',
                                                                     $customer->id,
-                                                                )->latest()->first();
+                                                                )
+                                                                    ->latest()
+                                                                    ->first();
 
                                                             ?>
 
                                                             <?php if($invoice): ?>
                                                                 <?php
-                                                                   $discount =  App\Models\PaymentLog::where('due', $invoice->discount)->first();
+                                                                    $discount = App\Models\PaymentLog::where(
+                                                                        'invoice_id',
+                                                                        $invoice->id,
+                                                                    )
+                                                                        ->where('due', $invoice->discount)
+                                                                        ->first();
                                                                 ?>
                                                                 <?php if($discount): ?>
-                                                                     <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span class="btn btn-success btn-sm">Paid</span></a>
-                                                                <?php else: ?> 
-                                                                <?php if($invoice->status == 'Paid'): ?>
-                                                                    <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span class="btn btn-success btn-sm">Paid</span></a>
-                                                                <?php elseif($invoice->status == 'Due'): ?>
-                                                                    <a class="btn btn-info btn-sm"
-                                                                        href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
-                                                                        Pay
-                                                                    </a>
-                                                                    <span class="">
-                                                                        <a class="btn btn-danger btn-sm"
-                                                                            href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
-                                                                            Due
+                                                                    <a
+                                                                        href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
+                                                                            class="btn btn-success btn-sm">Paid</span></a>
+                                                                <?php else: ?>
+                                                                    <?php if($invoice->status == 'Paid'): ?>
+                                                                        <a
+                                                                            href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
+                                                                                class="btn btn-success btn-sm">Paid</span></a>
+                                                                    <?php elseif($invoice->status == 'Due'): ?>
+                                                                        <a class="btn btn-info btn-sm"
+                                                                            href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
+                                                                            Pay
                                                                         </a>
+                                                                        <span class="">
+                                                                            <a class="btn btn-danger btn-sm"
+                                                                                href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
+                                                                                Due
+                                                                            </a>
 
-                                                                    </span>
+                                                                        </span>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
-                                                                     <?php endif; ?>
-                                                                
                                                             <?php else: ?>
                                                                 <span class="">Paynment not initiat</span>
                                                             <?php endif; ?>
@@ -116,12 +130,14 @@
                                                             <?php if($customer->search_active == 1): ?>
                                                                 <a class=""
                                                                     href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">
-                                                                     <img src="<?php echo e(asset('backend/assets/images/active.png')); ?>" height="30px" alt="">
+                                                                    <img src="<?php echo e(asset('backend/assets/images/active.png')); ?>"
+                                                                        height="30px" alt="">
                                                                 </a>
                                                             <?php else: ?>
                                                                 <a class=""
                                                                     href="<?php echo e(route('admin.customers.search-active', $customer->id)); ?>">
-                                                                  <img src="<?php echo e(asset('backend/assets/images/inactive.png')); ?>" height="30px" alt="">
+                                                                    <img src="<?php echo e(asset('backend/assets/images/inactive.png')); ?>"
+                                                                        height="30px" alt="">
                                                                 </a>
                                                             <?php endif; ?>
 

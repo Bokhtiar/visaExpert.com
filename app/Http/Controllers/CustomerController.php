@@ -26,16 +26,17 @@ class CustomerController extends Controller
     // {
     public function storeForm(CustomerStoreRequest $request, VisaFormService $visaFormService)
     {
-      
+
         DB::beginTransaction();
-        $customerCount = Customer::count();
+        $customerCount = Customer::latest()->first();
+
         try {
             $customer = Customer::create([
                 //'unique_id' => str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT),
-                'unique_id' => Customer::latest()->value('id') + 1,
+                'unique_id' => $customerCount == null ? 1 : $customerCount->id  + 1,
                 'name' => $request->input('name'),
                 'phone' => $request->input('phone'),
-                'parent_customer_id' => Customer::latest()->value('id') + 1, //customer_id and parent_customer_id are same beacuse, another customer belongs or not,
+                'parent_customer_id' => $customerCount == null ? 1 : $customerCount->id  + 1, //customer_id and parent_customer_id are same beacuse, another customer belongs or not,
             ]);
 
             $visaForm = $visaFormService->createVisaForm($customer, $request);
