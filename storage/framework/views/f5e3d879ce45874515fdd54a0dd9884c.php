@@ -135,7 +135,13 @@
                                     <i class="ri-arrow-left-s-line align-bottom me-1"></i>
                                     Go to Customer List
                                 </a>
+
+
                             </div>
+                            <?php $__currentLoopData = $links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                               <a href="<?php echo e($link->link); ?>" target="_blank" class="btn" style="color: white ;background-color: #<?php echo e($link->color); ?>"><?php echo e($link->name); ?></a>
+
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
                 </div>
@@ -251,8 +257,7 @@
                                                         </div>
                                                         <div class="col-lg-9">
                                                             
-                                                                <textarea name="note" class="ckeditor-classic"
-                                          id="description"><?php echo $customer->forms[0]->note ? $customer->forms[0]->note : ''; ?></textarea>
+                                                            <textarea name="note" class="ckeditor-classic" id="description"><?php echo $customer->forms[0]->note ? $customer->forms[0]->note : ''; ?></textarea>
                                                         </div>
                                                     </div>
 
@@ -383,7 +388,7 @@
                                             </div>
                                             <div class="col-lg-9">
 
-                                                    <span><?php echo e($customer->name); ?> PDF</span> <br>
+                                                <span><?php echo e($customer->name); ?> PDF</span> <br>
 
 
                                                 <span class="text-success cursor-pointer"
@@ -586,7 +591,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-12">
                                                     <div class="card">
-                                                        
+
                                                         <div class="card-body">
 
                                                             <table class="table">
@@ -1112,7 +1117,6 @@
     <script src="<?php echo e(asset('backend/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js')); ?>"></script>
     <!-- init js -->
     <script src="<?php echo e(asset('backend/assets/js/pages/form-editor.init.js')); ?>"></script>
-
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/customer/show.blade.php ENDPATH**/ ?>

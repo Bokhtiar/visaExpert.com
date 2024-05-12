@@ -42,6 +42,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                    <th scope="col">Name</th>
                                                     <th scope="col">Website Link</th>
                                                     <th scope="col">Actions</th>
                                             </thead>
@@ -51,6 +52,7 @@
                                                     <tr>
                                                         <td class="fw-medium">{{ $loop->index + 1 }}</td>
                                                         <td>{{ $link->name }}</td>
+                                                        <td>{{ $link->link }}</td>
 
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">

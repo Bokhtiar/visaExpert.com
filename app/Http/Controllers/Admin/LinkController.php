@@ -33,6 +33,8 @@ class LinkController extends Controller
         try {
             Link::create([
                 'name' => $request->name,
+                'link' => $request->link,
+                'color' => $request->color,
             ]);
 
             return redirect()->route('admin.link.index')->with('success', 'Created successfully.');
@@ -68,6 +70,8 @@ class LinkController extends Controller
         $link = Link::find($id);
         $link->update([
             'name' => $request->name,
+            'link' => $request->link,
+            'color' => $request->color,
         ]);
         return redirect()->back()->with('success', 'Updated successfully');
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\VisaType;
 use App\Models\Document;
+use App\Models\Link;
 use App\Models\Passport;
 use App\Models\VisaForm;
 use App\Services\VisaFormService;
@@ -145,7 +146,9 @@ class CustomerController extends Controller
 
 
         $passport = Passport::where('customer_id', $customer->id)->get();
-        return view('backend.customer.show', compact('customer', 'passport', 'visaStatuses', 'parent_customers','documents', 'customer_form_id', 'customer_id'));
+
+        $links = Link::latest()->get();
+        return view('backend.customer.show', compact('customer', 'passport', 'visaStatuses', 'parent_customers','documents', 'customer_form_id', 'customer_id', 'links'));
     }
 
     public function update(Customer $customer, Request $request): RedirectResponse

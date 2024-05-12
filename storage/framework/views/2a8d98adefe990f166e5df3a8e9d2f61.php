@@ -40,6 +40,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                    <th scope="col">Name</th>
                                                     <th scope="col">Website Link</th>
                                                     <th scope="col">Actions</th>
                                             </thead>
@@ -49,6 +50,7 @@
                                                     <tr>
                                                         <td class="fw-medium"><?php echo e($loop->index + 1); ?></td>
                                                         <td><?php echo e($link->name); ?></td>
+                                                        <td><?php echo e($link->link); ?></td>
 
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">

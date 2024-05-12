@@ -56,6 +56,36 @@
                                     </div>
                                     @enderror
                                 </div>
+
+                               
+
+                                <div>
+                                    <label for="link" class="form-label">link</label>
+                                    <input type="text" id="link"
+                                           class="form-control mb-3 @error('link') is-invalid @enderror"
+                                           name="link" value="{{ $edit->link ?? old('link') }}">
+
+                                    @error('link')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                    @enderror
+                                </div>
+
+
+                                 <div>
+                                    <label for="color" class="form-label">Color</label>
+                                    <input type="text" id="color"
+                                           class="form-control mb-3 @error('color') is-invalid @enderror"
+                                           name="color" value="{{ $edit->color ?? old('color') }}">
+
+                                    @error('color')
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                    @enderror
+                                </div>
+
                             
                                 <div class="mt-3">
                                     @isset($edit)

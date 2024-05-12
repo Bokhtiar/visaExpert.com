@@ -12,5 +12,7 @@ class Link extends Model
 
     protected $fillable = [
         'name',
+        'link',
+        'color',
     ];
 }

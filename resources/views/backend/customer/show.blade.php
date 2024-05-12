@@ -130,7 +130,13 @@
                                     <i class="ri-arrow-left-s-line align-bottom me-1"></i>
                                     Go to Customer List
                                 </a>
+
+
                             </div>
+                            @foreach ($links as $link)
+                               <a href="{{ $link->link }}" target="_blank" class="btn" style="color: white ;background-color: #{{ $link->color }}">{{ $link->name }}</a>
+
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -243,8 +249,7 @@
                                                             {{-- <input type="text" name="note" id="note"
                                                                 class="form-control"
                                                                 value="{{ $customer->forms[0]->note }}"> --}}
-                                                                <textarea name="note" class="ckeditor-classic"
-                                          id="description">{!! $customer->forms[0]->note ? $customer->forms[0]->note : '' !!}</textarea>
+                                                            <textarea name="note" class="ckeditor-classic" id="description">{!! $customer->forms[0]->note ? $customer->forms[0]->note : '' !!}</textarea>
                                                         </div>
                                                     </div>
 
@@ -373,7 +378,7 @@
                                             </div>
                                             <div class="col-lg-9">
 
-                                                    <span>{{ $customer->name }} PDF</span> <br>
+                                                <span>{{ $customer->name }} PDF</span> <br>
 
 
                                                 <span class="text-success cursor-pointer"
@@ -588,7 +593,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-12">
                                                     <div class="card">
-                                                        
+
                                                         <div class="card-body">
 
                                                             <table class="table">
@@ -1109,5 +1114,4 @@
     <script src="{{ asset('backend/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
     <!-- init js -->
     <script src="{{ asset('backend/assets/js/pages/form-editor.init.js') }}"></script>
-
 @endpush
