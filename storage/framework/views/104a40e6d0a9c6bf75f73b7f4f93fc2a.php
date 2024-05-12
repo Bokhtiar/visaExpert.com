@@ -44,7 +44,7 @@
                                     <?php echo method_field('PUT'); ?>
                                 <?php endif; ?>
                                 <div>
-                                    <label for="name" class="form-label">Name</label>
+                                    <label for="name" class="form-label">Name *</label>
                                     <input type="text" id="name"
                                            class="form-control mb-3 <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -54,7 +54,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                           name="name" value="<?php echo e($edit->name ?? old('name')); ?>">
+                                           name="name" placeholder="Govt" value="<?php echo e($edit->name ?? old('name')); ?>">
 
                                     <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -73,7 +73,7 @@ unset($__errorArgs, $__bag); ?>
                                
 
                                 <div>
-                                    <label for="link" class="form-label">link</label>
+                                    <label for="link" class="form-label">link *</label>
                                     <input type="text" id="link"
                                            class="form-control mb-3 <?php $__errorArgs = ['link'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -83,7 +83,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                           name="link" value="<?php echo e($edit->link ?? old('link')); ?>">
+                                           name="link" placeholder="https://bangladesh.gov.bd/index.php" value="<?php echo e($edit->link ?? old('link')); ?>">
 
                                     <?php $__errorArgs = ['link'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -101,7 +101,7 @@ unset($__errorArgs, $__bag); ?>
 
 
                                  <div>
-                                    <label for="color" class="form-label">Color</label>
+                                    <label for="color" class="form-label">Color *</label>
                                     <input type="text" id="color"
                                            class="form-control mb-3 <?php $__errorArgs = ['color'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -111,7 +111,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                           name="color" value="<?php echo e($edit->color ?? old('color')); ?>">
+                                           name="color" placeholder="097233" value="<?php echo e($edit->color ?? old('color')); ?>">
 
                                     <?php $__errorArgs = ['color'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

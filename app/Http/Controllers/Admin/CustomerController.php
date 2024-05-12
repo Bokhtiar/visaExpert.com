@@ -63,7 +63,7 @@ class CustomerController extends Controller
                 'unique_id' => $customerCount == null ? 1 : $customerCount->id  + 1,
                 'name' => $parent_customer->name,
                 'phone' => $parent_customer->phone,
-                'parent_customer_id' => $customerCount == null ? 1 : $customerCount->id  + 1,
+                'parent_customer_id' => $id,
             ]);
 
             $visaForm = $customer->forms()->create([

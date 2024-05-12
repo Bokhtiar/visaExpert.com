@@ -459,8 +459,10 @@
 
 
                                     </div>
+                                    <?php if($customer->id == $customer->parent_customer_id): ?>
                                     <a href="<?php echo e(route('admin.customers.add-more', $customer->id)); ?>"
                                         class="btn btn-clr-red">Add More Customer</a>
+                                    <?php endif; ?>
                                 </div>
                                 <!--end Service tab-pane-->
                                 <div class="tab-pane" id="personalInformation" role="tabpanel">

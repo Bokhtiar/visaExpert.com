@@ -45,10 +45,10 @@
                                     @method('PUT')
                                 @endif
                                 <div>
-                                    <label for="name" class="form-label">Name</label>
+                                    <label for="name" class="form-label">Name *</label>
                                     <input type="text" id="name"
                                            class="form-control mb-3 @error('name') is-invalid @enderror"
-                                           name="name" value="{{ $edit->name ?? old('name') }}">
+                                           name="name" placeholder="Govt" value="{{ $edit->name ?? old('name') }}">
 
                                     @error('name')
                                     <div class="invalid-feedback">
@@ -60,10 +60,10 @@
                                
 
                                 <div>
-                                    <label for="link" class="form-label">link</label>
+                                    <label for="link" class="form-label">link *</label>
                                     <input type="text" id="link"
                                            class="form-control mb-3 @error('link') is-invalid @enderror"
-                                           name="link" value="{{ $edit->link ?? old('link') }}">
+                                           name="link" placeholder="https://bangladesh.gov.bd/index.php" value="{{ $edit->link ?? old('link') }}">
 
                                     @error('link')
                                     <div class="invalid-feedback">
@@ -74,10 +74,10 @@
 
 
                                  <div>
-                                    <label for="color" class="form-label">Color</label>
+                                    <label for="color" class="form-label">Color *</label>
                                     <input type="text" id="color"
                                            class="form-control mb-3 @error('color') is-invalid @enderror"
-                                           name="color" value="{{ $edit->color ?? old('color') }}">
+                                           name="color" placeholder="097233" value="{{ $edit->color ?? old('color') }}">
 
                                     @error('color')
                                     <div class="invalid-feedback">
