@@ -17,8 +17,11 @@ class DailyOfficeExpenseController extends Controller
         $this->authorize('viewAny', DailyOfficeExpense::class);
 
         return view('backend.daily-office-expense.index', [
-            'expenses' => DailyOfficeExpense::query()->paginate(10),
+            'expenses' => DailyOfficeExpense::query()
+                ->orderBy('id', 'desc') // Assuming 'id' is the primary key
+                ->paginate(10),
         ]);
+
     }
 
     public function store(Request $request): RedirectResponse

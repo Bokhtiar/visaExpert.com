@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CustomerInvoiceController;
 use App\Http\Controllers\Admin\DailyOfficeExpenseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoadController;
 use App\Http\Controllers\Admin\RoleController;
@@ -60,6 +61,7 @@ Route::group(['as' => 'customers-invoices.', 'prefix' => 'customers/invoice/', '
 Route::resource('visa-types', VisaTypeController::class)->except('show');
 //Road
 Route::resource('road', RoadController::class)->except('show');
+Route::resource('link', LinkController::class)->except('show');
 
 // Services Route
 Route::resource('services', ServiceController::class)->except('show');

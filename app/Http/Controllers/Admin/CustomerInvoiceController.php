@@ -86,6 +86,11 @@ class CustomerInvoiceController extends Controller
                 $invoice->update(['status' => 'Due']);
             }
 
+            //invoice status update
+            if ($invoice->discount == $invoice_item_amount->due) {
+                $invoice->update(['status' => 'Paid']);
+            }
+
             logActivity(
                 (Auth::user()->name . ' created an invoice.'),
                 $invoice->id,
@@ -157,6 +162,11 @@ class CustomerInvoiceController extends Controller
                 $invoice->update(['status' => 'Paid']);
             } else {
                 $invoice->update(['status' => 'Due']);
+            }
+
+            //invoice status update
+            if ($invoice->discount == $invoice_item_amount->due) {
+                $invoice->update(['status' => 'Paid']);
             }
 
             logActivity(

@@ -92,4 +92,25 @@ class Permissions
     const UPDATE_PROFILE = 'admin.profile.update';
 
     const UPDATE_PASSWORD = 'admin.profile.password';
+
+
+    // road
+    const VIEW_ROAD = 'admin.road.index';
+
+    const CREATE_ROAD = 'admin.road.create';
+
+    const EDIT_ROAD = 'admin.road.edit';
+
+    const DELETE_ROAD = 'admin.road.destroy';
+
+
+    // link
+    const VIEW_LINK = 'admin.link.index';
+
+    const CREATE_LINK = 'admin.link.create';
+
+    const EDIT_LINK = 'admin.link.edit';
+
+    const DELETE_LINK = 'admin.link.destroy';
+
 }
