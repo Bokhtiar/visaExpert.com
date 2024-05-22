@@ -35,56 +35,61 @@
                             </a>
 
                             @hasPermission('Customer List')
-                            <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
-                                id="sidebarCustomers">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.customers.index') }}"
-                                            class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
-                                            data-key="t-customer-list">
-                                            Customer List
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            @endhasPermission   
+                                <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
+                                    id="sidebarCustomers">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.customers.index') }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                Customer List
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endhasPermission
                         </li>
                     @endcan
                 @endhasPermission
 
-                @can(\App\Permissions::VIEW_VISA_TYPE)
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link {{ request()->routeIs('admin.visa-types.*') ? 'active' : '' }}"
-                            href="#sidebarVisaTypes" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarVisaTypes">
-                            <i data-feather="divide-circle" class="icon-dual"></i>
-                            <span data-key="t-visa-types">Visa Types</span>
-                        </a>
-                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.visa-types.*') ? 'show' : '' }}"
-                            id="sidebarVisaTypes">
-                            <ul class="nav nav-sm flex-column">
-                                @can(\App\Permissions::CREATE_VISA_TYPE)
+                @hasPermission('Visa Type List')
+                    @can(\App\Permissions::VIEW_VISA_TYPE)
+                        <li class="nav-item my-1">
+                            <a class="nav-link menu-link {{ request()->routeIs('admin.visa-types.*') ? 'active' : '' }}"
+                                href="#sidebarVisaTypes" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarVisaTypes">
+                                <i data-feather="divide-circle" class="icon-dual"></i>
+                                <span data-key="t-visa-types">Visa Types</span>
+                            </a>
+                            <div class="collapse menu-dropdown {{ request()->routeIs('admin.visa-types.*') ? 'show' : '' }}"
+                                id="sidebarVisaTypes">
+                                <ul class="nav nav-sm flex-column">
+                                    @hasPermission('Visa Create Type')
+                                        @can(\App\Permissions::CREATE_VISA_TYPE)
+                                            <li class="nav-item">
+                                                <a href="{{ route('admin.visa-types.create') }}"
+                                                    class="nav-link {{ request()->routeIs('admin.visa-types.create') ? 'active' : '' }}"
+                                                    data-key="t-add-visa-type">
+                                                    Add Visa Type
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    @endhasPermission
+
                                     <li class="nav-item">
-                                        <a href="{{ route('admin.visa-types.create') }}"
-                                            class="nav-link {{ request()->routeIs('admin.visa-types.create') ? 'active' : '' }}"
-                                            data-key="t-add-visa-type">
-                                            Add Visa Type
+                                        <a href="{{ route('admin.visa-types.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.visa-types.index') ? 'active' : '' }}"
+                                            data-key="t-visa-type-list">
+                                            Visa Type List
                                         </a>
                                     </li>
-                                @endcan
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.visa-types.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.visa-types.index') ? 'active' : '' }}"
-                                        data-key="t-visa-type-list">
-                                        Visa Type List
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
+                                </ul>
+                            </div>
+                        </li>
+                    @endcan
+                @endhasPermission
 
-
+                @hasPermission('Road List')
                 @can(\App\Permissions::VIEW_ROAD)
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link {{ request()->routeIs('admin.road.*') ? 'active' : '' }}"
@@ -96,6 +101,8 @@
                         <div class="collapse menu-dropdown {{ request()->routeIs('admin.road.*') ? 'show' : '' }}"
                             id="sidebarRoad">
                             <ul class="nav nav-sm flex-column">
+
+                                 @hasPermission('Create Road')
                                 @can(\App\Permissions::CREATE_ROAD)
                                     <li class="nav-item">
                                         <a href="{{ route('admin.road.create') }}"
@@ -105,6 +112,7 @@
                                         </a>
                                     </li>
                                 @endcan
+                                 @endhasPermission
                                 @can(\App\Permissions::VIEW_ROAD)
                                     <li class="nav-item">
                                         <a href="{{ route('admin.road.index') }}"
@@ -118,7 +126,9 @@
                         </div>
                     </li>
                 @endcan
+                @endhasPermission
 
+                @hasPermission('List Link')
                 @can(\App\Permissions::VIEW_LINK)
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link {{ request()->routeIs('admin.link.*') ? 'active' : '' }}"
@@ -130,6 +140,7 @@
                         <div class="collapse menu-dropdown {{ request()->routeIs('admin.link.*') ? 'show' : '' }}"
                             id="sidebarLink">
                             <ul class="nav nav-sm flex-column">
+                                 @hasPermission('Create Link')
                                 @can(\App\Permissions::CREATE_LINK)
                                     <li class="nav-item">
                                         <a href="{{ route('admin.link.create') }}"
@@ -139,6 +150,8 @@
                                         </a>
                                     </li>
                                 @endcan
+                                @endhasPermission
+
                                 @can(\App\Permissions::VIEW_LINK)
                                     <li class="nav-item">
                                         <a href="{{ route('admin.link.index') }}"
@@ -152,6 +165,7 @@
                         </div>
                     </li>
                 @endcan
+                @endhasPermission
 
                 @can(\App\Permissions::VIEW_SERVICE, \App\Permissions::VIEW_TOUR_PACKAGE)
                     <li class="nav-item my-1">

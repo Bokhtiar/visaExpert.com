@@ -35,56 +35,61 @@
                             </a>
 
                             <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
-                            <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.customers.*') ? 'show' : ''); ?>"
-                                id="sidebarCustomers">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="<?php echo e(route('admin.customers.index')); ?>"
-                                            class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
-                                            data-key="t-customer-list">
-                                            Customer List
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <?php endif; ?>   
+                                <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.customers.*') ? 'show' : ''); ?>"
+                                    id="sidebarCustomers">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="<?php echo e(route('admin.customers.index')); ?>"
+                                                class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
+                                                data-key="t-customer-list">
+                                                Customer List
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_VISA_TYPE)): ?>
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.visa-types.*') ? 'active' : ''); ?>"
-                            href="#sidebarVisaTypes" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarVisaTypes">
-                            <i data-feather="divide-circle" class="icon-dual"></i>
-                            <span data-key="t-visa-types">Visa Types</span>
-                        </a>
-                        <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.visa-types.*') ? 'show' : ''); ?>"
-                            id="sidebarVisaTypes">
-                            <ul class="nav nav-sm flex-column">
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_VISA_TYPE)): ?>
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Visa Type List')): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_VISA_TYPE)): ?>
+                        <li class="nav-item my-1">
+                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.visa-types.*') ? 'active' : ''); ?>"
+                                href="#sidebarVisaTypes" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarVisaTypes">
+                                <i data-feather="divide-circle" class="icon-dual"></i>
+                                <span data-key="t-visa-types">Visa Types</span>
+                            </a>
+                            <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.visa-types.*') ? 'show' : ''); ?>"
+                                id="sidebarVisaTypes">
+                                <ul class="nav nav-sm flex-column">
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Visa Create Type')): ?>
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_VISA_TYPE)): ?>
+                                            <li class="nav-item">
+                                                <a href="<?php echo e(route('admin.visa-types.create')); ?>"
+                                                    class="nav-link <?php echo e(request()->routeIs('admin.visa-types.create') ? 'active' : ''); ?>"
+                                                    data-key="t-add-visa-type">
+                                                    Add Visa Type
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
                                     <li class="nav-item">
-                                        <a href="<?php echo e(route('admin.visa-types.create')); ?>"
-                                            class="nav-link <?php echo e(request()->routeIs('admin.visa-types.create') ? 'active' : ''); ?>"
-                                            data-key="t-add-visa-type">
-                                            Add Visa Type
+                                        <a href="<?php echo e(route('admin.visa-types.index')); ?>"
+                                            class="nav-link <?php echo e(request()->routeIs('admin.visa-types.index') ? 'active' : ''); ?>"
+                                            data-key="t-visa-type-list">
+                                            Visa Type List
                                         </a>
                                     </li>
-                                <?php endif; ?>
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.visa-types.index')); ?>"
-                                        class="nav-link <?php echo e(request()->routeIs('admin.visa-types.index') ? 'active' : ''); ?>"
-                                        data-key="t-visa-type-list">
-                                        Visa Type List
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    <?php endif; ?>
                 <?php endif; ?>
 
-
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Road List')): ?>
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_ROAD)): ?>
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.road.*') ? 'active' : ''); ?>"
@@ -96,6 +101,8 @@
                         <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.road.*') ? 'show' : ''); ?>"
                             id="sidebarRoad">
                             <ul class="nav nav-sm flex-column">
+
+                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Road')): ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_ROAD)): ?>
                                     <li class="nav-item">
                                         <a href="<?php echo e(route('admin.road.create')); ?>"
@@ -105,6 +112,7 @@
                                         </a>
                                     </li>
                                 <?php endif; ?>
+                                 <?php endif; ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_ROAD)): ?>
                                     <li class="nav-item">
                                         <a href="<?php echo e(route('admin.road.index')); ?>"
@@ -118,7 +126,9 @@
                         </div>
                     </li>
                 <?php endif; ?>
+                <?php endif; ?>
 
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'List Link')): ?>
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_LINK)): ?>
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.link.*') ? 'active' : ''); ?>"
@@ -130,6 +140,7 @@
                         <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.link.*') ? 'show' : ''); ?>"
                             id="sidebarLink">
                             <ul class="nav nav-sm flex-column">
+                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Link')): ?>
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_LINK)): ?>
                                     <li class="nav-item">
                                         <a href="<?php echo e(route('admin.link.create')); ?>"
@@ -139,6 +150,8 @@
                                         </a>
                                     </li>
                                 <?php endif; ?>
+                                <?php endif; ?>
+
                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_LINK)): ?>
                                     <li class="nav-item">
                                         <a href="<?php echo e(route('admin.link.index')); ?>"
@@ -151,6 +164,7 @@
                             </ul>
                         </div>
                     </li>
+                <?php endif; ?>
                 <?php endif; ?>
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_SERVICE, \App\Permissions::VIEW_TOUR_PACKAGE)): ?>

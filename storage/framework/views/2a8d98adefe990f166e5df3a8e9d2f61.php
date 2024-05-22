@@ -54,6 +54,7 @@
 
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
+                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Link')): ?>
                                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_LINK)): ?>
                                                                     <a href="<?php echo e(route('admin.link.edit', $link->id)); ?>"
                                                                         class="btn btn-primary waves-effect waves-light">
@@ -61,6 +62,8 @@
                                                                         Edit
                                                                     </a>
                                                                 <?php endif; ?>
+                                                                <?php endif; ?>
+                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Link')): ?>
                                                                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_LINK)): ?>
                                                                     <button type="button"
                                                                         class="btn btn-danger waves-effect waves-light"
@@ -74,6 +77,7 @@
                                                                         <?php echo csrf_field(); ?>
                                                                         <?php echo method_field('DELETE'); ?>
                                                                     </form>
+                                                                <?php endif; ?>
                                                                 <?php endif; ?>
                                                             </div>
                                                         </td>

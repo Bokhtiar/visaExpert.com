@@ -257,6 +257,8 @@
                                 days from the
                                 issuing date and customer must collect the work before expiry the invoice.
                             </p>
+                            
+                            @hasPermission('Download Invoice')
                             @can(\App\Permissions::DOWNLOAD_CUSTOMER_INVOICE)
                                 <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                                     <a href="javascript:window.print()" class="btn btn-soft-primary"><i
@@ -266,6 +268,7 @@
                                     </a>
                                 </div>
                             @endcan
+                            @endhasPermission
                         </div>
                     </div>
                 </div>

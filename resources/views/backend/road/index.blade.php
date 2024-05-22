@@ -54,6 +54,7 @@
 
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
+                                                                  @hasPermission('Edit Road')
                                                                 @can(\App\Permissions::EDIT_ROAD)
                                                                     <a href="{{ route('admin.road.edit', $road->id) }}"
                                                                         class="btn btn-primary waves-effect waves-light">
@@ -61,6 +62,8 @@
                                                                         Edit
                                                                     </a>
                                                                 @endcan
+                                                                 @endhasPermission
+                                                                  @hasPermission('Delete Road')
                                                                 @can(\App\Permissions::DELETE_ROAD)
                                                                     <button type="button"
                                                                         class="btn btn-danger waves-effect waves-light"
@@ -75,6 +78,7 @@
                                                                         @method('DELETE')
                                                                     </form>
                                                                 @endcan
+                                                                 @endhasPermission
                                                             </div>
                                                         </td>
                                                     </tr>
