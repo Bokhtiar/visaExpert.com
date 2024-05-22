@@ -25,65 +25,67 @@
                     <div class="table-responsive table-card mb-1">
                         <table class="table table-borderless table-nowrap align-middle">
                             <thead class="text-muted table-light">
-                            <tr class="text-uppercase">
-                                <th scope="col">SL</th>
-                                <th scope="col">Expense Details</th>
-                                <th scope="col">Amount (Tk)</th>
-                                <th scope="col">Date and Time</th>
-                                <th scope="col">Actions</th>
-                            </tr>
+                                <tr class="text-uppercase">
+                                    <th scope="col">SL</th>
+                                    <th scope="col">Expense Details</th>
+                                    <th scope="col">Amount (Tk)</th>
+                                    <th scope="col">Date and Time</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
                             </thead>
                             <tbody class="list">
-                            <?php $__empty_1 = true; $__currentLoopData = $expenses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$expense): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr>
-                                    <td class="fw-medium">
-                                        <?php echo e($key + $expenses->firstItem()); ?>
+                                <?php $__empty_1 = true; $__currentLoopData = $expenses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$expense): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <tr>
+                                        <td class="fw-medium">
+                                            <?php echo e($key + $expenses->firstItem()); ?>
 
-                                    </td>
-                                    <td>
-                                        <?php echo $expense->description; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $expense->description; ?>
 
-                                    </td>
-                                    <td>
-                                        <?php echo e($expense->amount); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo e($expense->amount); ?>
 
-                                    </td>
-                                    <td>
-                                        <?php echo e($expense->created_at->format('d M Y - g:i a')); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo e($expense->created_at->format('d M Y - g:i a')); ?>
 
-                                    </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_DAILY_OFFICE_EXPENSE)): ?>
-                                                <a href="<?php echo e(route('admin.daily-office-expenses.edit',$expense->id)); ?>"
-                                                   class="btn btn-primary waves-effect waves-light">
-                                                    <i class="ri-pencil-line align-bottom me-1"></i>
-                                                    Edit
-                                                </a>
-                                            <?php endif; ?>
-                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_DAILY_OFFICE_EXPENSE)): ?>
-                                                <button type="button"
-                                                        class="btn btn-danger waves-effect waves-light"
+                                        </td>
+                                        <td>
+                                            <div class="hstack gap-3 fs-15">
+                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Expense')): ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_DAILY_OFFICE_EXPENSE)): ?>
+                                                    <a href="<?php echo e(route('admin.daily-office-expenses.edit', $expense->id)); ?>"
+                                                        class="btn btn-primary waves-effect waves-light">
+                                                        <i class="ri-pencil-line align-bottom me-1"></i>
+                                                        Edit
+                                                    </a>
+                                                <?php endif; ?>
+                                                <?php endif; ?>
+                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Expense')): ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_DAILY_OFFICE_EXPENSE)): ?>
+                                                    <button type="button" class="btn btn-danger waves-effect waves-light"
                                                         onclick="deleteData(<?php echo e($expense->id); ?>)">
-                                                    <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                    Delete
-                                                </button>
-                                                <form id="delete-form-<?php echo e($expense->id); ?>"
-                                                      action="<?php echo e(route('admin.daily-office-expenses.destroy', $expense->id)); ?>"
-                                                      method="POST"
-                                                      style="display: none;">
-                                                    <?php echo csrf_field(); ?>
-                                                    <?php echo method_field('DELETE'); ?>
-                                                </form>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <tr>
-                                    <td>No record Found.</td>
-                                </tr>
-                            <?php endif; ?>
+                                                        <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                        Delete
+                                                    </button>
+                                                    <form id="delete-form-<?php echo e($expense->id); ?>"
+                                                        action="<?php echo e(route('admin.daily-office-expenses.destroy', $expense->id)); ?>"
+                                                        method="POST" style="display: none;">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('DELETE'); ?>
+                                                    </form>
+                                                <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    <tr>
+                                        <td>No record Found.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -109,16 +111,15 @@
                             <?php endif; ?>
                             <div class="my-2">
                                 <label for="description" class="form-label">Expense Details</label>
-                                <textarea name="description" class="ckeditor-classic"
-                                          id="description"><?php echo e($dailyOfficeExpense->description ?? old('description')); ?></textarea>
+                                <textarea name="description" class="ckeditor-classic" id="description"><?php echo e($dailyOfficeExpense->description ?? old('description')); ?></textarea>
                                 <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="invalid-feedback">
-                                    <strong><?php echo e($message); ?></strong>
-                                </div>
+                                    <div class="invalid-feedback">
+                                        <strong><?php echo e($message); ?></strong>
+                                    </div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -127,41 +128,45 @@ unset($__errorArgs, $__bag); ?>
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Amount (Tk)</label>
                                 <input type="number" id="amount"
-                                       class="form-control mb-3 <?php $__errorArgs = ['amount'];
+                                    class="form-control mb-3 <?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                       name="amount"
-                                       value="<?php echo e($dailyOfficeExpense->amount ?? old('amount')); ?>">
+unset($__errorArgs, $__bag); ?>" name="amount"
+                                    value="<?php echo e($dailyOfficeExpense->amount ?? old('amount')); ?>">
 
                                 <?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="invalid-feedback">
-                                    <strong><?php echo e($message); ?></strong>
-                                </div>
+                                    <div class="invalid-feedback">
+                                        <strong><?php echo e($message); ?></strong>
+                                    </div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                             <div class="mt-3">
+
                                 <?php if(isset($dailyOfficeExpense)): ?>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Update</span>
-                                    </button>
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Expense')): ?>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Update</span>
+                                        </button>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Add</span>
-                                    </button>
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Expense')): ?>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Add</span>
+                                        </button>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </form>

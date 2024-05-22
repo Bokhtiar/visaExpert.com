@@ -29,9 +29,11 @@
 
                                     <div class="flex-shrink-0">
                                         <div>
+                                             @hasPermission('Create Road')
                                             <a href="{{ route('admin.road.create') }}" class="btn btn-clr-red rounded-pill">
                                                 Create road
                                             </a>
+                                            @endhasPermission
                                         </div>
                                     </div>
 

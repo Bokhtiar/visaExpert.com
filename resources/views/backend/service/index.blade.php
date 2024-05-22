@@ -30,10 +30,13 @@
                                     @can(\App\Permissions::CREATE_SERVICE)
                                         <div class="flex-shrink-0">
                                             <div>
+                                                @hasPermission('Create Service')
                                                 <a href="{{ route('admin.services.create') }}"
                                                    class="btn btn-clr-red rounded-pill">
                                                     Create New Service
                                                 </a>
+                                                @endhasPermission
+
                                             </div>
                                         </div>
                                     @endcan
@@ -61,6 +64,7 @@
                                                     <td>{{ $service->customer_amount }}</td>
                                                     <td>
                                                         <div class="hstack gap-3 fs-15">
+                                                            @hasPermission('Update Service')
                                                             @can(\App\Permissions::EDIT_SERVICE)
                                                                 <a href="{{ route('admin.services.edit', $service->id) }}"
                                                                    class="btn btn-primary waves-effect waves-light">
@@ -68,6 +72,8 @@
                                                                     Edit
                                                                 </a>
                                                             @endcan
+                                                            @endhasPermission
+                                                            @hasPermission('Delete Service')
                                                             @can(\App\Permissions::DELETE_SERVICE)
                                                                 <button type="button"
                                                                         class="btn btn-danger waves-effect waves-light"
@@ -83,6 +89,7 @@
                                                                     @method('DELETE')
                                                                 </form>
                                                             @endcan
+                                                            @endhasPermission
                                                         </div>
                                                     </td>
                                                 </tr>

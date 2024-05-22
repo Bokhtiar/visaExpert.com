@@ -27,61 +27,63 @@
                     <div class="table-responsive table-card mb-1">
                         <table class="table table-borderless table-nowrap align-middle">
                             <thead class="text-muted table-light">
-                            <tr class="text-uppercase">
-                                <th scope="col">SL</th>
-                                <th scope="col">Expense Details</th>
-                                <th scope="col">Amount (Tk)</th>
-                                <th scope="col">Date and Time</th>
-                                <th scope="col">Actions</th>
-                            </tr>
+                                <tr class="text-uppercase">
+                                    <th scope="col">SL</th>
+                                    <th scope="col">Expense Details</th>
+                                    <th scope="col">Amount (Tk)</th>
+                                    <th scope="col">Date and Time</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
                             </thead>
                             <tbody class="list">
-                            @forelse($expenses as $key=>$expense)
-                                <tr>
-                                    <td class="fw-medium">
-                                        {{$key + $expenses->firstItem()}}
-                                    </td>
-                                    <td>
-                                        {!! $expense->description !!}
-                                    </td>
-                                    <td>
-                                        {{ $expense->amount }}
-                                    </td>
-                                    <td>
-                                        {{ $expense->created_at->format('d M Y - g:i a') }}
-                                    </td>
-                                    <td>
-                                        <div class="hstack gap-3 fs-15">
-                                            @can(\App\Permissions::EDIT_DAILY_OFFICE_EXPENSE)
-                                                <a href="{{ route('admin.daily-office-expenses.edit',$expense->id) }}"
-                                                   class="btn btn-primary waves-effect waves-light">
-                                                    <i class="ri-pencil-line align-bottom me-1"></i>
-                                                    Edit
-                                                </a>
-                                            @endcan
-                                            @can(\App\Permissions::DELETE_DAILY_OFFICE_EXPENSE)
-                                                <button type="button"
-                                                        class="btn btn-danger waves-effect waves-light"
+                                @forelse($expenses as $key=>$expense)
+                                    <tr>
+                                        <td class="fw-medium">
+                                            {{ $key + $expenses->firstItem() }}
+                                        </td>
+                                        <td>
+                                            {!! $expense->description !!}
+                                        </td>
+                                        <td>
+                                            {{ $expense->amount }}
+                                        </td>
+                                        <td>
+                                            {{ $expense->created_at->format('d M Y - g:i a') }}
+                                        </td>
+                                        <td>
+                                            <div class="hstack gap-3 fs-15">
+                                                @hasPermission('Edit Expense')
+                                                @can(\App\Permissions::EDIT_DAILY_OFFICE_EXPENSE)
+                                                    <a href="{{ route('admin.daily-office-expenses.edit', $expense->id) }}"
+                                                        class="btn btn-primary waves-effect waves-light">
+                                                        <i class="ri-pencil-line align-bottom me-1"></i>
+                                                        Edit
+                                                    </a>
+                                                @endcan
+                                                @endhasPermission
+                                                @hasPermission('Delete Expense')
+                                                @can(\App\Permissions::DELETE_DAILY_OFFICE_EXPENSE)
+                                                    <button type="button" class="btn btn-danger waves-effect waves-light"
                                                         onclick="deleteData({{ $expense->id }})">
-                                                    <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                    Delete
-                                                </button>
-                                                <form id="delete-form-{{ $expense->id }}"
-                                                      action="{{ route('admin.daily-office-expenses.destroy', $expense->id) }}"
-                                                      method="POST"
-                                                      style="display: none;">
-                                                    @csrf()
-                                                    @method('DELETE')
-                                                </form>
-                                            @endcan
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td>No record Found.</td>
-                                </tr>
-                            @endforelse
+                                                        <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                        Delete
+                                                    </button>
+                                                    <form id="delete-form-{{ $expense->id }}"
+                                                        action="{{ route('admin.daily-office-expenses.destroy', $expense->id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @csrf()
+                                                        @method('DELETE')
+                                                    </form>
+                                                @endcan
+                                                @endhasPermission
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td>No record Found.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -106,38 +108,41 @@
                             @endif
                             <div class="my-2">
                                 <label for="description" class="form-label">Expense Details</label>
-                                <textarea name="description" class="ckeditor-classic"
-                                          id="description">{{ $dailyOfficeExpense->description ?? old('description') }}</textarea>
+                                <textarea name="description" class="ckeditor-classic" id="description">{{ $dailyOfficeExpense->description ?? old('description') }}</textarea>
                                 @error('description')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Amount (Tk)</label>
                                 <input type="number" id="amount"
-                                       class="form-control mb-3 @error('amount') is-invalid @enderror"
-                                       name="amount"
-                                       value="{{ $dailyOfficeExpense->amount ?? old('amount') }}">
+                                    class="form-control mb-3 @error('amount') is-invalid @enderror" name="amount"
+                                    value="{{ $dailyOfficeExpense->amount ?? old('amount') }}">
 
                                 @error('amount')
-                                <div class="invalid-feedback">
-                                    <strong>{{ $message }}</strong>
-                                </div>
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
                                 @enderror
                             </div>
                             <div class="mt-3">
+
                                 @isset($dailyOfficeExpense)
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Update</span>
-                                    </button>
+                                    @hasPermission('Edit Expense')
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Update</span>
+                                        </button>
+                                    @endhasPermission
                                 @else
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <span>Add</span>
-                                    </button>
+                                    @hasPermission('Create Expense')
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Add</span>
+                                        </button>
+                                    @endhasPermission
                                 @endisset
                             </div>
                         </form>
