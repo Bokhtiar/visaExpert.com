@@ -34,9 +34,11 @@
 
 
                                     <!-- create new cusmer offline mood -->
+                                    @hasPermission('Create Customer')
                                     <a href="{{ route('admin.customers.offline') }}" class="btn btn-success">
                                         Create New Customer (Offline mood)
                                     </a>
+                                    @endhasPermission
 
 
 
@@ -49,7 +51,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
-                                                    <th scope="col">Owner</th>
+                                                    {{-- <th scope="col">Owner</th> --}}
                                                     <th scope="col">Work Status</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
@@ -67,7 +69,7 @@
                                                         <td>#{{ $customer->unique_id }}</td>
                                                         <td>{{ $customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')' }}
                                                         </td>
-                                                        <td>{{ $customer->customer ? $customer->customer->name : '' }}</td>
+                                                        {{-- <td>{{ $customer->customer ? $customer->customer->name : '' }}</td> --}}
                                                         <td>{{ App\Models\VisaForm::customerListStatus($customer->id) }}
                                                         </td>
                                                         <td>
@@ -144,34 +146,42 @@
                                                         </td>
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
-                                                                @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
-                                                                    <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
-                                                                        class="btn btn-dark waves-effect waves-light">
-                                                                        <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                        Create Invoice
-                                                                    </a>
-                                                                @endcan
-                                                                @can(\App\Permissions::VIEW_CUSTOMER)
-                                                                    <a href="{{ route('admin.customers.show', $customer->id) }}"
-                                                                        class="btn btn-clr-red waves-effect waves-light">
-                                                                        <i class="ri-eye-2-line align-bottom me-1"></i>
-                                                                        View Profile
-                                                                    </a>
-                                                                @endcan
-                                                                @can(\App\Permissions::DELETE_CUSTOMER)
-                                                                    <button type="button"
-                                                                        class="btn btn-soft-success waves-effect waves-light"
-                                                                        onclick="deleteData({{ $customer->id }})">
-                                                                        <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                        Delete Customer
-                                                                    </button>
-                                                                    <form id="delete-form-{{ $customer->id }}"
-                                                                        action="{{ route('admin.customers.destroy', $customer->id) }}"
-                                                                        method="POST" style="display: none;">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                    </form>
-                                                                @endcan
+                                                                @hasPermission('Create Invoice')
+                                                                    @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
+                                                                        <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
+                                                                            class="btn btn-dark waves-effect waves-light">
+                                                                            <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                            Create Invoice
+                                                                        </a>
+                                                                    @endcan
+                                                                @endhasPermission
+
+                                                                @hasPermission('Edit Customer')
+                                                                    @can(\App\Permissions::VIEW_CUSTOMER)
+                                                                        <a href="{{ route('admin.customers.show', $customer->id) }}"
+                                                                            class="btn btn-clr-red waves-effect waves-light">
+                                                                            <i class="ri-eye-2-line align-bottom me-1"></i>
+                                                                            View Profile
+                                                                        </a>
+                                                                    @endcan
+                                                                @endhasPermission
+
+                                                                @hasPermission('Delete Customer')
+                                                                    @can(\App\Permissions::DELETE_CUSTOMER)
+                                                                        <button type="button"
+                                                                            class="btn btn-soft-success waves-effect waves-light"
+                                                                            onclick="deleteData({{ $customer->id }})">
+                                                                            <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                            Delete Customer
+                                                                        </button>
+                                                                        <form id="delete-form-{{ $customer->id }}"
+                                                                            action="{{ route('admin.customers.destroy', $customer->id) }}"
+                                                                            method="POST" style="display: none;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                        </form>
+                                                                    @endcan
+                                                                @endhasPermission
                                                             </div>
                                                         </td>
 

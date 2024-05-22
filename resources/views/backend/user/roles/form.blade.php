@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0">Roles</h4>
-
+ 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item">Dashboard</li>
@@ -32,12 +32,12 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> 
                 <div class="card-body">
                     <form id="roleForm" method="POST"
                           action="{{ isset($role) ? route('admin.roles.update', $role->id) : route('admin.roles.store') }}">
                         @csrf
-                        @if (isset($role))
+                        @if (isset($role)) 
                             @method('PUT')
                         @endif
                         <div>
@@ -80,7 +80,7 @@
                                             <label class="form-check-label" for="module-{{ $module->id }}">
                                                 <span class="h5">{{ $module->name }}</span>
                                             </label>
-                                        </div>
+                                        </div> 
                                         @foreach ($module->permissions as $key => $permission)
                                             <div class="mb-3">
                                                 <div

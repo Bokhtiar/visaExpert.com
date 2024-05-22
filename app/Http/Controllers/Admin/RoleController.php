@@ -20,7 +20,7 @@ class RoleController extends Controller
         return view('backend.user.roles.index', [
             'roles' => Role::getAllRoles(),
         ]);
-    }
+    } 
 
     public function create(): View
     {
@@ -67,7 +67,7 @@ class RoleController extends Controller
         ]);
         $role->permissions()->sync($request->input('permissions', []));
 
-        logActivity(
+        logActivity( 
             (Auth::user()->name.' updated a role.'),
             $role->id,
             'updated',

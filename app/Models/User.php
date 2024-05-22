@@ -87,4 +87,9 @@ class User extends Authenticatable
     {
         return (bool) $this->role->permissions()->where('slug', $permission)->first();
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_users'); // Specify the table name here
+    }
 }

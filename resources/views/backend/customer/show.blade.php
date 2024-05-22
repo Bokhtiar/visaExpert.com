@@ -134,8 +134,8 @@
 
                             </div>
                             @foreach ($links as $link)
-                               <a href="{{ $link->link }}" target="_blank" class="btn" style="color: white ;background-color: #{{ $link->color }}">{{ $link->name }}</a>
-
+                                <a href="{{ $link->link }}" target="_blank" class="btn"
+                                    style="color: white ;background-color: #{{ $link->color }}">{{ $link->name }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -446,8 +446,8 @@
 
                                     </div>
                                     @if ($customer->id == $customer->parent_customer_id)
-                                    <a href="{{ route('admin.customers.add-more', $customer->id) }}"
-                                        class="btn btn-clr-red">Add More Customer</a>
+                                        <a href="{{ route('admin.customers.add-more', $customer->id) }}"
+                                            class="btn btn-clr-red">Add More Customer</a>
                                     @endif
                                 </div>
                                 <!--end Service tab-pane-->
@@ -793,200 +793,210 @@
                                     </div>
                                 </div>
                                 <!--end Personal Information tab-pane-->
-                                @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
-                                    @if (count($customer->invoices) > 0)
-                                        <div class="tab-pane" id="generatedBill" role="tabpanel">
-                                            <div class="row">
-                                                <div class="bg-clr-red mb-4 rounded-1">
-                                                    <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                @hasPermission('Create Invoice')
+                                    @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
+                                        @if (count($customer->invoices) > 0)
+                                            <div class="tab-pane" id="generatedBill" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="bg-clr-red mb-4 rounded-1">
+                                                        <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="card" id="invoiceList">
-                                                        <div class="card-header border-0">
-                                                            <div class="d-flex align-items-center">
-                                                                <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
-                                                                <div class="flex-shrink-0">
-                                                                    <div>
-                                                                        @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
-                                                                            <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
-                                                                                class="btn btn-clr-red waves-effect waves-light">
-                                                                                <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                                Create Invoice
-                                                                            </a>
-                                                                        @endcan
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card" id="invoiceList">
+                                                            <div class="card-header border-0">
+                                                                <div class="d-flex align-items-center">
+                                                                    <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div>
+                                                                            @hasPermission('Create Invoice')
+                                                                                @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
+                                                                                    <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
+                                                                                        class="btn btn-clr-red waves-effect waves-light">
+                                                                                        <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                                        Create Invoice
+                                                                                    </a>
+                                                                                @endcan
+                                                                            @endhasPermission
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div>
+                                                                    <div class="table-responsive table-card">
+                                                                        <table class="table align-middle table-nowrap"
+                                                                            id="invoiceTable">
+                                                                            <thead class="text-muted">
+                                                                                <tr>
+                                                                                    <th scope="col">SL</th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_id">User ID
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="customer_name">
+                                                                                        Customer
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="date">
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_amount">
+                                                                                        Amount
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="status">
+                                                                                        Payment
+                                                                                        Status
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="action">
+                                                                                        Action
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @forelse($customer->invoices as $key=>$invoice)
+                                                                                    <tr>
+                                                                                        <td class="fw-medium text-center">
+                                                                                            {{ $key + 1 }}</td>
+                                                                                        <td>{{ $invoice->customer->unique_id }}
+                                                                                        </td>
+                                                                                        <td>{{ ucfirst($invoice->customer->name) }}
+                                                                                        </td>
+                                                                                        <td>{{ $invoice->created_at->format('d M Y') }}
+                                                                                        </td>
+                                                                                        <td>{{ number_format($invoice->total_amount) }}
+                                                                                        </td>
+                                                                                        <td>{!! displayPaymentStatusBadge($invoice->status) !!}</td>
+                                                                                        <td>
+                                                                                            <div class="hstack gap-1">
+                                                                                                @hasPermission('Update Invoice')
+                                                                                                <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"
+                                                                                                    class="btn btn-sm btn-clr-red waves-effect waves-light">
+                                                                                                    <i
+                                                                                                        class="ri-eye-2-line align-bottom me-1"></i>
+                                                                                                    View
+                                                                                                </a>
+                                                                                                 @endhasPermission
+                                                                                                @hasPermission('Update Invoice')
+                                                                                                @can(\App\Permissions::EDIT_CUSTOMER_INVOICE)
+                                                                                                    <a href="{{ route('admin.customers-invoices.edit', $invoice->id) }}"
+                                                                                                        class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                        <i
+                                                                                                            class="ri-pencil-line align-bottom me-1"></i>
+                                                                                                        Edit
+                                                                                                    </a>
+                                                                                                @endcan
+                                                                                                @endhasPermission
+                                                                                                @hasPermission('Delete Invoice')
+                                                                                                @can(\App\Permissions::DELETE_CUSTOMER_INVOICE)
+                                                                                                    <button type="button"
+                                                                                                        class="btn btn-sm btn-outline-danger waves-effect waves-light"
+                                                                                                        onclick="deleteData({{ $invoice->id }})">
+                                                                                                        <i
+                                                                                                            class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                                                        Delete
+                                                                                                    </button>
+                                                                                                    <form
+                                                                                                        id="delete-form-{{ $invoice->id }}"
+                                                                                                        action="{{ route('admin.customers-invoices.destroy', $invoice->id) }}"
+                                                                                                        method="POST"
+                                                                                                        style="display: none;">
+                                                                                                        @csrf
+                                                                                                        @method('DELETE')
+                                                                                                    </form>
+                                                                                                @endcan
+                                                                                                 @endhasPermission
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @empty
+                                                                                    <tr>
+                                                                                        <td>No record Found.</td>
+                                                                                    </tr>
+                                                                                @endforelse
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <div>
-                                                                <div class="table-responsive table-card">
-                                                                    <table class="table align-middle table-nowrap"
-                                                                        id="invoiceTable">
-                                                                        <thead class="text-muted">
-                                                                            <tr>
-                                                                                <th scope="col">SL</th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_id">User ID
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="customer_name">
-                                                                                    Customer
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="date">
-                                                                                    Date
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_amount">
-                                                                                    Amount
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="status">
-                                                                                    Payment
-                                                                                    Status
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="action">
-                                                                                    Action
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            @forelse($customer->invoices as $key=>$invoice)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="tab-pane" id="generatedBill" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="bg-clr-red mb-4 rounded-1">
+                                                        <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card" id="invoiceList">
+                                                            <div class="card-header border-0">
+                                                                <div class="d-flex align-items-center">
+                                                                    <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div>
+                                                                            @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
+                                                                                <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
+                                                                                    class="btn btn-clr-red waves-effect waves-light">
+                                                                                    <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                                    Create Invoice
+                                                                                </a>
+                                                                            @endcan
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div>
+                                                                    <div class="table-responsive table-card">
+                                                                        <table class="table align-middle table-nowrap"
+                                                                            id="invoiceTable">
+                                                                            <thead class="text-muted">
                                                                                 <tr>
-                                                                                    <td class="fw-medium text-center">
-                                                                                        {{ $key + 1 }}</td>
-                                                                                    <td>{{ $invoice->customer->unique_id }}
-                                                                                    </td>
-                                                                                    <td>{{ ucfirst($invoice->customer->name) }}
-                                                                                    </td>
-                                                                                    <td>{{ $invoice->created_at->format('d M Y') }}
-                                                                                    </td>
-                                                                                    <td>{{ number_format($invoice->total_amount) }}
-                                                                                    </td>
-                                                                                    <td>{!! displayPaymentStatusBadge($invoice->status) !!}</td>
-                                                                                    <td>
-                                                                                        <div class="hstack gap-1">
-                                                                                            <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"
-                                                                                                class="btn btn-sm btn-clr-red waves-effect waves-light">
-                                                                                                <i
-                                                                                                    class="ri-eye-2-line align-bottom me-1"></i>
-                                                                                                View
-                                                                                            </a>
-                                                                                            @can(\App\Permissions::EDIT_CUSTOMER_INVOICE)
-                                                                                                <a href="{{ route('admin.customers-invoices.edit', $invoice->id) }}"
-                                                                                                    class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                                                                                    <i
-                                                                                                        class="ri-pencil-line align-bottom me-1"></i>
-                                                                                                    Edit
-                                                                                                </a>
-                                                                                            @endcan
-                                                                                            @can(\App\Permissions::DELETE_CUSTOMER_INVOICE)
-                                                                                                <button type="button"
-                                                                                                    class="btn btn-sm btn-outline-danger waves-effect waves-light"
-                                                                                                    onclick="deleteData({{ $invoice->id }})">
-                                                                                                    <i
-                                                                                                        class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                                                    Delete
-                                                                                                </button>
-                                                                                                <form
-                                                                                                    id="delete-form-{{ $invoice->id }}"
-                                                                                                    action="{{ route('admin.customers-invoices.destroy', $invoice->id) }}"
-                                                                                                    method="POST"
-                                                                                                    style="display: none;">
-                                                                                                    @csrf
-                                                                                                    @method('DELETE')
-                                                                                                </form>
-                                                                                            @endcan
-                                                                                        </div>
-                                                                                    </td>
+                                                                                    <th scope="col">SL</th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_id">User ID
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="customer_name">
+                                                                                        Customer
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="date">
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_amount">
+                                                                                        Amount
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="status">
+                                                                                        Payment
+                                                                                        Status
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="action">
+                                                                                        Action
+                                                                                    </th>
                                                                                 </tr>
-                                                                            @empty
+                                                                            </thead>
+                                                                            <tbody>
                                                                                 <tr>
                                                                                     <td>No record Found.</td>
                                                                                 </tr>
-                                                                            @endforelse
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="tab-pane" id="generatedBill" role="tabpanel">
-                                            <div class="row">
-                                                <div class="bg-clr-red mb-4 rounded-1">
-                                                    <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="card" id="invoiceList">
-                                                        <div class="card-header border-0">
-                                                            <div class="d-flex align-items-center">
-                                                                <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
-                                                                <div class="flex-shrink-0">
-                                                                    <div>
-                                                                        @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
-                                                                            <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
-                                                                                class="btn btn-clr-red waves-effect waves-light">
-                                                                                <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                                Create Invoice
-                                                                            </a>
-                                                                        @endcan
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <div>
-                                                                <div class="table-responsive table-card">
-                                                                    <table class="table align-middle table-nowrap"
-                                                                        id="invoiceTable">
-                                                                        <thead class="text-muted">
-                                                                            <tr>
-                                                                                <th scope="col">SL</th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_id">User ID
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="customer_name">
-                                                                                    Customer
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="date">
-                                                                                    Date
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_amount">
-                                                                                    Amount
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="status">
-                                                                                    Payment
-                                                                                    Status
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="action">
-                                                                                    Action
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>No record Found.</td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endif
-                                @endcan
+                                        @endif
+                                    @endcan
+                                @endhasPermission
                                 <!--end Generated Bill tab-pane-->
                             </div>
                         </div>

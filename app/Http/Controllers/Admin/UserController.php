@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Module;
+use App\Models\PermissionUser;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -19,7 +21,6 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
         $users = User::getAllUsers();
-
         return view('backend.user.index', compact('users'));
     }
 
@@ -56,8 +57,13 @@ class UserController extends Controller
     {
         //$this->authorize('edit', $user);
         $roles = Role::all();
+        $modules = Module::all();
+        $user = User::find($user->id);
+        $roleFind = Role::find($user->role_id);
+        $role = $roleFind->load('permissions'); 
+        $specificUserPermission = PermissionUser::where('user_id', $user->id)->get();
 
-        return view('backend.user.form', compact('roles', 'user'));
+        return view('backend.user.form', compact('roles', 'user', 'modules', 'role', 'specificUserPermission' ));
     }
 
     public function update(Request $request, User $user): RedirectResponse

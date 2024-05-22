@@ -139,8 +139,8 @@
 
                             </div>
                             <?php $__currentLoopData = $links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                               <a href="<?php echo e($link->link); ?>" target="_blank" class="btn" style="color: white ;background-color: #<?php echo e($link->color); ?>"><?php echo e($link->name); ?></a>
-
+                                <a href="<?php echo e($link->link); ?>" target="_blank" class="btn"
+                                    style="color: white ;background-color: #<?php echo e($link->color); ?>"><?php echo e($link->name); ?></a>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
@@ -460,8 +460,8 @@
 
                                     </div>
                                     <?php if($customer->id == $customer->parent_customer_id): ?>
-                                    <a href="<?php echo e(route('admin.customers.add-more', $customer->id)); ?>"
-                                        class="btn btn-clr-red">Add More Customer</a>
+                                        <a href="<?php echo e(route('admin.customers.add-more', $customer->id)); ?>"
+                                            class="btn btn-clr-red">Add More Customer</a>
                                     <?php endif; ?>
                                 </div>
                                 <!--end Service tab-pane-->
@@ -792,202 +792,212 @@
                                     </div>
                                 </div>
                                 <!--end Personal Information tab-pane-->
-                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
-                                    <?php if(count($customer->invoices) > 0): ?>
-                                        <div class="tab-pane" id="generatedBill" role="tabpanel">
-                                            <div class="row">
-                                                <div class="bg-clr-red mb-4 rounded-1">
-                                                    <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Invoice')): ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
+                                        <?php if(count($customer->invoices) > 0): ?>
+                                            <div class="tab-pane" id="generatedBill" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="bg-clr-red mb-4 rounded-1">
+                                                        <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="card" id="invoiceList">
-                                                        <div class="card-header border-0">
-                                                            <div class="d-flex align-items-center">
-                                                                <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
-                                                                <div class="flex-shrink-0">
-                                                                    <div>
-                                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
-                                                                            <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
-                                                                                class="btn btn-clr-red waves-effect waves-light">
-                                                                                <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                                Create Invoice
-                                                                            </a>
-                                                                        <?php endif; ?>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card" id="invoiceList">
+                                                            <div class="card-header border-0">
+                                                                <div class="d-flex align-items-center">
+                                                                    <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div>
+                                                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Invoice')): ?>
+                                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
+                                                                                    <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
+                                                                                        class="btn btn-clr-red waves-effect waves-light">
+                                                                                        <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                                        Create Invoice
+                                                                                    </a>
+                                                                                <?php endif; ?>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div>
+                                                                    <div class="table-responsive table-card">
+                                                                        <table class="table align-middle table-nowrap"
+                                                                            id="invoiceTable">
+                                                                            <thead class="text-muted">
+                                                                                <tr>
+                                                                                    <th scope="col">SL</th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_id">User ID
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="customer_name">
+                                                                                        Customer
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="date">
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_amount">
+                                                                                        Amount
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="status">
+                                                                                        Payment
+                                                                                        Status
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="action">
+                                                                                        Action
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <?php $__empty_1 = true; $__currentLoopData = $customer->invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                                                                    <tr>
+                                                                                        <td class="fw-medium text-center">
+                                                                                            <?php echo e($key + 1); ?></td>
+                                                                                        <td><?php echo e($invoice->customer->unique_id); ?>
+
+                                                                                        </td>
+                                                                                        <td><?php echo e(ucfirst($invoice->customer->name)); ?>
+
+                                                                                        </td>
+                                                                                        <td><?php echo e($invoice->created_at->format('d M Y')); ?>
+
+                                                                                        </td>
+                                                                                        <td><?php echo e(number_format($invoice->total_amount)); ?>
+
+                                                                                        </td>
+                                                                                        <td><?php echo displayPaymentStatusBadge($invoice->status); ?></td>
+                                                                                        <td>
+                                                                                            <div class="hstack gap-1">
+                                                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Update Invoice')): ?>
+                                                                                                <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"
+                                                                                                    class="btn btn-sm btn-clr-red waves-effect waves-light">
+                                                                                                    <i
+                                                                                                        class="ri-eye-2-line align-bottom me-1"></i>
+                                                                                                    View
+                                                                                                </a>
+                                                                                                 <?php endif; ?>
+                                                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Update Invoice')): ?>
+                                                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_CUSTOMER_INVOICE)): ?>
+                                                                                                    <a href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>"
+                                                                                                        class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                        <i
+                                                                                                            class="ri-pencil-line align-bottom me-1"></i>
+                                                                                                        Edit
+                                                                                                    </a>
+                                                                                                <?php endif; ?>
+                                                                                                <?php endif; ?>
+                                                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Invoice')): ?>
+                                                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER_INVOICE)): ?>
+                                                                                                    <button type="button"
+                                                                                                        class="btn btn-sm btn-outline-danger waves-effect waves-light"
+                                                                                                        onclick="deleteData(<?php echo e($invoice->id); ?>)">
+                                                                                                        <i
+                                                                                                            class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                                                        Delete
+                                                                                                    </button>
+                                                                                                    <form
+                                                                                                        id="delete-form-<?php echo e($invoice->id); ?>"
+                                                                                                        action="<?php echo e(route('admin.customers-invoices.destroy', $invoice->id)); ?>"
+                                                                                                        method="POST"
+                                                                                                        style="display: none;">
+                                                                                                        <?php echo csrf_field(); ?>
+                                                                                                        <?php echo method_field('DELETE'); ?>
+                                                                                                    </form>
+                                                                                                <?php endif; ?>
+                                                                                                 <?php endif; ?>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                                                                    <tr>
+                                                                                        <td>No record Found.</td>
+                                                                                    </tr>
+                                                                                <?php endif; ?>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <div>
-                                                                <div class="table-responsive table-card">
-                                                                    <table class="table align-middle table-nowrap"
-                                                                        id="invoiceTable">
-                                                                        <thead class="text-muted">
-                                                                            <tr>
-                                                                                <th scope="col">SL</th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_id">User ID
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="customer_name">
-                                                                                    Customer
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="date">
-                                                                                    Date
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_amount">
-                                                                                    Amount
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="status">
-                                                                                    Payment
-                                                                                    Status
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="action">
-                                                                                    Action
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <?php $__empty_1 = true; $__currentLoopData = $customer->invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="tab-pane" id="generatedBill" role="tabpanel">
+                                                <div class="row">
+                                                    <div class="bg-clr-red mb-4 rounded-1">
+                                                        <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card" id="invoiceList">
+                                                            <div class="card-header border-0">
+                                                                <div class="d-flex align-items-center">
+                                                                    <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
+                                                                    <div class="flex-shrink-0">
+                                                                        <div>
+                                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
+                                                                                <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
+                                                                                    class="btn btn-clr-red waves-effect waves-light">
+                                                                                    <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                                    Create Invoice
+                                                                                </a>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div>
+                                                                    <div class="table-responsive table-card">
+                                                                        <table class="table align-middle table-nowrap"
+                                                                            id="invoiceTable">
+                                                                            <thead class="text-muted">
                                                                                 <tr>
-                                                                                    <td class="fw-medium text-center">
-                                                                                        <?php echo e($key + 1); ?></td>
-                                                                                    <td><?php echo e($invoice->customer->unique_id); ?>
-
-                                                                                    </td>
-                                                                                    <td><?php echo e(ucfirst($invoice->customer->name)); ?>
-
-                                                                                    </td>
-                                                                                    <td><?php echo e($invoice->created_at->format('d M Y')); ?>
-
-                                                                                    </td>
-                                                                                    <td><?php echo e(number_format($invoice->total_amount)); ?>
-
-                                                                                    </td>
-                                                                                    <td><?php echo displayPaymentStatusBadge($invoice->status); ?></td>
-                                                                                    <td>
-                                                                                        <div class="hstack gap-1">
-                                                                                            <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"
-                                                                                                class="btn btn-sm btn-clr-red waves-effect waves-light">
-                                                                                                <i
-                                                                                                    class="ri-eye-2-line align-bottom me-1"></i>
-                                                                                                View
-                                                                                            </a>
-                                                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_CUSTOMER_INVOICE)): ?>
-                                                                                                <a href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>"
-                                                                                                    class="btn btn-sm btn-outline-primary waves-effect waves-light">
-                                                                                                    <i
-                                                                                                        class="ri-pencil-line align-bottom me-1"></i>
-                                                                                                    Edit
-                                                                                                </a>
-                                                                                            <?php endif; ?>
-                                                                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER_INVOICE)): ?>
-                                                                                                <button type="button"
-                                                                                                    class="btn btn-sm btn-outline-danger waves-effect waves-light"
-                                                                                                    onclick="deleteData(<?php echo e($invoice->id); ?>)">
-                                                                                                    <i
-                                                                                                        class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                                                    Delete
-                                                                                                </button>
-                                                                                                <form
-                                                                                                    id="delete-form-<?php echo e($invoice->id); ?>"
-                                                                                                    action="<?php echo e(route('admin.customers-invoices.destroy', $invoice->id)); ?>"
-                                                                                                    method="POST"
-                                                                                                    style="display: none;">
-                                                                                                    <?php echo csrf_field(); ?>
-                                                                                                    <?php echo method_field('DELETE'); ?>
-                                                                                                </form>
-                                                                                            <?php endif; ?>
-                                                                                        </div>
-                                                                                    </td>
+                                                                                    <th scope="col">SL</th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_id">User ID
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="customer_name">
+                                                                                        Customer
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="date">
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th class="text-uppercase"
+                                                                                        data-sort="invoice_amount">
+                                                                                        Amount
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="status">
+                                                                                        Payment
+                                                                                        Status
+                                                                                    </th>
+                                                                                    <th class="text-uppercase" data-sort="action">
+                                                                                        Action
+                                                                                    </th>
                                                                                 </tr>
-                                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                                                            </thead>
+                                                                            <tbody>
                                                                                 <tr>
                                                                                     <td>No record Found.</td>
                                                                                 </tr>
-                                                                            <?php endif; ?>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php else: ?>
-                                        <div class="tab-pane" id="generatedBill" role="tabpanel">
-                                            <div class="row">
-                                                <div class="bg-clr-red mb-4 rounded-1">
-                                                    <h5 class="mb-sm-0 text-light py-2">Generated Customer Bills</h5>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="card" id="invoiceList">
-                                                        <div class="card-header border-0">
-                                                            <div class="d-flex align-items-center">
-                                                                <h5 class="card-title mb-0 flex-grow-1">Invoices</h5>
-                                                                <div class="flex-shrink-0">
-                                                                    <div>
-                                                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
-                                                                            <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
-                                                                                class="btn btn-clr-red waves-effect waves-light">
-                                                                                <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                                Create Invoice
-                                                                            </a>
-                                                                        <?php endif; ?>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-                                                            <div>
-                                                                <div class="table-responsive table-card">
-                                                                    <table class="table align-middle table-nowrap"
-                                                                        id="invoiceTable">
-                                                                        <thead class="text-muted">
-                                                                            <tr>
-                                                                                <th scope="col">SL</th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_id">User ID
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="customer_name">
-                                                                                    Customer
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="date">
-                                                                                    Date
-                                                                                </th>
-                                                                                <th class="text-uppercase"
-                                                                                    data-sort="invoice_amount">
-                                                                                    Amount
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="status">
-                                                                                    Payment
-                                                                                    Status
-                                                                                </th>
-                                                                                <th class="text-uppercase" data-sort="action">
-                                                                                    Action
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>No record Found.</td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <!--end Generated Bill tab-pane-->

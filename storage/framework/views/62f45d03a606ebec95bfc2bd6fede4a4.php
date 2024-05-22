@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0">Roles</h4>
-
+ 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item">Dashboard</li>
@@ -30,12 +30,12 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> 
                 <div class="card-body">
                     <form id="roleForm" method="POST"
                           action="<?php echo e(isset($role) ? route('admin.roles.update', $role->id) : route('admin.roles.store')); ?>">
                         <?php echo csrf_field(); ?>
-                        <?php if(isset($role)): ?>
+                        <?php if(isset($role)): ?> 
                             <?php echo method_field('PUT'); ?>
                         <?php endif; ?>
                         <div>
@@ -99,7 +99,7 @@ unset($__errorArgs, $__bag); ?>
                                             <label class="form-check-label" for="module-<?php echo e($module->id); ?>">
                                                 <span class="h5"><?php echo e($module->name); ?></span>
                                             </label>
-                                        </div>
+                                        </div> 
                                         <?php $__currentLoopData = $module->permissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="mb-3">
                                                 <div

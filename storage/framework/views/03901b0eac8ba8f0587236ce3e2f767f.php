@@ -32,9 +32,11 @@
 
 
                                     <!-- create new cusmer offline mood -->
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Customer')): ?>
                                     <a href="<?php echo e(route('admin.customers.offline')); ?>" class="btn btn-success">
                                         Create New Customer (Offline mood)
                                     </a>
+                                    <?php endif; ?>
 
 
 
@@ -47,7 +49,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
-                                                    <th scope="col">Owner</th>
+                                                    
                                                     <th scope="col">Work Status</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
@@ -66,7 +68,7 @@
                                                         <td><?php echo e($customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')'); ?>
 
                                                         </td>
-                                                        <td><?php echo e($customer->customer ? $customer->customer->name : ''); ?></td>
+                                                        
                                                         <td><?php echo e(App\Models\VisaForm::customerListStatus($customer->id)); ?>
 
                                                         </td>
@@ -144,33 +146,41 @@
                                                         </td>
                                                         <td>
                                                             <div class="hstack gap-3 fs-15">
-                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
-                                                                    <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
-                                                                        class="btn btn-dark waves-effect waves-light">
-                                                                        <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                        Create Invoice
-                                                                    </a>
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Invoice')): ?>
+                                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
+                                                                        <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
+                                                                            class="btn btn-dark waves-effect waves-light">
+                                                                            <i class="ri-file-add-line align-bottom me-1"></i>
+                                                                            Create Invoice
+                                                                        </a>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
-                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
-                                                                    <a href="<?php echo e(route('admin.customers.show', $customer->id)); ?>"
-                                                                        class="btn btn-clr-red waves-effect waves-light">
-                                                                        <i class="ri-eye-2-line align-bottom me-1"></i>
-                                                                        View Profile
-                                                                    </a>
+
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Customer')): ?>
+                                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
+                                                                        <a href="<?php echo e(route('admin.customers.show', $customer->id)); ?>"
+                                                                            class="btn btn-clr-red waves-effect waves-light">
+                                                                            <i class="ri-eye-2-line align-bottom me-1"></i>
+                                                                            View Profile
+                                                                        </a>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
-                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER)): ?>
-                                                                    <button type="button"
-                                                                        class="btn btn-soft-success waves-effect waves-light"
-                                                                        onclick="deleteData(<?php echo e($customer->id); ?>)">
-                                                                        <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                        Delete Customer
-                                                                    </button>
-                                                                    <form id="delete-form-<?php echo e($customer->id); ?>"
-                                                                        action="<?php echo e(route('admin.customers.destroy', $customer->id)); ?>"
-                                                                        method="POST" style="display: none;">
-                                                                        <?php echo csrf_field(); ?>
-                                                                        <?php echo method_field('DELETE'); ?>
-                                                                    </form>
+
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Customer')): ?>
+                                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER)): ?>
+                                                                        <button type="button"
+                                                                            class="btn btn-soft-success waves-effect waves-light"
+                                                                            onclick="deleteData(<?php echo e($customer->id); ?>)">
+                                                                            <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                            Delete Customer
+                                                                        </button>
+                                                                        <form id="delete-form-<?php echo e($customer->id); ?>"
+                                                                            action="<?php echo e(route('admin.customers.destroy', $customer->id)); ?>"
+                                                                            method="POST" style="display: none;">
+                                                                            <?php echo csrf_field(); ?>
+                                                                            <?php echo method_field('DELETE'); ?>
+                                                                        </form>
+                                                                    <?php endif; ?>
                                                                 <?php endif; ?>
                                                             </div>
                                                         </td>

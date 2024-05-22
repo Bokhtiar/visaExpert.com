@@ -33,7 +33,8 @@ class CustomerController extends Controller
         //         Customer::with('forms')->get()
         //     );
         // parent_customer_id
-        $customers = Customer::latest()->get();
+        //$customers = Customer::where()->latest()->get();
+        $customers = Customer::whereColumn('parent_customer_id', 'id')->latest()->get();
         return view('backend.customer.index', compact('customers'));
 
     }

@@ -45,5 +45,10 @@ class AppServiceProvider extends ServiceProvider
             $notifications = $notificationService->getAllNotifications();
             $view->with('notifications', $notifications);
         });
+
+        // individual user permisssion
+        Blade::if('hasPermission', function ($permission) {
+            return auth()->user() && auth()->user()->permissions->contains('name', $permission);
+        });
     }
 }

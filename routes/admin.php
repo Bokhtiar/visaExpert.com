@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CustomerInvoiceController;
 use App\Http\Controllers\Admin\DailyOfficeExpenseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LinkController;
+use App\Http\Controllers\Admin\PermissionUserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoadController;
 use App\Http\Controllers\Admin\RoleController;
@@ -72,6 +73,7 @@ Route::resource('tour-packages', TourPackageController::class)->except(['create'
 // User Management
 Route::resource('roles', RoleController::class)->except(['show']);
 Route::resource('users', UserController::class);
+Route::resource('permission-user', PermissionUserController::class);
 
 // Daily Office Expense
 Route::resource('daily-office-expenses', DailyOfficeExpenseController::class)->except(['create', 'show']);

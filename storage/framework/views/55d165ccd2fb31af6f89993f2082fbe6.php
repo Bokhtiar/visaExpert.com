@@ -24,28 +24,32 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
+                        <li class="nav-item my-1">
+                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.customers.*') ? 'active' : ''); ?>"
+                                href="#sidebarCustomers" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarCustomers">
+                                <i data-feather="file" class="icon-dual"></i>
+                                <span data-key="t-customers">Customers</span>
+                            </a>
 
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.customers.*') ? 'active' : ''); ?>"
-                            href="#sidebarCustomers" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarCustomers">
-                            <i data-feather="file" class="icon-dual"></i>
-                            <span data-key="t-customers">Customers</span>
-                        </a>
-                        <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.customers.*') ? 'show' : ''); ?>"
-                            id="sidebarCustomers">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.customers.index')); ?>"
-                                        class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
-                                        data-key="t-customer-list">
-                                        Customer List
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
+                            <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.customers.*') ? 'show' : ''); ?>"
+                                id="sidebarCustomers">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="<?php echo e(route('admin.customers.index')); ?>"
+                                            class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
+                                            data-key="t-customer-list">
+                                            Customer List
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <?php endif; ?>   
+                        </li>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_VISA_TYPE)): ?>
@@ -79,6 +83,7 @@
                         </div>
                     </li>
                 <?php endif; ?>
+
 
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_ROAD)): ?>
                     <li class="nav-item my-1">
@@ -114,7 +119,7 @@
                     </li>
                 <?php endif; ?>
 
-                   <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_LINK)): ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_LINK)): ?>
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.link.*') ? 'active' : ''); ?>"
                             href="#sidebarLink" data-bs-toggle="collapse" role="button" aria-expanded="false"

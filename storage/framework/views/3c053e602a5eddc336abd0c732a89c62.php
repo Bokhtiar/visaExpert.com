@@ -173,19 +173,11 @@
                                 <div class="left">
 
                                 </div>
-
+                               
                                 <div class="right text-end">
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 30px"> Grand Total (BDT) </strong>
+                                        <strong style="font-size: 16px;margin-right: 30px"> Total Amount (BDT) </strong>
                                         <strong style="font-size: 16px"><?php echo e($invoice->total_amount); ?></strong>
-                                    </p>
-
-                                    <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 36px"> Discount Amount </strong>
-                                        <strong
-                                            style="font-size: 16px"><?php echo e($invoice->discount); ?>
-
-                                            </strong>
                                     </p>
 
                                      <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
@@ -196,37 +188,53 @@
                                             %</strong>
                                     </p>
 
+                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
+                                        <strong style="font-size: 16px;margin-right: 30px"> Payable </strong>
+                                        <strong style="font-size: 16px"><?php echo e($invoice->total_amount); ?></strong>
+                                    </p>
+
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 30px"> Total Pay (BDT) </strong>
+                                        <strong style="font-size: 16px;margin-right: 30px"> Recived </strong>
                                         <strong style="font-size: 16px">
                                             <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
 
                                         </strong>
                                     </p>
 
+                                    
+
+                                    
+
+                                    
+
+                                   
+
+                                    
+
 
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 30px"> Total Due (BDT) </strong>
+                                        <strong style="font-size: 16px;margin-right: 30px"> Due </strong>
                                         <strong style="font-size: 16px">
                                             <?php
                                                 $discount = App\Models\PaymentLog::where('invoice_id', $invoice->id)
                                                     ->where('due', $invoice->discount)
                                                     ->first();
                                             ?>
-                                            <?php if($discount->due == $invoice->discount): ?>
+                                   
+                                             
+                                            <?php if($discount): ?>
                                                 0
                                             <?php else: ?>
-                                                <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due')); ?>
+                                                <?php
+                                                    $due =  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due');
+                                                ?>
+                                                <?php echo e($due - $invoice->discount); ?>
 
                                             <?php endif; ?>
                                         </strong>
                                     </p>
 
-                                    <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 30px"> Total Amount (BDT) </strong>
-                                        <strong
-                                            style="font-size: 16px"><?php echo e($invoice->total_amount - $invoice->discount); ?></strong>
-                                    </p>
+                                    
 
                                 </div>
                             </div>

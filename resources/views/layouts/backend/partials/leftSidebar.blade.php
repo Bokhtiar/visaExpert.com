@@ -24,29 +24,33 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                @hasPermission('Customer List')
+                    @can(\App\Permissions::VIEW_CUSTOMER)
+                        <li class="nav-item my-1">
+                            <a class="nav-link menu-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}"
+                                href="#sidebarCustomers" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarCustomers">
+                                <i data-feather="file" class="icon-dual"></i>
+                                <span data-key="t-customers">Customers</span>
+                            </a>
 
-                @can(\App\Permissions::VIEW_CUSTOMER)
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}"
-                            href="#sidebarCustomers" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarCustomers">
-                            <i data-feather="file" class="icon-dual"></i>
-                            <span data-key="t-customers">Customers</span>
-                        </a>
-                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
-                            id="sidebarCustomers">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.customers.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
-                                        data-key="t-customer-list">
-                                        Customer List
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                @endcan
+                            @hasPermission('Customer List')
+                            <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
+                                id="sidebarCustomers">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.customers.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                            data-key="t-customer-list">
+                                            Customer List
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            @endhasPermission   
+                        </li>
+                    @endcan
+                @endhasPermission
 
                 @can(\App\Permissions::VIEW_VISA_TYPE)
                     <li class="nav-item my-1">
@@ -79,6 +83,7 @@
                         </div>
                     </li>
                 @endcan
+
 
                 @can(\App\Permissions::VIEW_ROAD)
                     <li class="nav-item my-1">
@@ -114,7 +119,7 @@
                     </li>
                 @endcan
 
-                   @can(\App\Permissions::VIEW_LINK)
+                @can(\App\Permissions::VIEW_LINK)
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link {{ request()->routeIs('admin.link.*') ? 'active' : '' }}"
                             href="#sidebarLink" data-bs-toggle="collapse" role="button" aria-expanded="false"
