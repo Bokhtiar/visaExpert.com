@@ -22,8 +22,8 @@
         <div class="col-12">
             <!-- form start -->
             <form role="form" id="userFrom" method="POST"
-                  action="<?php echo e(isset($user) ? route('admin.users.update',$user->id) : route('admin.users.store')); ?>"
-                  enctype="multipart/form-data">
+                action="<?php echo e(isset($user) ? route('admin.users.update', $user->id) : route('admin.users.store')); ?>"
+                enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <?php if(isset($user)): ?>
                     <?php echo method_field('PUT'); ?>
@@ -36,7 +36,7 @@
                                     <h5 class="card-title">User Information</h5>
                                     <div>
                                         <a href="<?php echo e(route('admin.users.index')); ?>" class="btn btn-success">
-                                           <i class="ri-arrow-go-back-line"></i> Back to list
+                                            <i class="ri-arrow-go-back-line"></i> Back to list
                                         </a>
                                         <button type="submit" class="btn btn-clr-red">
                                             <?php if(isset($user)): ?>
@@ -52,7 +52,7 @@
                                 <div class="my-3">
                                     <label for="name" class="form-label">Name</label>
                                     <input id="name" type="text"
-                                           class="form-control <?php $__errorArgs = ['name'];
+                                        class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -60,16 +60,16 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" name="name"
-                                           value="<?php echo e($user->name ?? old('name')); ?>" required autofocus>
+                                        value="<?php echo e($user->name ?? old('name')); ?>" required autofocus>
 
                                     <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -78,7 +78,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="my-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input id="email" type="email"
-                                           class="form-control <?php $__errorArgs = ['email'];
+                                        class="form-control <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -86,16 +86,16 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" name="email"
-                                           value="<?php echo e($user->email ?? old('email')); ?>" required>
+                                        value="<?php echo e($user->email ?? old('email')); ?>" required>
 
                                     <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -104,24 +104,24 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="my-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input id="password" type="password"
-                                           class="form-control <?php $__errorArgs = ['password'];
+                                        class="form-control <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                           name="password" <?php echo e(!isset($user) ? 'required' : ''); ?>>
+unset($__errorArgs, $__bag); ?>" name="password"
+                                        <?php echo e(!isset($user) ? 'required' : ''); ?>>
 
                                     <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -130,7 +130,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="my-3">
                                     <label for="confirm_password" class="form-label">Confirm Password</label>
                                     <input id="confirm_password" type="password"
-                                           class="form-control <?php $__errorArgs = ['password'];
+                                        class="form-control <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -138,16 +138,16 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                           name="password_confirmation" <?php echo e(!isset($user) ? 'required' : ''); ?>>
+                                        name="password_confirmation" <?php echo e(!isset($user) ? 'required' : ''); ?>>
 
                                     <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -163,7 +163,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="my-3">
                                     <label for="role" class="form-label">Select Role</label>
                                     <select name="role" id="role"
-                                            class="form-control js-example-basic-single <?php $__errorArgs = ['role'];
+                                        class="form-control js-example-basic-single <?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -171,12 +171,14 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                            name="role" required>
+                                        name="role" required>
                                         <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($role->id); ?>" <?php if(isset($user)): ?>
+                                            <option value="<?php echo e($role->id); ?>"
+                                                <?php if(isset($user)): ?>
                                                 <?php echo e($user->role->id == $role->id ? 'selected' : ''); ?>
 
-                                                <?php endif; ?>><?php echo e($role->name); ?></option>
+                                                <?php endif; ?>>
+                                                <?php echo e($role->name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
 
@@ -185,18 +187,17 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
                                 <div class="form-check form-check-right mb-2">
-                                    <input class="form-check-input" type="checkbox" name="status"
-                                           id="formCheckboxRight1"
-                                    <?php if(isset($user)): ?>
+                                    <input class="form-check-input" type="checkbox" name="status" id="formCheckboxRight1"
+                                        <?php if(isset($user)): ?>
                                         <?php echo e($user->status ? 'checked' : ''); ?>
 
                                         <?php endif; ?>>
@@ -208,9 +209,9 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong><?php echo e($message); ?></strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </span>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -223,10 +224,10 @@ unset($__errorArgs, $__bag); ?>
             </form>
 
             
-            <div class="card-body">
-                    <form id="roleForm" method="POST"
-                          
-                          action="<?php echo e(route('admin.permission-user.store')); ?>" >
+             <?php if(isset($user)): ?>
+                <div class="card-body">
+                    <form id="roleForm" method="POST" 
+                        action="<?php echo e(route('admin.permission-user.store')); ?>">
                         <?php echo csrf_field(); ?>
                         
                         <input type="hidden" name="user_id" value="<?php echo e($user->id); ?>" id="">
@@ -239,20 +240,18 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                   name="name"
-                                   id="Role Name"
-                                   value="<?php echo e($role->name ?? old('name')); ?>"
-                                   placeholder="Enter role name" required autofocus>
+unset($__errorArgs, $__bag); ?>" name="name"
+                                id="Role Name" value="<?php echo e($role->name ?? old('name')); ?>" placeholder="Enter role name"
+                                required autofocus>
 
                             <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="invalid-feedback">
-                                <strong><?php echo e($message); ?></strong>
-                            </div>
+                                <div class="invalid-feedback">
+                                    <strong><?php echo e($message); ?></strong>
+                                </div>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -266,9 +265,9 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="p-2 text-danger">
-                                <strong><?php echo e($message); ?></strong>
-                            </div>
+                                <div class="p-2 text-danger">
+                                    <strong><?php echo e($message); ?></strong>
+                                </div>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -286,33 +285,28 @@ unset($__errorArgs, $__bag); ?>
                                     <div class="col-md-6">
                                         <div class="form-check mb-4 form-check-inline">
                                             <input type="checkbox" class="form-check-input module-checkbox me-4"
-                                                   id="module-<?php echo e($module->id); ?>" value="<?php echo e($module->id); ?>"
-                                                   name="modules[]">
+                                                id="module-<?php echo e($module->id); ?>" value="<?php echo e($module->id); ?>"
+                                                name="modules[]">
                                             <label class="form-check-label" for="module-<?php echo e($module->id); ?>">
                                                 <span class="h5"><?php echo e($module->name); ?></span>
                                             </label>
-                                        </div> 
+                                        </div>
                                         <?php $__currentLoopData = $module->permissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             
                                             <div class="mb-3">
-                                                
-                                                <div
-                                                    class="form-check form-switch form-switch-md form-switch-danger mb-2"
+
+                                                <div class="form-check form-switch form-switch-md form-switch-danger mb-2"
                                                     dir="ltr">
-                                                    <input type="checkbox"
-                                                           class="form-check-input"
-                                                           id="permission-<?php echo e($permission->id); ?>"
-                                                           value="<?php echo e($permission->id); ?>"
-                                                           name="permissions[]"
-                                                    <?php if(isset($specificUserPermission)): ?>
-                                                        <?php $__currentLoopData = $specificUserPermission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rPermission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <input type="checkbox" class="form-check-input"
+                                                        id="permission-<?php echo e($permission->id); ?>"
+                                                        value="<?php echo e($permission->id); ?>" name="permissions[]"
+                                                        <?php if(isset($specificUserPermission)): ?> <?php $__currentLoopData = $specificUserPermission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rPermission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         
                                                             <?php echo e($permission->id == $rPermission->permission_id ? 'checked' : ''); ?>
 
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                        <?php endif; ?>>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> <?php endif; ?>>
                                                     <label class="form-check-label"
-                                                           for="permission-<?php echo e($permission->id); ?>"><?php echo e($permission->name); ?></label>
+                                                        for="permission-<?php echo e($permission->id); ?>"><?php echo e($permission->name); ?></label>
                                                 </div>
                                             </div>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -346,26 +340,28 @@ unset($__errorArgs, $__bag); ?>
 
                     </form>
                 </div>
+            <?php endif; ?>
+
         </div>
     </div>
 
     <?php $__env->startPush('js'); ?>
-    <script type="text/javascript">
-        $('#select-all').click(function () {
-            if (this.checked) {
-                $(':checkbox').prop('checked', true);
-            } else {
-                $(':checkbox').prop('checked', false);
-            }
-        });
+        <script type="text/javascript">
+            $('#select-all').click(function() {
+                if (this.checked) {
+                    $(':checkbox').prop('checked', true);
+                } else {
+                    $(':checkbox').prop('checked', false);
+                }
+            });
 
-        $('.module-checkbox').change(function () {
-            // let moduleId = $(this).val();
-            let modulePermissions = $(this).closest('.col-md-6').find('.form-check-input[name^="permissions"]');
-            modulePermissions.prop('checked', this.checked);
-        });
-    </script>
-<?php $__env->stopPush(); ?>
+            $('.module-checkbox').change(function() {
+                // let moduleId = $(this).val();
+                let modulePermissions = $(this).closest('.col-md-6').find('.form-check-input[name^="permissions"]');
+                modulePermissions.prop('checked', this.checked);
+            });
+        </script>
+    <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\visa\resources\views/backend/user/form.blade.php ENDPATH**/ ?>

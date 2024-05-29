@@ -167,6 +167,7 @@
                     @endcan
                 @endhasPermission
 
+                {{-- package and service --}}
                 @can(\App\Permissions::VIEW_SERVICE, \App\Permissions::VIEW_TOUR_PACKAGE)
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link {{ request()->routeIs('admin.services.*', 'admin.tour-packages.*') ? 'active' : '' }}"
@@ -201,6 +202,7 @@
                     </li>
                 @endcan
 
+                {{-- role and user --}}
                 @can(\App\Permissions::VIEW_ROLE, \App\Permissions::VIEW_USER)
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link {{ request()->routeIs('admin.roles.*', 'admin.users.*') ? 'active' : '' }}"
@@ -212,20 +214,24 @@
                         <div class="collapse menu-dropdown {{ request()->routeIs('admin.roles.*', 'admin.users.*') ? 'show' : '' }}"
                             id="sidebarUserManagement">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.roles.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.roles.index') ? 'active' : '' }}"
-                                        data-key="t-add-roles">
-                                        Roles
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.users.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
-                                        data-key="t-users">
-                                        Users
-                                    </a>
-                                </li>
+                                @hasPermission('Access Roles')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.roles.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.roles.index') ? 'active' : '' }}"
+                                            data-key="t-add-roles">
+                                            Roles
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                                @hasPermission('Access Users')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.users.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
+                                            data-key="t-users">
+                                            Users
+                                        </a>
+                                    </li>
+                                @endhasPermission
                             </ul>
                         </div>
                     </li>

@@ -26,9 +26,13 @@ class UserController extends Controller
 
     public function create(): View
     {
-        $this->authorize('create', User::class);
-        $roles = Role::getForSelect();
+        //$this->authorize('create', User::class);
+        // $roles = Role::getForSelect();
 
+        // return view('backend.user.form', compact('roles'));
+
+        $roles = Role::all();
+        
         return view('backend.user.form', compact('roles'));
     }
 

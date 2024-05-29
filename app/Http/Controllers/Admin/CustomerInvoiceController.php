@@ -10,6 +10,7 @@ use App\Models\InvoiceItem;
 use App\Models\PaymentLog;
 use App\Models\Road;
 use App\Models\Service;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\PDF as Pdf;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -23,21 +24,25 @@ class CustomerInvoiceController extends Controller
 {
     public function create(Customer $customer): View
     {
-        $customerList = Customer::where('parent_customer_id', $customer->id)->get();   
+
+        $customerList = Customer::where('parent_customer_id', $customer->id)->get();
         $this->authorize('create-invoice', CustomerInvoiceController::class);
         $paymentStatus = PaymentStatus::collection();
 
         $services = Service::all();
         $roads = Road::all();
-        $payables  = PaymentLog::where('customer_id',$customer->id)->get();
+        $payables  = PaymentLog::where('customer_id', $customer->id)->get();
 
         return view('backend.customer.invoice.form', compact('paymentStatus', 'customerList', 'customer', 'services', 'roads', 'payables'));
     }
 
     public function store(Request $request): RedirectResponse
     {
-  
+
         try {
+
+            $authUser = Auth::id();
+
             $this->authorize('create-invoice', CustomerInvoiceController::class);
             $validatedData = $request->validate([
                 'form_id' => 'required|exists:visa_forms,id',
@@ -52,7 +57,7 @@ class CustomerInvoiceController extends Controller
                 'discount' => 'nullable : numeric',
                 'pay' => 'required|numeric',
             ]);
-
+            $validatedData['created_by'] = $authUser;
             $invoice = Invoice::create($validatedData);
             //dd($validatedData['qty'][0]);
             foreach ($validatedData['items'] as $key => $itemName) {
@@ -60,21 +65,19 @@ class CustomerInvoiceController extends Controller
                 $item = new InvoiceItem();
                 $item->invoice_id = $invoice->id;
                 $item->item = $itemName;
-                $item->qty =$validatedData['qty'][$key];
+                $item->qty = $validatedData['qty'][$key];
                 $item->amount = $validatedData['amount'][$key] * $validatedData['qty'][$key];
                 $item->save();
             }
-
             $invoice->update(['total_amount' => $invoice->items()->sum('amount')]);
-
-            
 
             /** payment log */
             PaymentLog::create([
-                'invoice_id' => $invoice->id,   
+                'invoice_id' => $invoice->id,
                 'customer_id' => $request->customer_id,
                 'pay' => $request->pay,
-                'due' => $invoice->items()->sum('amount') - $request->pay,  
+                'due' => $invoice->items()->sum('amount') - $request->pay,
+                'created_by' => $authUser,
             ]);
 
             // payment status
@@ -91,6 +94,14 @@ class CustomerInvoiceController extends Controller
                 $invoice->update(['status' => 'Paid']);
             }
 
+
+            // account balance releted work
+            $existBalance = User::where('id', $authUser)->sum('balance');
+            $user = User::find($authUser);
+            $user->balance = $existBalance + $request->pay;
+            $user->save();
+
+
             logActivity(
                 (Auth::user()->name . ' created an invoice.'),
                 $invoice->id,
@@ -103,7 +114,6 @@ class CustomerInvoiceController extends Controller
             //throw $th;
             return back()->with('success', $th->getMessage());
         }
-       
     }
 
     public function show(Invoice $invoice)
@@ -118,32 +128,33 @@ class CustomerInvoiceController extends Controller
 
     public function edit(Invoice $invoice): View
     {
-       // dd($invoice);
-        $customerList = Customer::where('parent_customer_id', $invoice->customer_id)->get();  
+        // dd($invoice);
+        $customerList = Customer::where('parent_customer_id', $invoice->customer_id)->get();
         $this->authorize('edit-invoice', CustomerInvoiceController::class);
         $paymentStatus = PaymentStatus::collection();
 
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->where('invoice_id', $invoice->id)->get();
 
-        return view('backend.customer.invoice.form', compact('invoice', 'customerList', 'paymentStatus','roads', 'payables'));
+        return view('backend.customer.invoice.form', compact('invoice', 'customerList', 'paymentStatus', 'roads', 'payables'));
     }
 
     public function update(Request $request, Invoice $invoice): RedirectResponse
     {
 
         try {
+            $authUser = Auth::id();
             $this->authorize('edit-invoice', CustomerInvoiceController::class);
             $validatedData = $request->validate([
                 'status' => 'required|string',
                 'road_id' => 'nullable|numeric',
                 'discount' => 'nullable : numeric',
                 'pay' => 'required|numeric',
-            ],[
+            ], [
                 'pay.required' => 'The revice field is required.',
                 'pay.numeric' => 'The revice field must be a number.',
             ]);
-
+            $validatedData['created_by'] = $authUser;
             $invoice->update($validatedData);
 
             $due = PaymentLog::where('invoice_id', $invoice->id)->latest()->first();
@@ -153,6 +164,7 @@ class CustomerInvoiceController extends Controller
                 'customer_id' => $request->customer_id,
                 'pay' => $request->pay,
                 'due' => $due->due - $request->pay,
+                'created_by' => $authUser,
             ]);
 
             // payment status
@@ -169,6 +181,12 @@ class CustomerInvoiceController extends Controller
                 $invoice->update(['status' => 'Paid']);
             }
 
+            //update balance 
+            $existBalance = User::where('id', $authUser)->sum('balance');
+            $user = User::find($authUser);
+            $user->balance = $existBalance + $request->pay;
+            $user->save();
+
             logActivity(
                 (Auth::user()->name . ' updated an invoice.'),
                 $invoice->id,
@@ -177,7 +195,6 @@ class CustomerInvoiceController extends Controller
             );
 
             return redirect()->route('admin.customers.index')->with('success', 'Invoice updated successfully.');
-
         } catch (\Throwable $th) {
             return back()->with('success', $th->getMessage());
         }
@@ -190,14 +207,13 @@ class CustomerInvoiceController extends Controller
             $invoice->delete();
 
             logActivity(
-                (Auth::user()->name.' deleted an invoice.'),
+                (Auth::user()->name . ' deleted an invoice.'),
                 $invoice->id,
                 'deleted',
                 'invoices'
             );
 
             return back()->with('success', 'Invoice deleted successfully.');
-
         } catch (Exception $exception) {
 
             return back()->with('error', $exception->getMessage());
@@ -214,7 +230,7 @@ class CustomerInvoiceController extends Controller
             ]);
 
         logActivity(
-            (Auth::user()->name.' downloaded an invoice.'),
+            (Auth::user()->name . ' downloaded an invoice.'),
             $invoice->id,
             'downloaded',
             'invoices'

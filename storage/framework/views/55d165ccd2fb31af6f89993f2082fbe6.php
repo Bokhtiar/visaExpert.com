@@ -167,6 +167,7 @@
                     <?php endif; ?>
                 <?php endif; ?>
 
+                
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_SERVICE, \App\Permissions::VIEW_TOUR_PACKAGE)): ?>
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.services.*', 'admin.tour-packages.*') ? 'active' : ''); ?>"
@@ -201,6 +202,7 @@
                     </li>
                 <?php endif; ?>
 
+                
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_ROLE, \App\Permissions::VIEW_USER)): ?>
                     <li class="nav-item my-1">
                         <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.roles.*', 'admin.users.*') ? 'active' : ''); ?>"
@@ -212,20 +214,24 @@
                         <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.roles.*', 'admin.users.*') ? 'show' : ''); ?>"
                             id="sidebarUserManagement">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.roles.index')); ?>"
-                                        class="nav-link <?php echo e(request()->routeIs('admin.roles.index') ? 'active' : ''); ?>"
-                                        data-key="t-add-roles">
-                                        Roles
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?php echo e(route('admin.users.index')); ?>"
-                                        class="nav-link <?php echo e(request()->routeIs('admin.users.index') ? 'active' : ''); ?>"
-                                        data-key="t-users">
-                                        Users
-                                    </a>
-                                </li>
+                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Access Roles')): ?>
+                                    <li class="nav-item">
+                                        <a href="<?php echo e(route('admin.roles.index')); ?>"
+                                            class="nav-link <?php echo e(request()->routeIs('admin.roles.index') ? 'active' : ''); ?>"
+                                            data-key="t-add-roles">
+                                            Roles
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Access Users')): ?>
+                                    <li class="nav-item">
+                                        <a href="<?php echo e(route('admin.users.index')); ?>"
+                                            class="nav-link <?php echo e(request()->routeIs('admin.users.index') ? 'active' : ''); ?>"
+                                            data-key="t-users">
+                                            Users
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     </li>

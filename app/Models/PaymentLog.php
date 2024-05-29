@@ -10,7 +10,7 @@ class PaymentLog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'invoice_id', 'pay', 'due','customer_id'
+        'invoice_id', 'pay', 'due','customer_id', 'created_by'
     ];
 
 }

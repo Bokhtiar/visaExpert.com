@@ -23,6 +23,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">All Roles</h4>
+                     @hasPermission('Create Role')
                     @can(\App\Permissions::CREATE_ROLE)
                         <div class="flex-shrink-0">
                             <div>
@@ -32,6 +33,7 @@
                             </div>
                         </div>
                     @endcan
+                    @endhasPermission
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -72,6 +74,7 @@
                                     <td>{{ $role->created_at->diffForHumans() }}</td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
+                                            @hasPermission('Edit Role')
                                             @can(\App\Permissions::EDIT_ROLE)
                                                 <a href="{{ route('admin.roles.edit',$role->id) }}"
                                                    class="btn btn-primary waves-effect waves-light">
@@ -79,6 +82,8 @@
                                                     Edit
                                                 </a>
                                             @endcan
+                                            @endhasPermission
+                                            @hasPermission('Delete Role')
                                             @can(\App\Permissions::DELETE_ROLE)
                                                 @if ($role->deletable == true)
                                                     <button type="button"
@@ -95,6 +100,7 @@
                                                         @method('DELETE')
                                                     </form>
                                                 @endif
+                                                @endhasPermission
                                             @endcan
                                         </div>
                                     </td>

@@ -36,6 +36,9 @@ class User extends Authenticatable
         'phone',
         'status',
         'last_login_at',
+        'balance',
+        'invoice',
+        'expense',
     ];
 
     /**

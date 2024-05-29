@@ -21,6 +21,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">All Roles</h4>
+                     <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Role')): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_ROLE)): ?>
                         <div class="flex-shrink-0">
                             <div>
@@ -29,6 +30,7 @@
                                 </a>
                             </div>
                         </div>
+                    <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <div class="card-body">
@@ -70,6 +72,7 @@
                                     <td><?php echo e($role->created_at->diffForHumans()); ?></td>
                                     <td>
                                         <div class="hstack gap-3 fs-15">
+                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Role')): ?>
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_ROLE)): ?>
                                                 <a href="<?php echo e(route('admin.roles.edit',$role->id)); ?>"
                                                    class="btn btn-primary waves-effect waves-light">
@@ -77,6 +80,8 @@
                                                     Edit
                                                 </a>
                                             <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Role')): ?>
                                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_ROLE)): ?>
                                                 <?php if($role->deletable == true): ?>
                                                     <button type="button"
@@ -92,6 +97,7 @@
                                                         <?php echo csrf_field(); ?>
                                                         <?php echo method_field('DELETE'); ?>
                                                     </form>
+                                                <?php endif; ?>
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
