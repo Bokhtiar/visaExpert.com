@@ -128,6 +128,37 @@
                     <?php endif; ?>
                 <?php endif; ?>
 
+                <!-- balance transfer -->
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.transfer.*') ? 'active' : ''); ?>"
+                        href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarBalance">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">Balance Transfer</span>
+                    </a>
+                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.transfer.*') ? 'show' : ''); ?>"
+                        id="sidebarBalance">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.transfer.create')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.transfer.create') ? 'active' : ''); ?>"
+                                    data-key="t-add-visa-type">
+                                    Transfer Balance
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.transfer.index')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.transfer.index') ? 'active' : ''); ?>"
+                                    data-key="t-visa-type-list">
+                                    Revice Balance List
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- balance transfer -->
+
+
                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'List Link')): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_LINK)): ?>
                         <li class="nav-item my-1">

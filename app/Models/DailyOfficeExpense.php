@@ -12,6 +12,6 @@ class DailyOfficeExpense extends Model
     protected $table = 'daily_office_expenses';
 
     protected $fillable = [
-        'description', 'amount',
+        'description', 'amount', 'created_by'
     ];
 }

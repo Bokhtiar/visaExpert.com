@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DailyOfficeExpense;
+use App\Models\User;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -26,13 +27,22 @@ class DailyOfficeExpenseController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $authUser = Auth::id();
         $this->authorize('create', DailyOfficeExpense::class);
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|string|max:255',
         ]);
 
+        $validated['created_by'] = $authUser;
         $expense = DailyOfficeExpense::create($validated);
+
+
+        // account balance
+        $user = User::find($authUser);
+        $user->balance = $user->balance - $request->amount;
+        $user->expense = $user->expense + $request->amount;
+        $user->save();
 
         logActivity(
             (Auth::user()->name.' added an office expense.'),
@@ -54,13 +64,20 @@ class DailyOfficeExpenseController extends Controller
 
     public function update(Request $request, DailyOfficeExpense $dailyOfficeExpense): RedirectResponse
     {
+        $authUser = Auth::id();
         //$this->authorize('edit', DailyOfficeExpense::class);
         $validated = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|string|max:255',
         ]);
-
+        $validated['created_by'] = $authUser;
         $dailyOfficeExpense->update($validated);
+
+        $user = User::find($authUser);
+        $user->balance = $user->balance - $request->amount;
+        $existBalance =  $user->expense - $dailyOfficeExpense->amount; //this line add for before amount minus, other wish previse expense and new update expese update, thats why this line added
+        $user->expense = $existBalance + $request->amount;
+        $user->save();
 
         logActivity(
             (Auth::user()->name.' updated an office expense.'),

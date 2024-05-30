@@ -96,9 +96,9 @@ class CustomerInvoiceController extends Controller
 
 
             // account balance releted work
-            $existBalance = User::where('id', $authUser)->sum('balance');
             $user = User::find($authUser);
-            $user->balance = $existBalance + $request->pay;
+            $user->balance = $user->balance + $request->pay;
+            $user->invoice = $user->invoice + $request->pay;
             $user->save();
 
 
@@ -182,9 +182,9 @@ class CustomerInvoiceController extends Controller
             }
 
             //update balance 
-            $existBalance = User::where('id', $authUser)->sum('balance');
             $user = User::find($authUser);
-            $user->balance = $existBalance + $request->pay;
+            $user->balance = $user->balance + $request->pay;
+            $user->invoice = $user->invoice + $request->pay;
             $user->save();
 
             logActivity(

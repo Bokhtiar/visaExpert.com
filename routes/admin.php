@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\StaffDutySalaryController;
 use App\Http\Controllers\Admin\TourPackageController;
+use App\Http\Controllers\Admin\TransferController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VisaTypeController;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,9 @@ Route::group(['as' => 'customers-invoices.', 'prefix' => 'customers/invoice/', '
 Route::resource('visa-types', VisaTypeController::class)->except('show');
 //Road
 Route::resource('road', RoadController::class)->except('show');
+//transfer
+Route::resource('transfer', TransferController::class)->except('show');
+
 Route::resource('link', LinkController::class)->except('show');
 
 // Services Route

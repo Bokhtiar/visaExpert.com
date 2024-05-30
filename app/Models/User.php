@@ -39,6 +39,8 @@ class User extends Authenticatable
         'balance',
         'invoice',
         'expense',
+        'transfer',
+        'recive'
     ];
 
     /**
