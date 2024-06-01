@@ -11,4 +11,8 @@ class Transfer extends Model
     protected $fillable = [
         'recive_id', 'remark', 'amount', 'description', 'created_by', 'status'
     ];
+
+    public function reciver(){
+        return $this->belongsTo(User::class, 'recive_id', 'id');
+    }
 }

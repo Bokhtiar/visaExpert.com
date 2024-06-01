@@ -16,7 +16,8 @@ class TransferController extends Controller
      */
     public function index()
     {
-        //
+        $transfers = Transfer::where('created_by', Auth::id())->latest()->get();
+        return view('backend.transfer.index', compact('transfers'));
     }
 
     /**

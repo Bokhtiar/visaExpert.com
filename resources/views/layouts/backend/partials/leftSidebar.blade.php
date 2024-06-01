@@ -143,9 +143,18 @@
                                 <a href="{{ route('admin.transfer.create') }}"
                                     class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
                                     data-key="t-add-visa-type">
-                                    Transfer Balance
+                                    Transfer Balance Create
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.transfer.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
+                                    data-key="t-add-visa-type">
+                                    Transfer Balance List
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('admin.transfer.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
