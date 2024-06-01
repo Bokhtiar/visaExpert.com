@@ -175,6 +175,44 @@ class TransferController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            DB::transaction(function () use ($id) {
+                // Find the transfer record
+                $transfer = Transfer::find($id);
+
+                if (!$transfer) {
+                    throw new \Exception('Transfer record not found.');
+                }
+
+                // Retrieve the authenticated user
+                $user = User::find(Auth::id());
+
+                if (!$user) {
+                    throw new \Exception('Authenticated user not found.');
+                }
+
+                // Revert the original transfer amount to the user's balance
+                $user->balance += $transfer->amount;
+                $user->transfer -= $transfer->amount;
+                $user->save();
+
+                // Delete the transfer record
+                $transfer->delete();
+
+                // Log the activity
+                logActivity(
+                    (Auth::user()->name . ' deleted a transfer.'),
+                    $id,
+                    'deleted',
+                    'transfer'
+                );
+            });
+
+            return redirect()->route('admin.transfer.index')->with('success', 'Transfer deleted successfully');
+        } catch (\Throwable $th) {
+            // Log the error
+            return back()->with('error', $th->getMessage());
+        }
+
     }
 }
