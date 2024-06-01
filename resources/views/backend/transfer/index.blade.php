@@ -46,6 +46,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">Transfer</th>
                                                     <th scope="col">Amount</th>
+                                                    <th scope="col">Status</th>
                                                     <th scope="col">Actions</th>
                                             </thead>
                                             <tbody>
@@ -55,16 +56,17 @@
                                                         <td class="fw-medium">{{ $key + 1 }}</td>
                                                         <td>{{ $transfer->reciver ? $transfer->reciver->name : "" }}</td>
                                                         <td>{{ $transfer->amount }} Tk</td>
+                                                        <td>{{ $transfer->status }}</td>
                                                         <td>
+                                                            @if ($transfer->status == "pending")
                                                             <div class="hstack gap-3 fs-15">
-                                                                 
                                                                     <a href="{{ route('admin.transfer.edit', $transfer->id) }}"
                                                                         class="btn btn-primary waves-effect waves-light">
                                                                         <i class="ri-pencil-line align-bottom me-1"></i>
                                                                         Edit
                                                                     </a>
 
-                                                                    <a href="{{ route('admin.transfer.edit', $transfer->id) }}"
+                                                                    <a href="{{ route('admin.transfer.show', $transfer->id) }}"
                                                                         class="btn btn-success waves-effect waves-light">
                                                                           <i class="ri-eye-line align-bottom me-1"></i>
                                                                         Show
@@ -85,6 +87,7 @@
                                                                     </form>
                                                                
                                                             </div>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty

@@ -64,10 +64,10 @@ class TransferController extends Controller
 
 
                 // reciver Update account balance
-                $user = User::find($request->recive_id);
-                $user->balance = $user->balance + $request->amount;
-                $user->recive = $user->recive + $request->amount;
-                $user->save();
+                // $user = User::find($request->recive_id);
+                // $user->balance = $user->balance + $request->amount;
+                // $user->recive = $user->recive + $request->amount;
+                // $user->save();
 
 
                 logActivity(
@@ -89,7 +89,11 @@ class TransferController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $show = Transfer::find($id);
+        $users =  User::where('is_deletable', 0)
+            ->whereNotIn('id', [Auth::id()])
+            ->get();
+        return view('backend.transfer.show', compact('show', 'users'));
     }
 
     /**
@@ -97,7 +101,11 @@ class TransferController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $edit = Transfer::find($id);
+        $users =  User::where('is_deletable', 0)
+        ->whereNotIn('id', [Auth::id()])
+            ->get();
+        return view('backend.transfer.form', compact('edit', 'users'));
     }
 
     /**
@@ -105,7 +113,61 @@ class TransferController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $authUser = Auth::id();
+            $validatedData = $request->validate([
+                'recive_id' => 'required|exists:users,id',
+                'remark' => 'required|string',
+                'amount' => 'required|numeric',
+                'description' => 'required|string',
+            ]);
+
+            // Retrieve the authenticated user
+            $user = User::find($authUser);
+            if (!$user) {
+                return back()->with('error', 'Authenticated user not found.');
+            }
+
+            // Check if user has enough balance
+            if ($user->balance < $request->amount) {
+                return back()->with('error', 'Your balance is less than the requested amount');
+            }
+
+            DB::transaction(function () use ($validatedData, $request, $authUser, $id) {
+                // Find the transfer to update
+                $transfer = Transfer::find($id);
+                if (!$transfer) {
+                    throw new \Exception('Transfer record not found.');
+                }
+
+                // Retrieve the original transfer amount
+                $originalAmount = $transfer->amount;
+
+                // Update the transfer with validated data
+                $transfer->update($validatedData);
+
+                // Update user's balance
+                $user = User::find($authUser);
+                $user->balance += $originalAmount; // Revert the original transfer amount
+                $user->balance -= $request->amount; // Deduct the new transfer amount
+                $user->transfer = ($user->transfer - $originalAmount) + $request->amount; // Adjust the transfer amount
+                $user->save();
+
+                // Log the activity
+                logActivity(
+                    (Auth::user()->name . ' updated transfer.'),
+                    $id,
+                    'updated',
+                    'transfer'
+                );
+            });
+
+            return redirect()->route('admin.transfer.index')->with('success', 'Transfer updated successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+
+
     }
 
     /**

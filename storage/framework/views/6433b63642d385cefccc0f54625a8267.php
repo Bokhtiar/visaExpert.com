@@ -46,6 +46,7 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">Transfer</th>
                                                     <th scope="col">Amount</th>
+                                                    <th scope="col">Status</th>
                                                     <th scope="col">Actions</th>
                                             </thead>
                                             <tbody>
@@ -55,16 +56,17 @@
                                                         <td class="fw-medium"><?php echo e($key + 1); ?></td>
                                                         <td><?php echo e($transfer->reciver ? $transfer->reciver->name : ""); ?></td>
                                                         <td><?php echo e($transfer->amount); ?> Tk</td>
+                                                        <td><?php echo e($transfer->status); ?></td>
                                                         <td>
+                                                            <?php if($transfer->status == "pending"): ?>
                                                             <div class="hstack gap-3 fs-15">
-                                                                 
                                                                     <a href="<?php echo e(route('admin.transfer.edit', $transfer->id)); ?>"
                                                                         class="btn btn-primary waves-effect waves-light">
                                                                         <i class="ri-pencil-line align-bottom me-1"></i>
                                                                         Edit
                                                                     </a>
 
-                                                                    <a href="<?php echo e(route('admin.transfer.edit', $transfer->id)); ?>"
+                                                                    <a href="<?php echo e(route('admin.transfer.show', $transfer->id)); ?>"
                                                                         class="btn btn-success waves-effect waves-light">
                                                                           <i class="ri-eye-line align-bottom me-1"></i>
                                                                         Show
@@ -85,6 +87,7 @@
                                                                     </form>
                                                                
                                                             </div>
+                                                            <?php endif; ?>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

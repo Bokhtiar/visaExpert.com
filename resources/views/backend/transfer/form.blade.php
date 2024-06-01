@@ -3,6 +3,7 @@
 @section('title', isset($edit) ? 'Edit Transfer' : 'Create New Transfer')
 
 @section('content')
+
     <div class="row">
         <div class="container">
             <div class="row">
@@ -36,6 +37,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="card-body">
                             <form id="visa-form"
                                 action="{{ isset($edit) ? route('admin.transfer.update', $edit->id) : route('admin.transfer.store') }}"
@@ -49,13 +51,16 @@
                                 <div>
                                     <label for="cart-total">Select transfer account</label>
                                     <select class="form-control" name="recive_id" id="recive_id" required>
-                                        <option value="" >Select please</option>
+                                        <option value="">Select please</option>
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">
-                                                {{ $user->name }} (Role: {{ $user->role ? $user->role->name : '' }})
+                                            <option value="{{ $user->id }}"
+                                                {{ isset($edit) && $edit->recive_id == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }} (Role:
+                                                {{ $user->role ? $user->role->name : 'No Role' }})
                                             </option>
                                         @endforeach
                                     </select>
+
                                 </div>
                                 <!-- remark -->
                                 <div>
@@ -75,7 +80,7 @@
                                     <label for="amount" class="form-label">Amount</label>
                                     <input required type="text" id="amount"
                                         class="form-control mb-3 @error('amount') is-invalid @enderror" name="amount"
-                                        value="{{ $edit->name ?? old('name') }}">
+                                        value="{{ $edit->amount ?? old('name') }}">
 
                                     @error('name')
                                         <div class="invalid-feedback">
@@ -85,14 +90,14 @@
                                 </div>
                                 {{-- note --}}
                                 <div class="my-2">
-                                <label for="description" class="form-label">Note</label>
-                                <textarea name="description" class="ckeditor-classic" id="description">{{ $edit->description ?? old('description') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </div>
-                                @enderror
-                            </div>
+                                    <label for="description" class="form-label">Note</label>
+                                    <textarea name="description" class="ckeditor-classic" id="description">{{ $edit->description ?? old('description') }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
 
                                 <div class="mt-3">
                                     @isset($edit)

@@ -64,7 +64,7 @@ Route::resource('visa-types', VisaTypeController::class)->except('show');
 //Road
 Route::resource('road', RoadController::class)->except('show');
 //transfer
-Route::resource('transfer', TransferController::class)->except('show');
+Route::resource('transfer', TransferController::class);
 
 Route::resource('link', LinkController::class)->except('show');
 
