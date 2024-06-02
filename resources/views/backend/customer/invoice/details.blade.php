@@ -175,10 +175,10 @@
                                     </p>
 
                                      <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 36px"> Discount(%) </strong>
+                                        <strong style="font-size: 16px;margin-right: 36px"> Discount( {{ number_format(($invoice->discount / $invoice->total_amount) * 100, 0) }}%) </strong>
                                         <strong
-                                            style="font-size: 16px">{{ number_format(($invoice->discount / $invoice->total_amount) * 100, 0) }}
-                                            %</strong>
+                                            style="font-size: 16px">{{ $invoice->discount }}
+                                            </strong>
                                     </p>
 
                                      <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
@@ -212,23 +212,10 @@
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
                                         <strong style="font-size: 16px;margin-right: 30px"> Due </strong>
                                         <strong style="font-size: 16px">
-                                            {{-- @php
-                                                $discount = App\Models\PaymentLog::where('invoice_id', $invoice->id)
-                                                    ->where('due', $invoice->discount)
-                                                    ->first();
-                                            @endphp
-                                   
-                                             
-                                            @if ($discount)
-                                                0
-                                            @else
-                                                @php
-                                                    $due =  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due');
-                                                @endphp
-                                                {{ $due - $invoice->discount }}
-                                            @endif --}}
-
-                                            {{ $invoice->total_amount -  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay') }}
+                                           @php
+                                            $totalDue =  $invoice->total_amount -  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay');
+                                           @endphp
+                                      {{ $totalDue - $invoice->discount }}
                                         </strong>
                                     </p>
 
