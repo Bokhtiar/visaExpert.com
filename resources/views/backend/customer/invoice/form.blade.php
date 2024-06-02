@@ -308,7 +308,7 @@
                                                     <tbody>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
-                                                            <td>
+                                                            <td> 
                                                                 <input type="number" name=""
                                                                     value="{{ $invoice->total_amount -  $total_pay }}"
                                                                     class="form-control bg-light border-0" placeholder="0"

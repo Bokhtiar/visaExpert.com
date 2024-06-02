@@ -215,22 +215,10 @@
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
                                         <strong style="font-size: 16px;margin-right: 30px"> Due </strong>
                                         <strong style="font-size: 16px">
-                                            <?php
-                                                $discount = App\Models\PaymentLog::where('invoice_id', $invoice->id)
-                                                    ->where('due', $invoice->discount)
-                                                    ->first();
-                                            ?>
-                                   
-                                             
-                                            <?php if($discount): ?>
-                                                0
-                                            <?php else: ?>
-                                                <?php
-                                                    $due =  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due');
-                                                ?>
-                                                <?php echo e($due - $invoice->discount); ?>
+                                            
 
-                                            <?php endif; ?>
+                                            <?php echo e($invoice->total_amount -  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
+
                                         </strong>
                                     </p>
 
