@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\PermissionUserController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ReciveController;
 use App\Http\Controllers\Admin\RoadController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -65,6 +66,11 @@ Route::resource('visa-types', VisaTypeController::class)->except('show');
 Route::resource('road', RoadController::class)->except('show');
 //transfer
 Route::resource('transfer', TransferController::class);
+//reciver
+Route::get('recive/index', [ReciveController::class, 'index'])->name('recive.index');
+Route::get('recive/approved/{id}', [ReciveController::class, 'approved'])->name('recive.approved');
+Route::get('recive/rejected/{id}', [ReciveController::class, 'rejected'])->name('recive.rejected');
+
 
 Route::resource('link', LinkController::class)->except('show');
 

@@ -259,7 +259,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="text-center my-3">
-                            <strong>Manage permissions for role</strong>
+                            <strong>Manage permissions for role(Total Permission <?php echo e(App\Models\PermissionUser::where('user_id', Auth::id())->count()); ?> )</strong>
                             <?php $__errorArgs = ['permissions'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

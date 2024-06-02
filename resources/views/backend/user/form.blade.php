@@ -170,7 +170,7 @@
                         </div>
 
                         <div class="text-center my-3">
-                            <strong>Manage permissions for role</strong>
+                            <strong>Manage permissions for role(Total Permission {{ App\Models\PermissionUser::where('user_id', Auth::id())->count() }} )</strong>
                             @error('permissions')
                                 <div class="p-2 text-danger">
                                     <strong>{{ $message }}</strong>

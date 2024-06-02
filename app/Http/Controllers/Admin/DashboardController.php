@@ -18,7 +18,8 @@ class DashboardController extends Controller
     {
         $this->authorize('access', DashboardController::class);
 
-        $data['total_earnings'] = Invoice::where('status', PaymentStatus::PAID->toString())->sum('total_amount');
+        //$data['total_earnings'] = Invoice::where('status', PaymentStatus::PAID->toString())->sum('total_amount');
+        $data['total_earnings'] = Invoice::sum('total_amount');
         $data['total_forms'] = VisaForm::all()->count();
         $data['total_customers'] = Customer::query()->count();
         $data['total_services'] = Service::all()->count();

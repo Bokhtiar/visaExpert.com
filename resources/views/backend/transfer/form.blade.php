@@ -30,10 +30,12 @@
                                 Transfer</h4>
                             <div class="flex-shrink-0">
                                 <div>
+                                    @hasPermission('Transfer List')
                                     <a href="{{ route('admin.transfer.index') }}" class="btn btn-clr-red">
                                         <i class="ri-arrow-left-line align-bottom me-1"></i>
                                         Back to list
                                     </a>
+                                    @endhasPermission
                                 </div>
                             </div>
                         </div>

@@ -29,11 +29,13 @@
 
                                     <div class="flex-shrink-0">
                                         <div>
-                       
-                                            <a href="<?php echo e(route('admin.transfer.create')); ?>" class="btn btn-clr-red rounded-pill">
-                                                Create transfer
-                                            </a>
-                                    
+                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Transfer Create')): ?>
+                                                <a href="<?php echo e(route('admin.transfer.create')); ?>"
+                                                    class="btn btn-clr-red rounded-pill">
+                                                    Create transfer
+                                                </a>
+                                            <?php endif; ?>
+
                                         </div>
                                     </div>
 
@@ -54,39 +56,43 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $transfers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$transfer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium"><?php echo e($key + 1); ?></td>
-                                                        <td><?php echo e($transfer->reciver ? $transfer->reciver->name : ""); ?></td>
+                                                        <td><?php echo e($transfer->reciver ? $transfer->reciver->name : ''); ?></td>
                                                         <td><?php echo e($transfer->amount); ?> Tk</td>
                                                         <td><?php echo e($transfer->status); ?></td>
                                                         <td>
-                                                            <?php if($transfer->status == "pending"): ?>
-                                                            <div class="hstack gap-3 fs-15">
-                                                                    <a href="<?php echo e(route('admin.transfer.edit', $transfer->id)); ?>"
-                                                                        class="btn btn-primary waves-effect waves-light">
-                                                                        <i class="ri-pencil-line align-bottom me-1"></i>
-                                                                        Edit
-                                                                    </a>
+                                                            <?php if($transfer->status == 'pending'): ?>
+                                                                <div class="hstack gap-3 fs-15">
+                                                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Transfer Edit')): ?>
+                                                                        <a href="<?php echo e(route('admin.transfer.edit', $transfer->id)); ?>"
+                                                                            class="btn btn-primary waves-effect waves-light">
+                                                                            <i class="ri-pencil-line align-bottom me-1"></i>
+                                                                            Edit
+                                                                        </a>
+                                                                    <?php endif; ?>
+                                                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Transfer Show')): ?>
+                                                                        <a href="<?php echo e(route('admin.transfer.show', $transfer->id)); ?>"
+                                                                            class="btn btn-success waves-effect waves-light">
+                                                                            <i class="ri-eye-line align-bottom me-1"></i>
+                                                                            Show
+                                                                        </a>
+                                                                    <?php endif; ?>
+                                                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Transfer Delete')): ?>
+                                                                        <button type="button"
+                                                                            class="btn btn-danger waves-effect waves-light"
+                                                                            onclick="deleteData(<?php echo e($transfer->id); ?>)">
+                                                                            <i
+                                                                                class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                            Delete
+                                                                        </button>
+                                                                        <form id="delete-form-<?php echo e($transfer->id); ?>"
+                                                                            action="<?php echo e(route('admin.transfer.destroy', $transfer->id)); ?>"
+                                                                            method="POST" style="display: none;">
+                                                                            <?php echo csrf_field(); ?>
+                                                                            <?php echo method_field('DELETE'); ?>
+                                                                        </form>
+                                                                    <?php endif; ?>
 
-                                                                    <a href="<?php echo e(route('admin.transfer.show', $transfer->id)); ?>"
-                                                                        class="btn btn-success waves-effect waves-light">
-                                                                          <i class="ri-eye-line align-bottom me-1"></i>
-                                                                        Show
-                                                                    </a>
-                                                                
-                                                              
-                                                                    <button type="button"
-                                                                        class="btn btn-danger waves-effect waves-light"
-                                                                        onclick="deleteData(<?php echo e($transfer->id); ?>)">
-                                                                        <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                        Delete
-                                                                    </button>
-                                                                    <form id="delete-form-<?php echo e($transfer->id); ?>"
-                                                                        action="<?php echo e(route('admin.transfer.destroy', $transfer->id)); ?>"
-                                                                        method="POST" style="display: none;">
-                                                                        <?php echo csrf_field(); ?>
-                                                                        <?php echo method_field('DELETE'); ?>
-                                                                    </form>
-                                                               
-                                                            </div>
+                                                                </div>
                                                             <?php endif; ?>
                                                         </td>
                                                     </tr>

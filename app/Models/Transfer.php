@@ -15,4 +15,9 @@ class Transfer extends Model
     public function reciver(){
         return $this->belongsTo(User::class, 'recive_id', 'id');
     }
+
+    public function transfer()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

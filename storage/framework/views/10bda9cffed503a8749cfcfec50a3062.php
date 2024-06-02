@@ -31,10 +31,12 @@
                                 Transfer</h4>
                             <div class="flex-shrink-0">
                                 <div>
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Transfer List')): ?>
                                     <a href="<?php echo e(route('admin.transfer.index')); ?>" class="btn btn-clr-red">
                                         <i class="ri-arrow-left-line align-bottom me-1"></i>
                                         Back to list
                                     </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

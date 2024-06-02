@@ -134,34 +134,39 @@
                         href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
                         aria-controls="sidebarBalance">
                         <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">Balance Transfer</span>
+                        <span data-key="t-visa-types">Balance</span>
                     </a>
                     <div class="collapse menu-dropdown {{ request()->routeIs('admin.transfer.*') ? 'show' : '' }}"
                         id="sidebarBalance">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.transfer.create') }}"
-                                    class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
-                                    data-key="t-add-visa-type">
-                                    Transfer Balance Create
-                                </a>
-                            </li>
+                            @hasPermission('Transfer Create')
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.transfer.create') }}"
+                                        class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
+                                        data-key="t-add-visa-type">
+                                        Transfer Balance Create
+                                    </a>
+                                </li>
+                            @endhasPermission
+                            @hasPermission('Transfer List')
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.transfer.index') }}"
+                                        class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
+                                        data-key="t-add-visa-type">
+                                        Transfer Balance List
+                                    </a>
+                                </li>
+                            @endhasPermission
 
+                            @hasPermission('Recive List')
                             <li class="nav-item">
-                                <a href="{{ route('admin.transfer.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
-                                    data-key="t-add-visa-type">
-                                    Transfer Balance List
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ route('admin.transfer.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
+                                <a href="{{ route('admin.recive.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
                                     data-key="t-visa-type-list">
-                                    Revice Balance List
+                                    Recive Balance List
                                 </a>
                             </li>
+                            @endhasPermission
                         </ul>
                     </div>
                 </li>
