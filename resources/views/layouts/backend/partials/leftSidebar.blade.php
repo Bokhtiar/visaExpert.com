@@ -168,7 +168,7 @@
                             </li>
                             @endhasPermission
 
-                            {{-- @hasPermission('Recive List') --}}
+                           @hasPermission('Statement List')
                             <li class="nav-item">
                                 <a href="{{ route('admin.statement.index') }}"
                                     class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
@@ -176,7 +176,7 @@
                                     Statement List 
                                 </a>
                             </li>
-                            {{-- @endhasPermission --}}
+                            @endhasPermission
                         </ul>
                     </div>
                 </li>

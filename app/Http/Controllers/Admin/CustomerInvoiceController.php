@@ -203,6 +203,14 @@ class CustomerInvoiceController extends Controller
     public function destroy(Invoice $invoice): RedirectResponse
     {
         try {
+            // dd($invoice);
+            $authUser = Auth::id();
+            $payment = PaymentLog::where('invoice_id', $invoice->id)->sum('pay');
+            $user = User::find($authUser);
+            $user->balance = $user->balance - $payment;
+            $user->invoice = $user->invoice - $payment;
+            $user->save();
+
             $this->authorize('delete-invoice', CustomerInvoiceController::class);
             $invoice->delete();
 

@@ -168,7 +168,7 @@
                             </li>
                             <?php endif; ?>
 
-                            
+                           <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Statement List')): ?>
                             <li class="nav-item">
                                 <a href="<?php echo e(route('admin.statement.index')); ?>"
                                     class="nav-link <?php echo e(request()->routeIs('admin.statement.index') ? 'active' : ''); ?>"
@@ -176,7 +176,7 @@
                                     Statement List 
                                 </a>
                             </li>
-                            
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </li>
