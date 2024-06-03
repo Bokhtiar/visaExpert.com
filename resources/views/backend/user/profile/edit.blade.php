@@ -43,6 +43,12 @@
                                 Change Password
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#statement" role="tab">
+                                <i class="far fa-user"></i>
+                                Statement
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -146,6 +152,39 @@
                                 <!--end row-->
                             </form>
                         </div>
+
+                        <div class="tab-pane" id="statement" role="tabpanel">
+                            <div class="table-responsive">
+                                        <table class="table table-borderless align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col">SL</th>
+                                                    <th scope="col">Transfer</th>
+                                                    <th scope="col">Receiver</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Status</th>
+                                            </thead>
+                                            <tbody>
+
+                                                @forelse($transfers as $key=>$transfer)
+                                                    <tr>
+                                                        <td class="fw-medium">{{ $key + 1 }}</td>
+                                                        <td>{{ $transfer->transfer ? $transfer->transfer->name : '' }}</td>
+                                                        <td>{{ $transfer->reciver ? $transfer->reciver->name : '' }}</td>
+                                                        <td>{{ $transfer->amount }} Tk</td>
+                                                        <td>{{ $transfer->status }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td>No record Found.</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                        </div>
+
+
                         <!--end tab-pane-->
                     </div>
                 </div>

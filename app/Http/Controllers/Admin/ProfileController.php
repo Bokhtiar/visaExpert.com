@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transfer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +21,14 @@ class ProfileController extends Controller
     {
         $this->authorize('updateProfile', ProfileController::class);
 
+        // Retrieve transfers where the authenticated user is the creator
+        $createdTransfers = Transfer::where('created_by', Auth::id())->get();
+        $receivedTransfers = Transfer::where('recive_id', Auth::id())->get();
+        $transfers = $createdTransfers->merge($receivedTransfers);
+        $transfers = $transfers->unique('id');
         return view('backend.user.profile.edit', [
             'user' => $request->user(),
+            'transfers' => $transfers
         ]);
     }
 
