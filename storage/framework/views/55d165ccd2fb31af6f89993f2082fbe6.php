@@ -167,6 +167,16 @@
                                 </a>
                             </li>
                             <?php endif; ?>
+
+                            
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.statement.index')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.statement.index') ? 'active' : ''); ?>"
+                                    data-key="t-visa-type-list">
+                                    Statement List 
+                                </a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </li>

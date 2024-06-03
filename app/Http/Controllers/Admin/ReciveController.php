@@ -89,4 +89,11 @@ class ReciveController extends Controller
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
+
+
+    public function statement()
+    {
+        $transfers = Transfer::latest()->get();
+        return view('backend.transfer.statement', compact('transfers'));
+    }
 }

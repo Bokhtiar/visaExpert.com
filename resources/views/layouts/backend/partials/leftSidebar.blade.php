@@ -167,6 +167,16 @@
                                 </a>
                             </li>
                             @endhasPermission
+
+                            {{-- @hasPermission('Recive List') --}}
+                            <li class="nav-item">
+                                <a href="{{ route('admin.statement.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
+                                    data-key="t-visa-type-list">
+                                    Statement List 
+                                </a>
+                            </li>
+                            {{-- @endhasPermission --}}
                         </ul>
                     </div>
                 </li>

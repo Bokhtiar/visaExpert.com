@@ -70,7 +70,8 @@ Route::resource('transfer', TransferController::class);
 Route::get('recive/index', [ReciveController::class, 'index'])->name('recive.index');
 Route::get('recive/approved/{id}', [ReciveController::class, 'approved'])->name('recive.approved');
 Route::get('recive/rejected/{id}', [ReciveController::class, 'rejected'])->name('recive.rejected');
-
+//statement
+Route::get('statement/index', [ReciveController::class, 'statement'])->name('statement.index');
 
 Route::resource('link', LinkController::class)->except('show');
 
