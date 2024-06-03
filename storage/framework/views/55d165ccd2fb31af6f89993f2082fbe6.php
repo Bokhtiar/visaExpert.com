@@ -24,6 +24,9 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+
+
+
                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
                         <li class="nav-item my-1">
@@ -51,6 +54,32 @@
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
+
+                
+                <li class="nav-item my-1">
+                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.customers.*') ? 'active' : ''); ?>"
+                                href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarNotepad">
+                                <i data-feather="file" class="icon-dual"></i>
+                                <span data-key="t-customers">Notepad</span>
+                            </a>
+
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
+                                <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.notepad.*') ? 'show' : ''); ?>"
+                                    id="sidebarNotepad">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="<?php echo e(route('admin.notepad.index')); ?>"
+                                                class="nav-link <?php echo e(request()->routeIs('admin.notepad.index') ? 'active' : ''); ?>"
+                                                data-key="t-customer-list">
+                                                Notepad List
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+                        </li>
+
 
                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Visa Type List')): ?>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_VISA_TYPE)): ?>
@@ -159,23 +188,23 @@
                             <?php endif; ?>
 
                             <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Recive List')): ?>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.recive.index')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.recive.index') ? 'active' : ''); ?>"
-                                    data-key="t-visa-type-list">
-                                    Recive Balance List
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.recive.index')); ?>"
+                                        class="nav-link <?php echo e(request()->routeIs('admin.recive.index') ? 'active' : ''); ?>"
+                                        data-key="t-visa-type-list">
+                                        Recive Balance List
+                                    </a>
+                                </li>
                             <?php endif; ?>
 
-                           <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Statement List')): ?>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.statement.index')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.statement.index') ? 'active' : ''); ?>"
-                                    data-key="t-visa-type-list">
-                                    Statement List 
-                                </a>
-                            </li>
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Statement List')): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.statement.index')); ?>"
+                                        class="nav-link <?php echo e(request()->routeIs('admin.statement.index') ? 'active' : ''); ?>"
+                                        data-key="t-visa-type-list">
+                                        Statement List
+                                    </a>
+                                </li>
                             <?php endif; ?>
                         </ul>
                     </div>

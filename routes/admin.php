@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CustomerInvoiceController;
 use App\Http\Controllers\Admin\DailyOfficeExpenseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LinkController;
+use App\Http\Controllers\Admin\NotepedController;
 use App\Http\Controllers\Admin\PermissionUserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReciveController;
@@ -72,6 +73,8 @@ Route::get('recive/approved/{id}', [ReciveController::class, 'approved'])->name(
 Route::get('recive/rejected/{id}', [ReciveController::class, 'rejected'])->name('recive.rejected');
 //statement
 Route::get('statement/index', [ReciveController::class, 'statement'])->name('statement.index');
+// notepad
+Route::resource('notepad', NotepedController::class);
 
 Route::resource('link', LinkController::class)->except('show');
 

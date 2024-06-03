@@ -24,6 +24,9 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+
+
+
                 @hasPermission('Customer List')
                     @can(\App\Permissions::VIEW_CUSTOMER)
                         <li class="nav-item my-1">
@@ -51,6 +54,32 @@
                         </li>
                     @endcan
                 @endhasPermission
+
+                {{-- notepad --}}
+                <li class="nav-item my-1">
+                            <a class="nav-link menu-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}"
+                                href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                                aria-controls="sidebarNotepad">
+                                <i data-feather="file" class="icon-dual"></i>
+                                <span data-key="t-customers">Notepad</span>
+                            </a>
+
+                            @hasPermission('Customer List')
+                                <div class="collapse menu-dropdown {{ request()->routeIs('admin.notepad.*') ? 'show' : '' }}"
+                                    id="sidebarNotepad">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.notepad.index') }}"
+                                                class="nav-link {{ request()->routeIs('admin.notepad.index') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                Notepad List
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endhasPermission
+                        </li>
+
 
                 @hasPermission('Visa Type List')
                     @can(\App\Permissions::VIEW_VISA_TYPE)
@@ -159,23 +188,23 @@
                             @endhasPermission
 
                             @hasPermission('Recive List')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.recive.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
-                                    data-key="t-visa-type-list">
-                                    Recive Balance List
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.recive.index') }}"
+                                        class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
+                                        data-key="t-visa-type-list">
+                                        Recive Balance List
+                                    </a>
+                                </li>
                             @endhasPermission
 
-                           @hasPermission('Statement List')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.statement.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
-                                    data-key="t-visa-type-list">
-                                    Statement List 
-                                </a>
-                            </li>
+                            @hasPermission('Statement List')
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.statement.index') }}"
+                                        class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
+                                        data-key="t-visa-type-list">
+                                        Statement List
+                                    </a>
+                                </li>
                             @endhasPermission
                         </ul>
                     </div>
