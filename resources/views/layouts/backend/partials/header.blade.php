@@ -139,7 +139,7 @@
 
                          <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
                             <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Recive: {{ Auth::user()->recive }}Tk </span>
+                            <span class="align-middle">Total Receive: {{ Auth::user()->recive }}Tk </span>
                         </a>
 
 

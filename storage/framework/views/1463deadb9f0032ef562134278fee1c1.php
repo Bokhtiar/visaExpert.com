@@ -141,7 +141,7 @@
 
                          <a class="dropdown-item" href="<?php echo e(route('admin.profile.edit')); ?>">
                             <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Recive: <?php echo e(Auth::user()->recive); ?>Tk </span>
+                            <span class="align-middle">Total Receive: <?php echo e(Auth::user()->recive); ?>Tk </span>
                         </a>
 
 

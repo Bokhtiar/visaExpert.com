@@ -192,7 +192,7 @@
                                     <a href="{{ route('admin.recive.index') }}"
                                         class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
                                         data-key="t-visa-type-list">
-                                        Recive Balance List
+                                        Receive Balance List
                                     </a>
                                 </li>
                             @endhasPermission

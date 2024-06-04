@@ -44,6 +44,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Current Balance</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Joined At</th>
                                     <th scope="col">Actions</th>
@@ -56,6 +57,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->role->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->balance }}Tk</td>
                                         <td>
                                             @if ($user->status)
                                                 <div class="badge badge-gradient-success"> Active</div>

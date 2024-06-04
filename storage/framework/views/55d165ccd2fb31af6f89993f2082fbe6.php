@@ -192,7 +192,7 @@
                                     <a href="<?php echo e(route('admin.recive.index')); ?>"
                                         class="nav-link <?php echo e(request()->routeIs('admin.recive.index') ? 'active' : ''); ?>"
                                         data-key="t-visa-type-list">
-                                        Recive Balance List
+                                        Receive Balance List
                                     </a>
                                 </li>
                             <?php endif; ?>

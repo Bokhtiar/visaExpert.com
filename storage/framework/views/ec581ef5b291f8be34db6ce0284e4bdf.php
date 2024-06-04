@@ -42,6 +42,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Current Balance</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Joined At</th>
                                     <th scope="col">Actions</th>
@@ -54,6 +55,7 @@
                                         <td><?php echo e($user->name); ?></td>
                                         <td><?php echo e($user->role->name); ?></td>
                                         <td><?php echo e($user->email); ?></td>
+                                        <td><?php echo e($user->balance); ?>Tk</td>
                                         <td>
                                             <?php if($user->status): ?>
                                                 <div class="badge badge-gradient-success"> Active</div>
