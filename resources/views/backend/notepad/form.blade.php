@@ -1,6 +1,6 @@
 @extends('layouts.backend.master')
 
-@section('title',  isset($edit) ? 'Edit Link' : 'Create New Link')
+@section('title',  isset($edit) ? 'Edit notepad' : 'Create New notepad')
 
 @section('content')
     <div class="row">
@@ -8,12 +8,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">New Link</h4>
+                        <h4 class="mb-sm-0">New Notepad</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Link</li>
+                                <li class="breadcrumb-item">Notepad</li>
                                 <li class="breadcrumb-item active">Create New</li>
                             </ol>
                         </div>
@@ -26,19 +26,21 @@
                     <div class="card">
                         <div class="card-header align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">{{ isset($edit) ? 'Edit' : 'Create New' }}
-                                Link</h4>
+                                Notepad</h4>
                             <div class="flex-shrink-0">
                                 <div>
-                                    <a href="{{ route('admin.link.index') }}" class="btn btn-clr-red">
+                                      @hasPermission('Notepad List')
+                                    <a href="{{ route('admin.notepad.index') }}" class="btn btn-clr-red">
                                         <i class="ri-arrow-left-line align-bottom me-1"></i>
                                         Back to list
                                     </a>
+                                    @endhasPermission
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
                             <form id="visa-form"
-                                  action="{{ isset($edit) ? route('admin.link.update', $edit->id) : route('admin.link.store') }}"
+                                  action="{{ isset($edit) ? route('admin.notepad.update', $edit->id) : route('admin.notepad.store') }}"
                                   method="POST">
                                 @csrf
                                 @if (isset($edit))
@@ -48,7 +50,7 @@
                                     <label for="title" class="form-label">Title *</label>
                                     <input type="text" id="title"
                                            class="form-control mb-3 @error('title') is-invalid @enderror"
-                                           name="title" placeholder="Govt" value="{{ $edit->title ?? old('title') }}">
+                                           name="title" placeholder="title" value="{{ $edit->title ?? old('title') }}">
 
                                     @error('title')
                                     <div class="invalid-feedback">

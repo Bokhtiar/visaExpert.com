@@ -36,24 +36,15 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="visa-form"
-                                  method="POST">
-                                <div>
-                                    <label for="title" class="form-label">Name</label>
-                                    <input type="text" id="title"
-                                           class="form-control mb-3" value="{{ $show->title }}"
-                                           disabled=""
-                                    >
-                                </div>
-                                
-                                <div class="mt-3">
-                                    <a href="{{ route('admin.notepad.edit', $show->id) }}"
-                                       class="btn btn-primary">
-                                        <i class="ri-pencil-line align-bottom me-1"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                </div>
-                            </form>
+                            <div class="">
+                                <strong>Title: </strong> <br>
+                                {{ $show->title }}
+                            </div>
+
+                            <div>
+                                <strong>Description</strong> <br>
+                                {!! $show->description !!}
+                            </div>
                         </div>
                     </div>
                 </div>

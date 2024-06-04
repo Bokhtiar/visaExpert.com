@@ -57,14 +57,14 @@
 
                 {{-- notepad --}}
                 <li class="nav-item my-1">
-                            <a class="nav-link menu-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}"
+                            <a class="nav-link menu-link {{ request()->routeIs('admin.notepad.*') ? 'active' : '' }}"
                                 href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
                                 aria-controls="sidebarNotepad">
                                 <i data-feather="file" class="icon-dual"></i>
                                 <span data-key="t-customers">Notepad</span>
                             </a>
 
-                            @hasPermission('Customer List')
+                            @hasPermission('Notepad List')
                                 <div class="collapse menu-dropdown {{ request()->routeIs('admin.notepad.*') ? 'show' : '' }}"
                                     id="sidebarNotepad">
                                     <ul class="nav nav-sm flex-column">

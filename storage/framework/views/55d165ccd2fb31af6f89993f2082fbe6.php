@@ -57,14 +57,14 @@
 
                 
                 <li class="nav-item my-1">
-                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.customers.*') ? 'active' : ''); ?>"
+                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.notepad.*') ? 'active' : ''); ?>"
                                 href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
                                 aria-controls="sidebarNotepad">
                                 <i data-feather="file" class="icon-dual"></i>
                                 <span data-key="t-customers">Notepad</span>
                             </a>
 
-                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer List')): ?>
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Notepad List')): ?>
                                 <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.notepad.*') ? 'show' : ''); ?>"
                                     id="sidebarNotepad">
                                     <ul class="nav nav-sm flex-column">
