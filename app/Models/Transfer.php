@@ -9,7 +9,7 @@ class Transfer extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'recive_id', 'remark', 'amount', 'description', 'created_by', 'status'
+        'recive_id', 'remark', 'amount', 'description', 'created_by', 'status', 'expense_id', 'customer_id', 'type', 'current_amount', 'invoice_id'
     ];
 
     public function reciver(){

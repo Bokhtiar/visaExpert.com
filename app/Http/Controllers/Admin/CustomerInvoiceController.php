@@ -10,6 +10,7 @@ use App\Models\InvoiceItem;
 use App\Models\PaymentLog;
 use App\Models\Road;
 use App\Models\Service;
+use App\Models\Transfer;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\PDF as Pdf;
 use Exception;
@@ -38,7 +39,7 @@ class CustomerInvoiceController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
+      //dd($request->all());
         try {
 
             $authUser = Auth::id();
@@ -70,7 +71,7 @@ class CustomerInvoiceController extends Controller
                 $item->save();
             }
             $invoice->update(['total_amount' => $invoice->items()->sum('amount')]);
-
+           
             /** payment log */
             PaymentLog::create([
                 'invoice_id' => $invoice->id,
@@ -101,6 +102,16 @@ class CustomerInvoiceController extends Controller
             $user->invoice = $user->invoice + $request->pay;
             $user->save();
 
+            //balance log table transfer
+            $userBalance = User::find($authUser);
+            Transfer::create([
+                'type' => 'invoice_recive',
+                'amount' => $request->pay,
+                'current_amount' => $userBalance->balance,
+                'customer_id' =>  $request->customer_id,
+                'created_ay' => Auth::id(),
+                'invoice_id' => $invoice->id,
+            ]);
 
             logActivity(
                 (Auth::user()->name . ' created an invoice.'),
@@ -112,6 +123,7 @@ class CustomerInvoiceController extends Controller
             return redirect()->route('admin.customers.index')->with('success', 'Invoice created successfully.');
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
             return back()->with('success', $th->getMessage());
         }
     }
@@ -187,6 +199,22 @@ class CustomerInvoiceController extends Controller
             $user->invoice = $user->invoice + $request->pay;
             $user->save();
 
+
+            //balance log table transfer
+            $userBalance = User::find($authUser);
+            Transfer::create([
+                'type' => 'invoice_recive',
+                'amount' => $request->pay,
+                'current_amount' => $userBalance->balance,
+                'customer_id' =>  $request->customer_id,
+                'created_by' => Auth::id(),
+                'invoice_id' => $invoice->id,
+            ]);
+
+
+
+
+
             logActivity(
                 (Auth::user()->name . ' updated an invoice.'),
                 $invoice->id,
@@ -210,6 +238,8 @@ class CustomerInvoiceController extends Controller
             $user->balance = $user->balance - $payment;
             $user->invoice = $user->invoice - $payment;
             $user->save();
+
+            Transfer::where('invoice_id', $invoice->id)->delete();
 
             $this->authorize('delete-invoice', CustomerInvoiceController::class);
             $invoice->delete();

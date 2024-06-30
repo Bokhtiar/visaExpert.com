@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->integer('recive_id');
-            $table->integer('created_by');
-            $table->text('remark');
-            $table->integer('amount');
-            $table->longText('description');
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->integer('recive_id')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->text('remark')->nullable();
+            $table->integer('amount')->nullable();
+            $table->longText('description')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected','others'])->default('pending');
             $table->timestamps();
         });
     }

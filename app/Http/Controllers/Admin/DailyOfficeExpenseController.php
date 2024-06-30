@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DailyOfficeExpense;
+use App\Models\Transfer;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -44,6 +45,15 @@ class DailyOfficeExpenseController extends Controller
         $user->expense = $user->expense + $request->amount;
         $user->save();
 
+        $userBalance = User::find($authUser);
+        Transfer::create([
+            'type' => 'expense_create',
+            'amount' => $request->amount,
+            'current_amount' => $userBalance->balance,
+            'created_by' => Auth::id(),
+            'expense_id' => $expense->id,
+        ]);
+
         logActivity(
             (Auth::user()->name.' added an office expense.'),
             $expense->id,
@@ -79,6 +89,18 @@ class DailyOfficeExpenseController extends Controller
         $user->expense = $existBalance + $request->amount;
         $user->save();
 
+        $userBalance = User::find($authUser);
+
+        $expense_balance = Transfer::where('expense_id', $dailyOfficeExpense->id)->first();
+        $expense_balance->update([
+            'type' => 'expense_update',
+            'amount' => $request->amount,
+            'current_amount' => $userBalance->balance,
+            'created_by' => Auth::id(),
+            'expense_id' => $dailyOfficeExpense->id,
+        ]);
+
+
         logActivity(
             (Auth::user()->name.' updated an office expense.'),
             $dailyOfficeExpense->id,
@@ -92,6 +114,25 @@ class DailyOfficeExpenseController extends Controller
     public function destroy(DailyOfficeExpense $dailyOfficeExpense): RedirectResponse
     {
         try {
+            $authUser = Auth::id();
+            $user = User::find($authUser);
+            $user->balance = $user->balance + $dailyOfficeExpense->amount;
+            $user->expense = $user->expense - $dailyOfficeExpense->amount;
+            $user->save();
+
+            $userBalance = User::find($authUser);
+
+            $expense_balance = Transfer::where('expense_id', $dailyOfficeExpense->id)->first();
+            $expense_balance->update([
+                'type' => 'expense_update',
+                'amount' => $dailyOfficeExpense->amount,
+                'current_amount' => $userBalance->balance,
+                'created_by' => Auth::id(),
+                'expense_id' => $dailyOfficeExpense->id,
+            ]);
+
+
+
            // $this->authorize('delete', DailyOfficeExpense::class);
             $dailyOfficeExpense->delete();
 
