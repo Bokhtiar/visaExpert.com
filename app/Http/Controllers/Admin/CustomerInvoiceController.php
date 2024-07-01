@@ -203,7 +203,7 @@ class CustomerInvoiceController extends Controller
             //balance log table transfer
             $userBalance = User::find($authUser);
             Transfer::create([
-                'type' => 'invoice_recive',
+                'type' => 'invoice_due',
                 'amount' => $request->pay,
                 'current_amount' => $userBalance->balance,
                 'customer_id' =>  $request->customer_id,
@@ -239,7 +239,17 @@ class CustomerInvoiceController extends Controller
             $user->invoice = $user->invoice - $payment;
             $user->save();
 
-            Transfer::where('invoice_id', $invoice->id)->delete();
+            $transer = Transfer::where('invoice_id', $invoice->id)->first();
+            $userBalance = User::find($authUser);
+            Transfer::create([
+                'type' => 'invoice_delete',
+                'amount' => $payment,
+                'current_amount' => $userBalance->balance,
+                'customer_id' =>  $transer->customer_id,
+                'created_by' => Auth::id(),
+                'invoice_id' => $invoice->id,
+            ]);
+
 
             $this->authorize('delete-invoice', CustomerInvoiceController::class);
             $invoice->delete();

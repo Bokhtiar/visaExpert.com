@@ -53,14 +53,18 @@ class TransferController extends Controller
             DB::transaction(function () use ($validatedData, $request, $authUser) {
 
 
-                $validatedData['created_by'] = $authUser;
-                $invoice = Transfer::create($validatedData);
-
+               
+               
                 // transfer Update account balance
                 $user = User::find($authUser);
                 $user->balance = $user->balance - $request->amount;
                 $user->transfer = $user->transfer + $request->amount;
                 $user->save();
+
+                $validatedData['created_by'] = $authUser;
+                $validatedData['type'] = 'balance_transfer';
+                $validatedData['current_amount'] = $user->balance - $request->amount;
+                $invoice = Transfer::create($validatedData);
 
 
                 // reciver Update account balance
@@ -121,6 +125,7 @@ class TransferController extends Controller
                 'amount' => 'required|numeric',
                 'description' => 'required|string',
             ]);
+            
 
             // Retrieve the authenticated user
             $user = User::find($authUser);
@@ -144,7 +149,7 @@ class TransferController extends Controller
                 $originalAmount = $transfer->amount;
 
                 // Update the transfer with validated data
-                $transfer->update($validatedData);
+                
 
                 // Update user's balance
                 $user = User::find($authUser);
@@ -152,6 +157,12 @@ class TransferController extends Controller
                 $user->balance -= $request->amount; // Deduct the new transfer amount
                 $user->transfer = ($user->transfer - $originalAmount) + $request->amount; // Adjust the transfer amount
                 $user->save();
+
+
+                $user_balance = User::find($authUser);
+                $validatedData['type'] = 'balance_transfer_updated';
+                $validatedData['current_amount'] =  $user_balance->balance;
+                $transfer->update($validatedData);
 
                 // Log the activity
                 logActivity(

@@ -42,6 +42,17 @@ class ReciveController extends Controller
             $transfer->status = 'Approved';
             $transfer->save();
 
+
+            //balance log table transfer
+            $userBalance = User::find(Auth::id());
+            Transfer::create([
+                'type' => 'transfer_recieve',
+                'amount' => $transfer->amount,
+                'current_amount' => $userBalance->balance,
+                'created_by' => $transfer->created_by,
+                'recive_id' => $transfer->recive_id,
+            ]);
+
             // Log activity
             logActivity(
                 Auth::user()->name . ' approved a transfer.',
@@ -72,6 +83,18 @@ class ReciveController extends Controller
             $user->balance += $transfer->amount;
             $user->transfer -= $transfer->amount;
             $user->save();
+
+
+            $userBalance = User::find(Auth::id());
+            Transfer::create([
+                'type' => 'transfer_rejected',
+                'amount' => $transfer->amount,
+                'current_amount' => $userBalance->balance,
+                'created_by' => $transfer->created_by,
+                'recive_id' => $transfer->recive_id,
+            ]);
+
+
 
             // Log activity
             logActivity(

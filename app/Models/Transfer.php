@@ -20,4 +20,14 @@ class Transfer extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+    public function expense()
+    {
+        return $this->belongsTo(DailyOfficeExpense::class, 'created_by', 'id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
 }
