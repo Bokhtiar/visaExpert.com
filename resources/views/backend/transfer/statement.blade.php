@@ -60,7 +60,7 @@
                                                                 {!! $user->name .
                                                                     ' (' .
                                                                     ($user->role ? $user->role->name : '') .
-                                                                    ')' .
+                                                                    ')' . " spending update ".
                                                                     ($transfer->expense ? $transfer->expense->description : '') !!}
                                                             </td>
                                                         @elseif ($transfer->type == 'invoice_recive' || $transfer->type == 'invoice_due' || $transfer->type == 'invoice_delete')
@@ -102,28 +102,24 @@
                                                                 </td>
                                                             @endif
                                                         @endif
-<td>
-                                                        @if (
-                                                            $transfer->type == 'transfer_recieve' ||
-                                                                $transfer->type == 'transfer_rejected' ||
-                                                                $transfer->type == 'invoice_recive' ||
-                                                                $transfer->type == 'invoice_due' ||
-                                                                $transfer->type == 'invoice_delete')
-                                                            
+                                                        <td>
+                                                            @if (
+                                                                $transfer->type == 'transfer_recieve' ||
+                                                                    $transfer->type == 'transfer_rejected' ||
+                                                                    $transfer->type == 'invoice_recive' ||
+                                                                    $transfer->type == 'invoice_due' ||
+                                                                    $transfer->type == 'invoice_delete')
                                                                 {{ $transfer->amount }}
-                                                            
-                                                        @endif
-</td>
- <td>
-                                                        @if (
-                                                            $transfer->type == 'expense_create' ||
-                                                                $transfer->type == 'expense_update' ||
-                                                                $transfer->type == 'balance_transfer' ||
-                                                                $transfer->type == 'balance_transfer_updated')
-                                                           
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if (
+                                                                $transfer->type == 'expense_create' ||
+                                                                    $transfer->type == 'expense_update' ||
+                                                                    $transfer->type == 'balance_transfer' ||
+                                                                    $transfer->type == 'balance_transfer_updated')
                                                                 {{ $transfer->amount }}
-                                                            
-                                                        @endif
+                                                            @endif
                                                         </td>
 
                                                         <td>{{ $transfer->current_amount }} Tk</td>

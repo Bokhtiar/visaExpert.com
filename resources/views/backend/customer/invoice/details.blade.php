@@ -24,39 +24,25 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card-header border-bottom-dashed p-4">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                    <h4 style="user-select: none;text-wrap: nowrap;">
-                                        <img src="{{ asset('backend/assets/images/logo.jpg') }}" alt="Logo"
-                                            height="40">
-                                        {{ config('app.name') }}
-                                    </h4>
+                            <div class="row">
+                                {{-- logo --}}
+                                <div class="col-md-2">
+                                    <img src="{{ asset('backend/assets/images/logo.jpg') }}" alt="Logo" height="120px"
+                                        width="100%">
+                                    <h5>{{ config('app.name') }}</h5>
                                 </div>
-                                <div class="flex-grow-1 text-center">
+                                {{-- card --}}
+                                <div class="col-md-6">
                                     <img src="{{ asset('backend/assets/images/visiting-card.jpg') }}" alt="Visiting Card"
-                                        class="visiting-card">
+                                        class="" height="180px" width="100%">
                                 </div>
-                                <div class="flex-grow-1">
-                                    <div class="">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div>
-                                                <h6 class="text-muted text-uppercase fw-semibold">Date</h6>
-                                                <p class="text-muted text-nowrap mb-1" id="address-details">
-                                                    {{ $invoice->created_at->format('d M Y') }}
-                                                </p>
-                                            </div>
-                                            <div class="text-nowrap ms-5">
-                                                <h6 class="text-muted text-uppercase fw-semibold">Payment Status</h6>
-                                                <p class="text-muted mb-1" id="payment-status">{{ $invoice->status }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="mt-3">
-                                            <h6 class="text-muted text-uppercase fw-semibold">Total Amount (BDT)</h6>
-                                            <p class="text-muted mb-1" id="">{{ $invoice->total_amount }}
-                                            </p>
-                                        </div>
-                                    </div>
+                                {{-- contact --}}
+                                <div class="col-md-4 my-auto">
+                                    <p class="m-0" style="font-weight: 600; font-size: 20px">Visa Expert</p>
+                                    <p class="m-0" style="font-weight: 600">Rahim Towe.Subhanighat, sylhet-3100,
+                                        Bangladesh</p>
+                                    <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
+                                    <p class="m-0" style="font-weight: 600">Hotline: +8801703605660</p>
                                 </div>
                             </div>
                         </div>
@@ -64,10 +50,25 @@
                     <div class="col-lg-12">
                         <div class="card-body p-4">
                             <div class="row g-3">
-                                <div class="col-lg-3 col-6">
-                                    <p class="text-muted mb-2 text-uppercase fw-semibold">User ID</p>
-                                    <h5 class="fs-14 mb-0"><span id="invoice-no">#{{ $invoice->customer->unique_id }}</span>
-                                    </h5>
+                                <div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">USER ID</th>
+                                                <th scope="col">CUSTOMER NAME</th>
+                                                <th scope="col">CUSTOMER PHONE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($customers as $item)
+                                                <tr>
+                                                    <td>{{ $item->id }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->phone }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                                 {{--                                <div class="col-lg-3 col-6"> --}}
                                 {{--                                    <p class="text-muted mb-2 text-uppercase fw-semibold">Date</p> --}}
@@ -167,23 +168,25 @@
                                 <div class="left">
 
                                 </div>
-                               
+
                                 <div class="right text-end">
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
                                         <strong style="font-size: 16px;margin-right: 30px"> Total Amount (BDT) </strong>
                                         <strong style="font-size: 16px">{{ $invoice->total_amount }}</strong>
                                     </p>
 
-                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 36px"> Discount( {{ number_format(($invoice->discount / $invoice->total_amount) * 100, 0) }}%) </strong>
-                                        <strong
-                                            style="font-size: 16px">{{ $invoice->discount }}
-                                            </strong>
+                                    <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
+                                        <strong style="font-size: 16px;margin-right: 36px"> Discount(
+                                            {{ number_format(($invoice->discount / $invoice->total_amount) * 100, 0) }}%)
+                                        </strong>
+                                        <strong style="font-size: 16px">{{ $invoice->discount }}
+                                        </strong>
                                     </p>
 
-                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
+                                    <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
                                         <strong style="font-size: 16px;margin-right: 30px"> Payable </strong>
-                                        <strong style="font-size: 16px">{{ $invoice->total_amount }}</strong>
+                                        <strong
+                                            style="font-size: 16px">{{ $invoice->total_amount - $invoice->discount }}</strong>
                                     </p>
 
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
@@ -200,22 +203,26 @@
                                             </strong>
                                     </p> --}}
 
-                                    
 
-                                    
 
-                                   
 
-                                    
+
+
+
+
 
 
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
                                         <strong style="font-size: 16px;margin-right: 30px"> Due </strong>
                                         <strong style="font-size: 16px">
-                                           @php
-                                            $totalDue =  $invoice->total_amount -  App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay');
-                                           @endphp
-                                      {{ $totalDue - $invoice->discount }}
+                                            @php
+                                                $totalDue =
+                                                    $invoice->total_amount -
+                                                    App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum(
+                                                        'pay',
+                                                    );
+                                            @endphp
+                                            {{ $totalDue - $invoice->discount }}
                                         </strong>
                                     </p>
 
@@ -246,17 +253,17 @@
                                 days from the
                                 issuing date and customer must collect the work before expiry the invoice.
                             </p>
-                            
+
                             @hasPermission('Download Invoice')
-                            @can(\App\Permissions::DOWNLOAD_CUSTOMER_INVOICE)
-                                <div class="hstack gap-2 justify-content-end d-print-none mt-4">
-                                    <a href="javascript:window.print()" class="btn btn-soft-primary"><i
-                                            class="ri-printer-line align-bottom me-1"></i> Print</a>
-                                    <a href="{{ route('admin.customers-invoices.download', $invoice->id) }}"
-                                        class="btn btn-primary"><i class="ri-download-2-line align-bottom me-1"></i> Download
-                                    </a>
-                                </div>
-                            @endcan
+                                @can(\App\Permissions::DOWNLOAD_CUSTOMER_INVOICE)
+                                    <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                                        <a href="javascript:window.print()" class="btn btn-soft-primary"><i
+                                                class="ri-printer-line align-bottom me-1"></i> Print</a>
+                                        <a href="{{ route('admin.customers-invoices.download', $invoice->id) }}"
+                                            class="btn btn-primary"><i class="ri-download-2-line align-bottom me-1"></i> Download
+                                        </a>
+                                    </div>
+                                @endcan
                             @endhasPermission
                         </div>
                     </div>

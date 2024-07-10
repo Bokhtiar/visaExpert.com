@@ -60,7 +60,7 @@
                                                                 <?php echo $user->name .
                                                                     ' (' .
                                                                     ($user->role ? $user->role->name : '') .
-                                                                    ')' .
+                                                                    ')' . " spending update ".
                                                                     ($transfer->expense ? $transfer->expense->description : ''); ?>
 
                                                             </td>
@@ -104,30 +104,26 @@
                                                                 </td>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
-<td>
-                                                        <?php if(
-                                                            $transfer->type == 'transfer_recieve' ||
-                                                                $transfer->type == 'transfer_rejected' ||
-                                                                $transfer->type == 'invoice_recive' ||
-                                                                $transfer->type == 'invoice_due' ||
-                                                                $transfer->type == 'invoice_delete'): ?>
-                                                            
+                                                        <td>
+                                                            <?php if(
+                                                                $transfer->type == 'transfer_recieve' ||
+                                                                    $transfer->type == 'transfer_rejected' ||
+                                                                    $transfer->type == 'invoice_recive' ||
+                                                                    $transfer->type == 'invoice_due' ||
+                                                                    $transfer->type == 'invoice_delete'): ?>
                                                                 <?php echo e($transfer->amount); ?>
 
-                                                            
-                                                        <?php endif; ?>
-</td>
- <td>
-                                                        <?php if(
-                                                            $transfer->type == 'expense_create' ||
-                                                                $transfer->type == 'expense_update' ||
-                                                                $transfer->type == 'balance_transfer' ||
-                                                                $transfer->type == 'balance_transfer_updated'): ?>
-                                                           
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if(
+                                                                $transfer->type == 'expense_create' ||
+                                                                    $transfer->type == 'expense_update' ||
+                                                                    $transfer->type == 'balance_transfer' ||
+                                                                    $transfer->type == 'balance_transfer_updated'): ?>
                                                                 <?php echo e($transfer->amount); ?>
 
-                                                            
-                                                        <?php endif; ?>
+                                                            <?php endif; ?>
                                                         </td>
 
                                                         <td><?php echo e($transfer->current_amount); ?> Tk</td>

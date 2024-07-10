@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DailyOfficeExpenseController extends Controller
 {
@@ -74,41 +75,48 @@ class DailyOfficeExpenseController extends Controller
 
     public function update(Request $request, DailyOfficeExpense $dailyOfficeExpense): RedirectResponse
     {
-        $authUser = Auth::id();
-        //$this->authorize('edit', DailyOfficeExpense::class);
-        $validated = $request->validate([
-            'description' => 'required|string|max:255',
-            'amount' => 'required|string|max:255',
-        ]);
-        $validated['created_by'] = $authUser;
-        $dailyOfficeExpense->update($validated);
+        DB::beginTransaction();
 
-        $user = User::find($authUser);
-        $user->balance = $user->balance - $request->amount;
-        $existBalance =  $user->expense - $dailyOfficeExpense->amount; //this line add for before amount minus, other wish previse expense and new update expese update, thats why this line added
-        $user->expense = $existBalance + $request->amount;
-        $user->save();
+        try {
+            $authUser = Auth::id();
+            $user = User::find($authUser);
 
-        $userBalance = User::find($authUser);
+            $previus_balance = $request->amount - $dailyOfficeExpense->amount;
+            $user->balance = $user->balance - $previus_balance;
+            $user->expense = $user->expense + $previus_balance;
+            $user->save();
 
-        $expense_balance = Transfer::where('expense_id', $dailyOfficeExpense->id)->first();
-        $expense_balance->update([
-            'type' => 'expense_update',
-            'amount' => $request->amount,
-            'current_amount' => $userBalance->balance,
-            'created_by' => Auth::id(),
-            'expense_id' => $dailyOfficeExpense->id,
-        ]);
+            $userBalance = User::find($authUser);
+            Transfer::create([
+                'type' => 'expense_update',
+                'amount' =>  $previus_balance,
+                'current_amount' => $userBalance->balance,
+                'created_by' => Auth::id(),
+                'expense_id' => $dailyOfficeExpense->id,
+            ]);
 
+            //$this->authorize('edit', DailyOfficeExpense::class);
+            $validated = $request->validate([
+                'description' => 'required|string|max:255',
+                'amount' => 'required|string|max:255',
+            ]);
+            $validated['created_by'] = $authUser;
+            $dailyOfficeExpense->update($validated);
 
-        logActivity(
-            (Auth::user()->name.' updated an office expense.'),
-            $dailyOfficeExpense->id,
-            'updated',
-            'daily_office_expenses'
-        );
+            logActivity(
+                (Auth::user()->name . ' updated an office expense.'),
+                $dailyOfficeExpense->id,
+                'updated',
+                'daily_office_expenses'
+            );
 
-        return redirect()->route('admin.daily-office-expenses.index')->with('success', 'An office expense updated.');
+            DB::commit();
+
+            return redirect()->route('admin.daily-office-expenses.index')->with('success', 'An office expense updated.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.daily-office-expenses.index')->with('error', 'Failed to update the office expense.');
+        }
     }
 
     public function destroy(DailyOfficeExpense $dailyOfficeExpense): RedirectResponse

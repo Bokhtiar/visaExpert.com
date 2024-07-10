@@ -23,7 +23,7 @@ class Transfer extends Model
 
     public function expense()
     {
-        return $this->belongsTo(DailyOfficeExpense::class, 'created_by', 'id');
+        return $this->belongsTo(DailyOfficeExpense::class, 'expense_id', 'id');
     }
 
     public function customer()

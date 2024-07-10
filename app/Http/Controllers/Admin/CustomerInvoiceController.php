@@ -109,7 +109,7 @@ class CustomerInvoiceController extends Controller
                 'amount' => $request->pay,
                 'current_amount' => $userBalance->balance,
                 'customer_id' =>  $request->customer_id,
-                'created_ay' => Auth::id(),
+                'created_by' => Auth::id(),
                 'invoice_id' => $invoice->id,
             ]);
 
@@ -134,8 +134,9 @@ class CustomerInvoiceController extends Controller
         $invoice->load('customer');
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->get();
+        $customers = Customer::where('parent_customer_id', $invoice->customer_id)->get();
 
-        return view('backend.customer.invoice.details', compact('invoice', 'roads', 'payables'));
+        return view('backend.customer.invoice.details', compact('invoice', 'roads', 'payables', 'customers'));
     }
 
     public function edit(Invoice $invoice): View
