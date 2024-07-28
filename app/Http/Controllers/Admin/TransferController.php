@@ -16,7 +16,10 @@ class TransferController extends Controller
      */
     public function index()
     {
-        $transfers = Transfer::where('created_by', Auth::id())->latest()->get();
+       $transfers = Transfer::latest()
+        ->whereIn('type', ['transfer_rejected', 'transfer_recieve', 'balance_transfer_updated', 'balance_transfer'])
+        ->get();
+
         return view('backend.transfer.index', compact('transfers'));
     }
 
@@ -82,7 +85,7 @@ class TransferController extends Controller
                 );
             });
 
-            return back()->with('success', 'Transfer successfully');
+            return redirect()->route('admin.statement.index')->with('success', 'Transfer successfully');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

@@ -204,7 +204,7 @@
                                         data-key="t-visa-type-list">
                                         Statement List
                                     </a>
-                                </li>
+                                </li> 
                             @endhasPermission
                         </ul>
                     </div>

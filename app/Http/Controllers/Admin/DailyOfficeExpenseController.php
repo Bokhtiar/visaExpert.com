@@ -89,7 +89,7 @@ class DailyOfficeExpenseController extends Controller
             $userBalance = User::find($authUser);
             Transfer::create([
                 'type' => 'expense_update',
-                'amount' =>  $previus_balance,
+                'amount' =>  $request->amount,
                 'current_amount' => $userBalance->balance,
                 'created_by' => Auth::id(),
                 'expense_id' => $dailyOfficeExpense->id,
@@ -112,7 +112,7 @@ class DailyOfficeExpenseController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.daily-office-expenses.index')->with('success', 'An office expense updated.');
+            return redirect()->route('admin.daily-office-expenses.index')->with('success', 'Office expense updated.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('admin.daily-office-expenses.index')->with('error', 'Failed to update the office expense.');

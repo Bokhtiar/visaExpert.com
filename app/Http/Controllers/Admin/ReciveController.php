@@ -105,7 +105,7 @@ class ReciveController extends Controller
             );
 
             DB::commit();
-
+ 
             return redirect()->back()->with('success', 'Balance Rejected successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -118,5 +118,7 @@ class ReciveController extends Controller
     {
         $transfers = Transfer::latest()->get();
         return view('backend.transfer.statement', compact('transfers'));
-    }
+    } 
+
+
 }
