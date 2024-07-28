@@ -363,6 +363,7 @@
                             </div>
                         </div>
                     <?php else: ?>
+                    
                         <div class="card-body p-4">
                             <div class="table-responsive">
                                 <table class="invoice-table table table-borderless table-nowrap mb-0">
@@ -393,15 +394,15 @@
                                                             <option value="<?php echo e($service->title); ?>"
                                                                 <?php if(old($service->title) == $service->title): ?> selected <?php endif; ?>
                                                                 data-amount="<?php echo e(auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount); ?>">
-                                                                <?php echo e($service->title); ?>
-
+                                                               <?php echo e($service->title); ?> (<?php echo e(auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount); ?>Tk)
                                                             </option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="text" name="qty[]" id="">
+                                                <input type="text" name="qty[]" class="product-qty" id="">
                                             </td>
                                             <td class="text-end">
                                                 <div>
@@ -527,7 +528,6 @@
                                 </button>
                             </div>
                         </div>
-
                     <?php endif; ?>
 
                 </form>
@@ -539,6 +539,10 @@
 
 
 <?php $__env->startPush('js'); ?>
+    
+
+
+
     <script>
         function calculateTotal() {
             let total = 0;
@@ -546,92 +550,50 @@
                 let amount = parseFloat($(this).val()) || 0;
                 total += amount;
             });
-            $('#cart-total').val(total.toFixed(2)).trigger('input');
-            $('#invoice-total').val(total.toFixed(2));
-
-            $('#due_amount_save').val(total.toFixed(2));
+            $('#cart-total').val(total.toFixed(2));
         }
 
-
-        $(document).ready(function() {
-            calculateTotal();
-        });
-
-        $('#newlink').on('change', 'select[name="items[]"]', function() {
-            let selectedOption = $(this).find(':selected');
-            let amount = selectedOption.data('amount') || 0;
-            $(this).closest('tr').find('.product-line-price').val(amount);
-            calculateTotal();
-        });
-
-        $('#newlink').on('click', 'a.btn-danger:not(:first)', function() {
-            $(this).closest('tr.product').remove();
-            calculateTotal();
-        });
-
-        function new_link() {
-            let tr = $('#newlink tr:last').clone();
-            let currentId = parseInt(tr.attr('id'));
-            let newId = currentId + 1;
-            tr.attr('id', newId);
-            tr.find('.product-id').text(newId);
-            tr.find('input, textarea').val('');
-            tr.appendTo('#newlink');
+        function calculateRow(row) {
+            let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
+            let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
+            let total = price * qty;
+            row.find('.product-line-price').val(total.toFixed(2));
             calculateTotal();
         }
-    </script>
 
-
-    <script>
         $(document).ready(function() {
-            $('#receive_payment_save').on('keyup', function() {
-                // Get the due amount
-                var dueAmount = parseFloat($('#due_amount_save').val());
-                console.log("due amount save:", dueAmount);
+            // Initial calculation
+            calculateTotal();
 
-                // Get the received payment
-                var receivedPayment = parseFloat($(this).val());
-                console.log("received payment save:", receivedPayment);
-
-                // Check for NaN values
-                if (isNaN(dueAmount) || isNaN(receivedPayment)) {
-                    console.log("Invalid input. Please enter valid numbers.");
-                    return; // Exit the function if input values are not valid
-                }
-
-                // Calculate the remaining due amount
-                var remainingDue = dueAmount - receivedPayment;
-
-                // Update the remaining due amount field
-                $('#due_amount_save').val(remainingDue.toFixed(
-                    2)); // Assuming you want to display 2 decimal places
+            // Service dropdown change
+            $('#newlink').on('change', 'select[name="items[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
             });
-        });
-    </script>
 
+            // Quantity change
+            $('#newlink').on('input', 'input[name="qty[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
 
-    
-    <script>
-        $(document).ready(function() {
+            // Remove row
+            $('#newlink').on('click', 'a.btn-danger', function() {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            });
 
-
-            $('#receive_payment').on('input', function() {
-
-                // Get the received payment
-                var receivedPayment = parseFloat($(this).val());
-                var dueAmount = parseFloat($('#due_amount').val());
-                // Get the due amount
-
-                console.log("due amount", dueAmount);
-
-                // Calculate the remaining due amount
-                var remainingDue = dueAmount - receivedPayment;
-
-
-
-                // Update the remaining due amount field
-                $('#due_amount').val(remainingDue.toFixed(
-                    2)); // Assuming you want to display 2 decimal places
+            // Add new row
+            $('#add-item').on('click', function() {
+                let tr = $('#newlink tr:first').clone();
+                let currentId = parseInt(tr.attr('id'));
+                let newId = currentId + 1;
+                tr.attr('id', newId);
+                tr.find('.product-id').text(newId);
+                tr.find('input, textarea').val('');
+                tr.find('.product-line-price').val('0.00');
+                tr.appendTo('#newlink');
+                calculateTotal();
             });
         });
     </script>

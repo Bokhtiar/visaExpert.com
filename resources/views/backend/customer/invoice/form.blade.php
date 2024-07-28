@@ -399,6 +399,7 @@
                             </div>
                         </div>
                     @else
+                    {{-- create invoice --}}
                         <div class="card-body p-4">
                             <div class="table-responsive">
                                 <table class="invoice-table table table-borderless table-nowrap mb-0">
@@ -429,14 +430,15 @@
                                                             <option value="{{ $service->title }}"
                                                                 @if (old($service->title) == $service->title) selected @endif
                                                                 data-amount="{{ auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount }}">
-                                                                {{ $service->title }}
+                                                               {{ $service->title }} ({{ auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount}}Tk)
                                                             </option>
                                                         @endforeach
+                                                        
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="text" name="qty[]" id="">
+                                                <input type="text" name="qty[]" class="product-qty" id="">
                                             </td>
                                             <td class="text-end">
                                                 <div>
@@ -614,7 +616,6 @@
                                 </button>
                             </div>
                         </div>
-
                     @endisset
 
                 </form>
@@ -626,7 +627,7 @@
 
 
 @push('js')
-    <script>
+    {{-- <script>
         function calculateTotal() {
             let total = 0;
             $('.product-line-price').each(function() {
@@ -668,7 +669,6 @@
         }
     </script>
 
-
     <script>
         $(document).ready(function() {
             $('#receive_payment_save').on('keyup', function() {
@@ -696,8 +696,6 @@
         });
     </script>
 
-
-    {{-- revice ammount and due amont update --}}
     <script>
         $(document).ready(function() {
 
@@ -719,6 +717,63 @@
                 // Update the remaining due amount field
                 $('#due_amount').val(remainingDue.toFixed(
                     2)); // Assuming you want to display 2 decimal places
+            });
+        });
+    </script> --}}
+
+
+
+    <script>
+        function calculateTotal() {
+            let total = 0;
+            $('.product-line-price').each(function() {
+                let amount = parseFloat($(this).val()) || 0;
+                total += amount;
+            });
+            $('#cart-total').val(total.toFixed(2));
+        }
+
+        function calculateRow(row) {
+            let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
+            let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
+            let total = price * qty;
+            row.find('.product-line-price').val(total.toFixed(2));
+            calculateTotal();
+        }
+
+        $(document).ready(function() {
+            // Initial calculation
+            calculateTotal();
+
+            // Service dropdown change
+            $('#newlink').on('change', 'select[name="items[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
+
+            // Quantity change
+            $('#newlink').on('input', 'input[name="qty[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
+
+            // Remove row
+            $('#newlink').on('click', 'a.btn-danger', function() {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            });
+
+            // Add new row
+            $('#add-item').on('click', function() {
+                let tr = $('#newlink tr:first').clone();
+                let currentId = parseInt(tr.attr('id'));
+                let newId = currentId + 1;
+                tr.attr('id', newId);
+                tr.find('.product-id').text(newId);
+                tr.find('input, textarea').val('');
+                tr.find('.product-line-price').val('0.00');
+                tr.appendTo('#newlink');
+                calculateTotal();
             });
         });
     </script>
