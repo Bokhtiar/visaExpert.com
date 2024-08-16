@@ -67,7 +67,8 @@ class CustomerInvoiceController extends Controller
                 $item->invoice_id = $invoice->id;
                 $item->item = $itemName;
                 $item->qty = $validatedData['qty'][$key];
-                $item->amount = $validatedData['amount'][$key] * $validatedData['qty'][$key];
+                // $item->amount = $validatedData['amount'][$key] * $validatedData['qty'][$key];
+                $item->amount = $validatedData['amount'][$key];
                 $item->save();
             }
             $invoice->update(['total_amount' => $invoice->items()->sum('amount')]);
@@ -87,8 +88,9 @@ class CustomerInvoiceController extends Controller
             if ($invoice_item_amount->due <= 0) {
                 $invoice->update(['status' => 'Paid']);
             } else {
-                $invoice->update(['status' => 'Due']);
-            }
+                $invoice->update(['status' => 'Due']); 
+                     
+            }  
 
             //invoice status update
             if ($invoice->discount == $invoice_item_amount->due) {
