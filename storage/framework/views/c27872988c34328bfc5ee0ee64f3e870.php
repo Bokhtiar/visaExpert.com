@@ -8,8 +8,14 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Good Morning, <?php if (\Illuminate\Support\Facades\Blade::check('role', 'admin')): ?> Admin! <?php endif; ?> <?php if (\Illuminate\Support\Facades\Blade::check('role', 'staff')): ?>
-                                    Staff! <?php endif; ?> <?php if (\Illuminate\Support\Facades\Blade::check('role', 'agent')): ?> Agent! <?php endif; ?></h4>
+                                <h4 class="fs-16 mb-1">Good Morning, <?php if (\Illuminate\Support\Facades\Blade::check('role', 'admin')): ?>
+                                        Admin!
+                                        <?php endif; ?> <?php if (\Illuminate\Support\Facades\Blade::check('role', 'staff')): ?>
+                                        Staff!
+                                        <?php endif; ?> <?php if (\Illuminate\Support\Facades\Blade::check('role', 'agent')): ?>
+                                        Agent!
+                                    <?php endif; ?>
+                                </h4>
                                 <p class="text-muted mb-0">
                                     Wish you a wonderful day ahead.
                                 </p>
@@ -17,9 +23,20 @@
 
                             
                             <div class="mx-2">
-                                <a href="<?php echo e(url('admin/punch-in')); ?>" class="font-bold bg-success text-white p-2 rounded">Punch in (9:40AM)</a>
-                                <a href="<?php echo e(url('admin/punch-out')); ?>" class="bg-danger text-white p-2 rounded ">Punch out  (6:40PM) </a>
-                            </div>
+    <?php if($attendance && $attendance->punch_in): ?>
+        <a href="<?php echo e(url('admin/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
+            Punch Out 
+            (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
+        </a>
+    <?php else: ?>
+        <a href="<?php echo e(url('admin/punch-in')); ?>" class="font-bold bg-success text-white p-2 rounded">
+            Punch In 
+            (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
+        </a>
+    <?php endif; ?>
+</div>
+
+
 
 
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::ACCESS_ACTIVITY_LOGS)): ?>
@@ -28,7 +45,7 @@
                                         <div class="row g-3 mb-0 align-items-center">
                                             <div class="col-auto">
                                                 <button type="button"
-                                                        class="btn btn-soft-secondary btn-icon waves-effect waves-light layout-rightside-btn">
+                                                    class="btn btn-soft-secondary btn-icon waves-effect waves-light layout-rightside-btn">
                                                     <i class="ri-pulse-line"></i>
                                                 </button>
                                             </div>
@@ -57,9 +74,9 @@
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
-                                      <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                        <i class="bx bx-dollar-circle text-primary"></i>
-                                      </span>
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-dollar-circle text-primary"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -83,9 +100,9 @@
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
-                                      <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                        <i class="bx bx-dollar-circle text-primary"></i>
-                                      </span>
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-dollar-circle text-primary"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -109,9 +126,9 @@
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
-                                      <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                        <i class="bx bxs-file text-primary"></i>
-                                      </span>
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bxs-file text-primary"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -134,9 +151,9 @@
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
-                                      <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                        <i class="bx bx-user-circle text-primary"></i>
-                                      </span>
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -159,9 +176,9 @@
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
-                                      <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                        <i class="bx bx-user-circle text-primary"></i>
-                                      </span>
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -181,8 +198,7 @@
                                     Recent Activity
                                 </h6>
                             </div>
-                            <div data-simplebar
-                                 style="height: 100%" class="p-3 pt-0">
+                            <div data-simplebar style="height: 100%" class="p-3 pt-0">
                                 <div class="acitivity-timeline acitivity-main">
                                     <?php $__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <div class="acitivity-item d-flex">
