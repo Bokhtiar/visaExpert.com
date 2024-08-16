@@ -16,6 +16,15 @@
                                     Wish you a wonderful day ahead.
                                 </p>
                             </div>
+
+                            {{-- attendance  --}}
+                            <div class="mx-2">
+                                
+                                <a href="{{ url('admin/punch-in') }}" class="font-bold bg-success text-white p-2 rounded">Punch in (9:40AM)</a>
+                                <a href="{{ url('admin/punch-out') }}" class="bg-danger text-white p-2 rounded ">Punch out  (6:40PM) </a>
+                            </div>
+
+
                             @can(\App\Permissions::ACCESS_ACTIVITY_LOGS)
                                 <div class="mt-3 mt-lg-0">
                                     <form action="javascript:void(0);">

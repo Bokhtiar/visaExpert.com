@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TourPackageController;
 use App\Http\Controllers\Admin\TransferController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VisaTypeController;
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard Routes
@@ -105,3 +106,8 @@ Route::get('activity-logs', ActivityLogController::class)->name('activity-logs')
 Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::put('password', [ProfileController::class, 'updatePassword'])->name('password.update');
+
+
+/** attendance */
+Route::get('punch-in', [AttendanceController::class, 'punchIn']);
+Route::get('punch-out', [AttendanceController::class, 'punchOut']);

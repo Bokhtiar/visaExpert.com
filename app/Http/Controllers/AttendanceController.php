@@ -14,17 +14,27 @@ class AttendanceController extends Controller
             $date = now()->format('Y-m-d');
             $time = now()->format('H:i:s');
 
-            // Update or create the attendance record
+            // Define the threshold time for being late (9:30 AM)
+            $lateThreshold = now()->setTime(9, 30);
+
+            // Determine the status based on punch-in time
+            $status = now()->greaterThan($lateThreshold) ? 'late' : 'normal';
+
+            // Update or create the attendance record with status
             $attendance = Attendance::updateOrCreate(
                 ['user_id' => $user->id, 'date' => $date],
-                ['punch_in' => $time]
+                [
+                    'punch_in' => $time,
+                    'status' => $status
+                ]
             );
 
-            return redirect()->back()->with('success', 'Attendance successfully done.');
+            return redirect()->back()->with('success', 'Punch successfully done.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Something went wrong.');
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
 
 
     public function punchOut(Request $request)
@@ -40,33 +50,79 @@ class AttendanceController extends Controller
             if ($attendance) {
                 $attendance->punch_out = $time;
 
-                // Calculate total working hours
-                $attendance->total_hour = $attendance->punch_in->diffInHours($attendance->punch_out, false);
+                // Define the threshold times
+                $lateThreshold = now()->setTime(9, 30);   // 9:30 AM
+                $earlyOutThreshold = now()->setTime(17, 30);  // 5:30 PM
 
-                // Calculate late hours
-                $lateHour = max(0, $attendance->punch_in->diffInMinutes(now()->setTime(9, 30), false) / 60);
-                $attendance->late_hour = $lateHour;
+                // Initialize variables
+                $earlyOutHours = 0;
+                $earlyOutMinutes = 0;
+                $earlyOutSeconds = 0;
 
-                // Calculate early out hours
-                $earlyOutHour = max(0, now()->setTime(17, 30)->diffInMinutes($attendance->punch_out, false) / 60);
-                $attendance->early_out_hour = $earlyOutHour;
+                // Step 1: Calculate late hours (after 9:30 AM) with seconds precision
+                $lateMinutes = max(0, $attendance->punch_in->diffInMinutes($lateThreshold, true));
+                $lateSeconds = max(0, $attendance->punch_in->diffInSeconds($lateThreshold, true) % 60);
 
-                // Calculate fines
-                $attendance->fine = ($lateHour > 0 ? $lateHour * 50 : 0) + ($earlyOutHour > 0 ? $earlyOutHour * 50 : 0);
+                // Convert to hours, minutes, and seconds
+                $lateHours = floor($lateMinutes / 60);
+                $lateMinutes = $lateMinutes % 60;
+                $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
 
-                // Determine status
-                $attendance->status = $lateHour > 0 ? 'late' : ($earlyOutHour > 0 ? 'early_out' : 'normal');
+                $attendance->late_hour = sprintf('%02d:%02d:%02d', $lateHours, $lateMinutes, $lateSeconds);
+
+                // Check if punch-out time is before 5:30 PM
+                if ($attendance->punch_out < $earlyOutThreshold) {
+                    // Calculate early out time only if punch-out is before 5:30 PM
+                    $earlyOutMinutes = $earlyOutThreshold->diffInMinutes($attendance->punch_out, false);
+                    $earlyOutSeconds = $earlyOutThreshold->diffInSeconds($attendance->punch_out, false) % 60;
+
+                    // Convert to hours, minutes, and seconds
+                    $earlyOutHours = floor($earlyOutMinutes / 60);
+                    $earlyOutMinutes = $earlyOutMinutes % 60;
+                }
+
+                // Format with hours, minutes, and seconds
+                $attendance->early_out_hour = sprintf('%02d:%02d:%02d', $earlyOutHours, $earlyOutMinutes, $earlyOutSeconds);
+
+                // Optional: Calculate the fine based on rounded hours
+                $lateFine = $lateHours * 50 + ($lateMinutes / 60 * 50);
+                $earlyOutFine = $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50);
+                $attendance->fine = $lateFine + $earlyOutFine;
+
+                // Calculate total time worked (from punch_in to punch_out)
+                $totalSeconds = $attendance->punch_in->diffInSeconds($attendance->punch_out);
+                // Convert total seconds to hours, minutes, and seconds
+                $totalHours = floor($totalSeconds / 3600); // 3600 seconds in an hour
+                $totalMinutes = floor(($totalSeconds % 3600) / 60); // Remaining minutes after extracting hours
+                $totalSeconds = $totalSeconds % 60; // Remaining seconds after extracting hours and minutes
+
+                // Format total hours, minutes, and seconds
+                $totalHour = sprintf('%02d:%02d:%02d', $totalHours, $totalMinutes, $totalSeconds);
+
+                $attendance->total_hour = $totalHour;
+
+                // Determine status based on late or early out
+                if ($lateHours > 0 || $lateMinutes > 0 || $lateSeconds > 0) {
+                    $attendance->status = 'late';
+                } elseif ($earlyOutHours > 0 || $earlyOutMinutes > 0 || $earlyOutSeconds > 0) {
+                    $attendance->status = 'early_out';
+                } else {
+                    $attendance->status = 'normal';
+                }
 
                 $attendance->save();
 
                 return redirect()->back()->with('success', 'Punch out successfully done.');
             } else {
-                return redirect()->back()->with('success', 'Attendance record not found.');
+                return redirect()->back()->with('error', 'Attendance record not found.');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Something went wrong.');
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+
+
 
 
     public function getAttendanceList()
