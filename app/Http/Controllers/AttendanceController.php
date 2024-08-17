@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,8 +23,11 @@ class AttendanceController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
+        $users = User::all();
+        
+
         // Pass data to the view
-        return view('backend.attendance.show', compact('attendances', 'today'));
+        return view('backend.attendance.show', compact('attendances', 'users'));
     }
 
     public function punchIn(Request $request)
@@ -164,5 +168,56 @@ class AttendanceController extends Controller
         $attendance->save();
         return redirect()->back()->with('success', 'Attendance fine update.');
     }
+
+    /** filter */
+    public function filter(Request $request)
+    {
+        // Get the selected month and year, default to current month and year
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+        $findUser = User::find($request->user_id);
+
+        // Define the start and end dates for the selected month and year
+        $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
+        $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
+
+        // Fetch the attendance records for the current user within the date range
+        $attendances = Attendance::where('user_id', $request->user_id)
+            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $users = User::all();
+
+        return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
+
+    }
+
+    /** finecalcelfilter */
+    public function fineCancelFilter(Request $request, $id, $month, $user, $year)
+    {
+        // Update the fine for the attendance record
+        $attendance = Attendance::find($id);
+        $attendance->fine = $request->fine;
+        $attendance->save();
+
+        // Get the selected month and year
+        $findUser = User::find($user);
+        $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
+        $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
+
+        // Fetch the attendance records for the specified user within the date range
+        $attendances = Attendance::where('user_id', $user)
+            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $users = User::all();
+
+
+        // Return the filtered view
+        return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
+    }
+
 
 }
