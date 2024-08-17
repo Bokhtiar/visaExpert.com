@@ -25,16 +25,23 @@
 
                             {{-- attendance  --}}
                             <div class="mx-2">
-                                @if ($attendance && $attendance->punch_in)
+                                
+                                @if ($attendance)
+                                    <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
+                                        style="pointer-events: none; opacity: 0.5;">
+                                        Punch In
+                                        ({{ $attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : '' }})
+                                    </a>
+
                                     <a href="{{ url('admin/punch-out') }}" class="bg-danger text-white p-2 rounded">
                                         Punch Out
                                         ({{ $attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : '' }})
                                     </a>
                                 @else
+                          
                                     <a href="{{ url('admin/punch-in') }}"
                                         class="font-bold bg-success text-white p-2 rounded">
                                         Punch In
-                                        ({{ $attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : '' }})
                                     </a>
                                 @endif
                             </div>

@@ -20,12 +20,27 @@ class AttendanceController extends Controller
             // Determine the status based on punch-in time
             $status = now()->greaterThan($lateThreshold) ? 'late' : 'normal';
 
+
+
+            // Step 1: Calculate late hours (after 9:30 AM) with seconds precision
+            $current = \Carbon\Carbon::parse($time);  // Current punch-in time
+            $lateMinutes = max(0, $current->diffInMinutes($lateThreshold, true));
+            $lateSeconds = max(0, $current->diffInSeconds($lateThreshold, true) % 60);
+
+            // Convert to hours, minutes, and seconds
+            $lateHours = floor($lateMinutes / 60);
+            $lateMinutes = $lateMinutes % 60;
+            $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
+
+            
+
             // Update or create the attendance record with status
             $attendance = Attendance::updateOrCreate(
                 ['user_id' => $user->id, 'date' => $date],
                 [
                     'punch_in' => $time,
-                    'status' => $status
+                    'status' => $status,
+                    'late_hour' => sprintf('%02d:%02d:%02d', $lateHours, $lateMinutes, $lateSeconds)
                 ]
             );
 
@@ -73,15 +88,15 @@ class AttendanceController extends Controller
                 // Check if punch-out time is before 5:30 PM
                 if ($attendance->punch_out < $earlyOutThreshold) {
                     // Calculate early out time only if punch-out is before 5:30 PM
-                    $earlyOutMinutes = $earlyOutThreshold->diffInMinutes($attendance->punch_out, false);
-                    $earlyOutSeconds = $earlyOutThreshold->diffInSeconds($attendance->punch_out, false) % 60;
+                    $earlyOutMinutes = abs($earlyOutThreshold->diffInMinutes($attendance->punch_out, false));
+                    $earlyOutSeconds = abs($earlyOutThreshold->diffInSeconds($attendance->punch_out, false) % 60);
 
                     // Convert to hours, minutes, and seconds
-                    $earlyOutHours = floor($earlyOutMinutes / 60);
-                    $earlyOutMinutes = $earlyOutMinutes % 60;
+                    $earlyOutHours = floor($earlyOutMinutes / 60);  // Calculate full hours
+                    $earlyOutMinutes = $earlyOutMinutes % 60;       // Remaining minutes after full hours
                 }
 
-                // Format with hours, minutes, and seconds
+                // Format early out time with hours, minutes, and seconds
                 $attendance->early_out_hour = sprintf('%02d:%02d:%02d', $earlyOutHours, $earlyOutMinutes, $earlyOutSeconds);
 
                 // Optional: Calculate the fine based on rounded hours

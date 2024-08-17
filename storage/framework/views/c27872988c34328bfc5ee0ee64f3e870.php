@@ -23,18 +23,26 @@
 
                             
                             <div class="mx-2">
-    <?php if($attendance && $attendance->punch_in): ?>
-        <a href="<?php echo e(url('admin/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
-            Punch Out 
-            (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
-        </a>
-    <?php else: ?>
-        <a href="<?php echo e(url('admin/punch-in')); ?>" class="font-bold bg-success text-white p-2 rounded">
-            Punch In 
-            (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
-        </a>
-    <?php endif; ?>
-</div>
+                                
+                                <?php if($attendance): ?>
+                                    <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
+                                        style="pointer-events: none; opacity: 0.5;">
+                                        Punch In
+                                        (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
+                                    </a>
+
+                                    <a href="<?php echo e(url('admin/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
+                                        Punch Out
+                                        (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
+                                    </a>
+                                <?php else: ?>
+                          
+                                    <a href="<?php echo e(url('admin/punch-in')); ?>"
+                                        class="font-bold bg-success text-white p-2 rounded">
+                                        Punch In
+                                    </a>
+                                <?php endif; ?>
+                            </div>
 
 
 
