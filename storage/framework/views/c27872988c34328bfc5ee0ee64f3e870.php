@@ -31,13 +31,13 @@
                                         (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
                                     </a>
 
-                                    <a href="<?php echo e(url('admin/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
+                                    <a href="<?php echo e(url('admin/attendance/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
                                         Punch Out
                                         (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
                                     </a>
                                 <?php else: ?>
                           
-                                    <a href="<?php echo e(url('admin/punch-in')); ?>"
+                                    <a href="<?php echo e(url('admin/attendance/punch-in')); ?>"
                                         class="font-bold bg-success text-white p-2 rounded">
                                         Punch In
                                     </a>

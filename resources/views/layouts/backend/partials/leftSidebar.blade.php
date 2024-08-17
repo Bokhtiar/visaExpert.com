@@ -57,28 +57,28 @@
 
                 {{-- notepad --}}
                 <li class="nav-item my-1">
-                            <a class="nav-link menu-link {{ request()->routeIs('admin.notepad.*') ? 'active' : '' }}"
-                                href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                aria-controls="sidebarNotepad">
-                                <i data-feather="file" class="icon-dual"></i>
-                                <span data-key="t-customers">Notepad</span>
-                            </a>
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.notepad.*') ? 'active' : '' }}"
+                        href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarNotepad">
+                        <i data-feather="file" class="icon-dual"></i>
+                        <span data-key="t-customers">Notepad</span>
+                    </a>
 
-                            @hasPermission('Notepad List')
-                                <div class="collapse menu-dropdown {{ request()->routeIs('admin.notepad.*') ? 'show' : '' }}"
-                                    id="sidebarNotepad">
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item">
-                                            <a href="{{ route('admin.notepad.index') }}"
-                                                class="nav-link {{ request()->routeIs('admin.notepad.index') ? 'active' : '' }}"
-                                                data-key="t-customer-list">
-                                                Notepad List
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            @endhasPermission
-                        </li>
+                    @hasPermission('Notepad List')
+                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.notepad.*') ? 'show' : '' }}"
+                            id="sidebarNotepad">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.notepad.index') }}"
+                                        class="nav-link {{ request()->routeIs('admin.notepad.index') ? 'active' : '' }}"
+                                        data-key="t-customer-list">
+                                        Notepad List
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endhasPermission
+                </li>
 
 
                 @hasPermission('Visa Type List')
@@ -204,12 +204,36 @@
                                         data-key="t-visa-type-list">
                                         Statement List
                                     </a>
-                                </li> 
+                                </li>
                             @endhasPermission
                         </ul>
                     </div>
                 </li>
                 <!-- balance transfer -->
+
+                {{-- attendance --}}
+
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.attendance.*') ? 'active' : '' }}"
+                        href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarAttendance">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">Attendance</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.attendance.*') ? 'show' : '' }}"
+                        id="sidebarAttendance">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ url('admin/attendance') }}"
+                                    class="nav-link {{ request()->routeIs('admin.attendance') ? 'active' : '' }}"
+                                    data-key="t-add-visa-type">
+                                    Attendance List
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
 
 
                 @hasPermission('List Link')

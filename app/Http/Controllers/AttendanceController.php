@@ -3,10 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    public function index()
+    {
+        // Get the current user
+        $user = auth()->user();
+
+        // Get today's date
+        $today = Carbon::now()->format('Y-m-d');
+
+        // Fetch the attendance records for the current user for today
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Pass data to the view
+        return view('backend.attendance.show', compact('attendances', 'today'));
+    }
+
     public function punchIn(Request $request)
     {
         try {
@@ -100,8 +119,8 @@ class AttendanceController extends Controller
                 $attendance->early_out_hour = sprintf('%02d:%02d:%02d', $earlyOutHours, $earlyOutMinutes, $earlyOutSeconds);
 
                 // Optional: Calculate the fine based on rounded hours
-                $lateFine = $lateHours * 50 + ($lateMinutes / 60 * 50);
-                $earlyOutFine = $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50);
+                $lateFine = $lateHours ?  $lateHours * 50 + ($lateMinutes / 60 * 50) : 0;
+                $earlyOutFine = $earlyOutHours ?  $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50): 0;
                 $attendance->fine = $lateFine + $earlyOutFine;
 
                 // Calculate total time worked (from punch_in to punch_out)
@@ -137,13 +156,13 @@ class AttendanceController extends Controller
     }
 
 
-
-
-
-    public function getAttendanceList()
+    /** fine cancel */
+    public function fineCancel(Request $request, $id)
     {
-        $attendances = Attendance::where('user_id', auth()->user()->id)->get();
-        return response()->json($attendances);
+        $attendance = Attendance::find($id);
+        $attendance->fine = $request->fine;
+        $attendance->save();
+        return redirect()->back()->with('success', 'Attendance fine update.');
     }
 
 }

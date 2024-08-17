@@ -108,6 +108,10 @@ Route::patch('profile', [ProfileController::class, 'update'])->name('profile.upd
 Route::put('password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
 
+
+
 /** attendance */
-Route::get('punch-in', [AttendanceController::class, 'punchIn']);
-Route::get('punch-out', [AttendanceController::class, 'punchOut']);
+Route::get('attendance', [AttendanceController::class, 'index']);
+Route::get('attendance/punch-in', [AttendanceController::class, 'punchIn']);
+Route::get('attendance/punch-out', [AttendanceController::class, 'punchOut']);
+Route::get('attendance/find-cancel/{id}', [AttendanceController::class, 'fineCancel']);

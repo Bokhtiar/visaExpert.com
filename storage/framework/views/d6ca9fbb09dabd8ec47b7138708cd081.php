@@ -57,28 +57,28 @@
 
                 
                 <li class="nav-item my-1">
-                            <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.notepad.*') ? 'active' : ''); ?>"
-                                href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                aria-controls="sidebarNotepad">
-                                <i data-feather="file" class="icon-dual"></i>
-                                <span data-key="t-customers">Notepad</span>
-                            </a>
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.notepad.*') ? 'active' : ''); ?>"
+                        href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarNotepad">
+                        <i data-feather="file" class="icon-dual"></i>
+                        <span data-key="t-customers">Notepad</span>
+                    </a>
 
-                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Notepad List')): ?>
-                                <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.notepad.*') ? 'show' : ''); ?>"
-                                    id="sidebarNotepad">
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item">
-                                            <a href="<?php echo e(route('admin.notepad.index')); ?>"
-                                                class="nav-link <?php echo e(request()->routeIs('admin.notepad.index') ? 'active' : ''); ?>"
-                                                data-key="t-customer-list">
-                                                Notepad List
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            <?php endif; ?>
-                        </li>
+                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Notepad List')): ?>
+                        <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.notepad.*') ? 'show' : ''); ?>"
+                            id="sidebarNotepad">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="<?php echo e(route('admin.notepad.index')); ?>"
+                                        class="nav-link <?php echo e(request()->routeIs('admin.notepad.index') ? 'active' : ''); ?>"
+                                        data-key="t-customer-list">
+                                        Notepad List
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                </li>
 
 
                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Visa Type List')): ?>
@@ -204,12 +204,36 @@
                                         data-key="t-visa-type-list">
                                         Statement List
                                     </a>
-                                </li> 
+                                </li>
                             <?php endif; ?>
                         </ul>
                     </div>
                 </li>
                 <!-- balance transfer -->
+
+                
+
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.attendance.*') ? 'active' : ''); ?>"
+                        href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarAttendance">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">Attendance</span>
+                    </a>
+                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.attendance.*') ? 'show' : ''); ?>"
+                        id="sidebarAttendance">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="<?php echo e(url('admin/attendance')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.attendance') ? 'active' : ''); ?>"
+                                    data-key="t-add-visa-type">
+                                    Attendance List
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
 
 
                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'List Link')): ?>
