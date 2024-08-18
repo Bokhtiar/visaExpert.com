@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Holiday;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -170,28 +171,69 @@ class AttendanceController extends Controller
     }
 
     /** filter */
+    // public function filter(Request $request)
+    // {
+    //     // Get the selected month and year, default to current month and year
+    //     $month = $request->input('month', date('m'));
+    //     $year = $request->input('year', date('Y'));
+    //     $findUser = User::find($request->user_id);
+
+    //     // Define the start and end dates for the selected month and year
+    //     $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
+    //     $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
+
+    //     // Fetch the attendance records for the current user within the date range
+    //     $attendances = Attendance::where('user_id', $request->user_id)
+    //         ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+    //         ->orderBy('date', 'asc')
+    //         ->get();
+
+    //     $users = User::all();
+
+    //     return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
+
+    // }
+
     public function filter(Request $request)
     {
         // Get the selected month and year, default to current month and year
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
-        $findUser = User::find($request->user_id);
+        $userId = $request->input('user_id');
 
         // Define the start and end dates for the selected month and year
         $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
         $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
 
-        // Fetch the attendance records for the current user within the date range
-        $attendances = Attendance::where('user_id', $request->user_id)
+        // Fetch holidays for the selected month and year
+        $holidays = Holiday::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Fetch the attendance records for the selected user within the date range
+        $attendances = Attendance::where('user_id', $userId)
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->orderBy('date', 'asc')
             ->get();
 
+        // Fetch all users
         $users = User::all();
+        $findUser = User::find($userId);
 
-        return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
+        // Combine holidays and attendances into a single collection and sort by date
+        $combinedRecords = $holidays->concat($attendances)->sortBy('date')->values();
 
+        return view('backend.attendance.filter', compact(
+            'combinedRecords',
+            'users',
+            'findUser',
+            'month',
+            'year'
+        ));
     }
+
+
 
     /** finecalcelfilter */
     public function fineCancelFilter(Request $request, $id, $month, $user, $year)
