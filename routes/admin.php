@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CustomerInvoiceController;
 use App\Http\Controllers\Admin\DailyOfficeExpenseController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HolidayController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\NotepedController;
 use App\Http\Controllers\Admin\PermissionUserController;
@@ -118,3 +119,5 @@ Route::post('attendance/find-cancel/{id}', [AttendanceController::class, 'fineCa
 Route::post('attendance/filter', [AttendanceController::class, 'filter']);
 Route::post('attendance/fine-cancel-filter/{id}/{month}/{user}/{year}', [AttendanceController::class, 'fineCancelFilter']);
 
+/** holiday */
+Route::resource('holidays', HolidayController::class);
