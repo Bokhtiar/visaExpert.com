@@ -157,6 +157,37 @@
                     <?php endif; ?>
                 <?php endif; ?>
 
+                
+
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.holiday.*') ? 'active' : ''); ?>"
+                        href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarholiday">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">Holiday List</span>
+                    </a>
+                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.holiday.*') ? 'show' : ''); ?>"
+                        id="sidebarholiday">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.holiday.create')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.create') ? 'active' : ''); ?>"
+                                    data-key="t-add-visa-type">
+                                    Add holiday
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.holiday.index')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.index') ? 'active' : ''); ?>"
+                                    data-key="t-visa-type-list">
+                                    holiday List
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
                 <!-- balance transfer -->
                 <li class="nav-item my-1">
                     <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.transfer.*') ? 'active' : ''); ?>"
