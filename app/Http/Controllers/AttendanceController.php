@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -194,14 +195,51 @@ class AttendanceController extends Controller
 
     // }
 
+    // public function filter(Request $request)
+    // {
+    //     // Get the selected month and year, default to current month and year
+    //     $month = $request->input('month', date('m'));
+    //     $year = $request->input('year', date('Y'));
+    //     $userId = $request->input('user_id');
+
+    //     // Define the start and end dates for the selected month and year
+    //     $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
+    //     $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
+
+    //     // Fetch holidays for the selected month and year
+    //     $holidays = Holiday::whereMonth('date', $month)
+    //         ->whereYear('date', $year)
+    //         ->orderBy('date', 'asc')
+    //         ->get();
+
+    //     // Fetch the attendance records for the selected user within the date range
+    //     $attendances = Attendance::where('user_id', $userId)
+    //         ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+    //         ->orderBy('date', 'asc')
+    //         ->get();
+
+    //     // Fetch all users
+    //     $users = User::all();
+    //     $findUser = User::find($userId);
+
+    //     // Combine holidays and attendances into a single collection and sort by date
+    //     $combinedRecords = $holidays->concat($attendances)->sortBy('date')->values();
+
+    //     return view('backend.attendance.filter', compact(
+    //         'combinedRecords',
+    //         'users',
+    //         'findUser',
+    //         'month',
+    //         'year'
+    //     ));
+    // }
+
     public function filter(Request $request)
     {
-        // Get the selected month and year, default to current month and year
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
         $userId = $request->input('user_id');
 
-        // Define the start and end dates for the selected month and year
         $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
         $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
 
@@ -211,27 +249,41 @@ class AttendanceController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        // Fetch the attendance records for the selected user within the date range
+        // Fetch attendances for the selected user within the date range
         $attendances = Attendance::where('user_id', $userId)
-            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
             ->orderBy('date', 'asc')
             ->get();
 
-        // Fetch all users
+        // Fetch leaves for the selected user within the date range
+        $leaves = Leave::where('user_id', $userId)
+            ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
+            ->where('status', 'approved')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Debugging output
+      //  dd($holidays, $attendances, $leaves);
+
+        // Combine all records and sort by date
+        $combinedRecords = $holidays->concat($attendances)->concat($leaves)
+            ->unique('date')
+            ->sortBy('date');
+
+        // Debugging output
+        // dd($combinedRecords);
+
+        // Fetch all users and find the current user
         $users = User::all();
         $findUser = User::find($userId);
 
-        // Combine holidays and attendances into a single collection and sort by date
-        $combinedRecords = $holidays->concat($attendances)->sortBy('date')->values();
-
-        return view('backend.attendance.filter', compact(
-            'combinedRecords',
-            'users',
-            'findUser',
-            'month',
-            'year'
-        ));
+        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year'));
     }
+
+
+
 
 
 

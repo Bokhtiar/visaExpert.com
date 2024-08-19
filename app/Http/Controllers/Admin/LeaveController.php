@@ -17,9 +17,9 @@ class LeaveController extends Controller
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
         
-        $leaves = Leave::whereMonth('leave_date', $month)
-            ->whereYear('leave_date', $year)
-            ->orderBy('leave_date', 'asc')
+        $leaves = Leave::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->orderBy('date', 'asc')
             ->get();
 
         return view('backend.leave.index', compact('leaves','month', 'year'));
@@ -33,20 +33,20 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
 
-
+        
     
         $request->validate([
-            'leave_date' => 'required|date',
+            'date' => 'required|date',
             'leave_type' => 'required|string',
             'reason' => 'nullable|string',
         ]);
 
         $userId = Auth::id();
-        $leaveDate = $request->input('leave_date');
+        $leaveDate = $request->input('date');
 
         // Check if a leave already exists for the same user on the same date
         $existingLeave = Leave::where('user_id', $userId)
-        ->where('leave_date', $leaveDate)
+        ->where('date', $leaveDate)
         ->first();
 
         if ($existingLeave) {
@@ -75,18 +75,18 @@ class LeaveController extends Controller
     {
         $request->validate([
            
-            'leave_date' => 'required|date',
+            'date' => 'required|date',
             'leave_type' => 'required|string',
             'reason' => 'nullable|string',
         ]);
 
         $userId = Auth::id();
-        $leaveDate = $request->input('leave_date');
+        $leaveDate = $request->input('date');
 
         // Check if a leave already exists for the same user on the same date
-        if ($leaveDate !== $leave->leave_date) {
+        if ($leaveDate !== $leave->date) {
             $existingLeave = Leave::where('user_id', $userId)
-            ->where('leave_date', $leaveDate)
+            ->where('date', $leaveDate)
             ->first();
 
             if ($existingLeave) {
@@ -127,8 +127,8 @@ class LeaveController extends Controller
         $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
 
         // Fetch leaves for the selected user within the date range
-        $leaves = Leave::whereBetween('leave_date', [$firstDayOfMonth, $lastDayOfMonth])
-            ->orderBy('leave_date', 'asc')
+        $leaves = Leave::whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->orderBy('date', 'asc')
             ->get();
 
         return view('backend.leave.index', compact('leaves', 'month', 'year'));

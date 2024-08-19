@@ -51,14 +51,14 @@
 
                                
 
-                                <!--leave_date Date Field -->
+                                <!--date Date Field -->
                                 <div>
-                                    <label for="leave_date" class="form-label">Leave date</label>
-                                    <input type="date" id="leave_date"
-                                        class="form-control mb-3 @error('date') is-invalid @enderror" name="leave_date"
-                                        value="{{ $edit->leave_date ?? old('leave_date') }}">
+                                    <label for="date" class="form-label">Leave date</label>
+                                    <input type="date" id="date"
+                                        class="form-control mb-3 @error('date') is-invalid @enderror" name="date"
+                                        value="{{ $edit->date ?? old('date') }}">
 
-                                    @error('leave_date')
+                                    @error('date')
                                         <div class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </div>

@@ -108,7 +108,7 @@
                                                     <tr>
                                                         <td>{{ $leave->user_id }}</td>
                                                         <td>{{ $leave->leave_type }}</td>
-                                                        <td>{{ $leave->leave_date }}</td>
+                                                        <td>{{ $leave->date }}</td>
                                                         <td>{{ $leave->reason }}</td>
                                                         <td>{{ $leave->status }}</td>
                                                         <td>

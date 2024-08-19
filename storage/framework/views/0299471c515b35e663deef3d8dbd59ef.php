@@ -50,10 +50,10 @@
 
                                
 
-                                <!--leave_date Date Field -->
+                                <!--date Date Field -->
                                 <div>
-                                    <label for="leave_date" class="form-label">Leave date</label>
-                                    <input type="date" id="leave_date"
+                                    <label for="date" class="form-label">Leave date</label>
+                                    <input type="date" id="date"
                                         class="form-control mb-3 <?php $__errorArgs = ['date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -61,10 +61,10 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="leave_date"
-                                        value="<?php echo e($edit->leave_date ?? old('leave_date')); ?>">
+unset($__errorArgs, $__bag); ?>" name="date"
+                                        value="<?php echo e($edit->date ?? old('date')); ?>">
 
-                                    <?php $__errorArgs = ['leave_date'];
+                                    <?php $__errorArgs = ['date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

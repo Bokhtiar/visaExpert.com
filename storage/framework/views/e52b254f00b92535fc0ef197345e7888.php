@@ -98,7 +98,7 @@
                                                     <tr>
                                                         <td><?php echo e($leave->user_id); ?></td>
                                                         <td><?php echo e($leave->leave_type); ?></td>
-                                                        <td><?php echo e($leave->leave_date); ?></td>
+                                                        <td><?php echo e($leave->date); ?></td>
                                                         <td><?php echo e($leave->reason); ?></td>
                                                         <td><?php echo e($leave->status); ?></td>
                                                         <td>
