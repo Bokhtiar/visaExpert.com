@@ -126,4 +126,4 @@ Route::post('holiday/filter', [HolidayController::class, 'holiday_filter'])->nam
 
 /** leave */
 Route::resource('leave', LeaveController::class);
-Route::post('leave/filter', [HolidayController::class, 'leave_filter'])->name('leave.filter');
+Route::post('leave/filter', [LeaveController::class, 'leave_filter'])->name('leave.filter');

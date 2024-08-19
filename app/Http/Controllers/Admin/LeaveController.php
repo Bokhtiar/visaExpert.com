@@ -114,4 +114,24 @@ class LeaveController extends Controller
 
         return redirect()->route('admin.leave.index')->with('success', 'Leave deleted successfully.');
     }
+
+    public function leave_filter(Request $request)
+    {
+        // Get the selected month and year, default to current month and year
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+        
+
+        // Define the start and end dates for the selected month and year
+        $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
+        $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
+
+        // Fetch leaves for the selected user within the date range
+        $leaves = Leave::whereBetween('leave_date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->orderBy('leave_date', 'asc')
+            ->get();
+
+        return view('backend.leave.index', compact('leaves', 'month', 'year'));
+    }
+
 }
