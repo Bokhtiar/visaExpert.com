@@ -158,7 +158,6 @@
                 @endhasPermission
 
                 {{-- holiday --}}
-
                 <li class="nav-item my-1">
                     <a class="nav-link menu-link {{ request()->routeIs('admin.holiday.*') ? 'active' : '' }}"
                         href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
@@ -181,6 +180,35 @@
                                     class="nav-link {{ request()->routeIs('admin.holiday.index') ? 'active' : '' }}"
                                     data-key="t-visa-type-list">
                                     holiday List
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- leave --}}
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.leave.*') ? 'active' : '' }}"
+                        href="#sidebarleave" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarleave">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">leave Apply</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.leave.*') ? 'show' : '' }}"
+                        id="sidebarleave">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.leave.create') }}"
+                                    class="nav-link {{ request()->routeIs('admin.leave.create') ? 'active' : '' }}"
+                                    data-key="t-add-visa-type">
+                                    Add Leave
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.leave.index') }}"
+                                    class="nav-link {{ request()->routeIs('admin.leave.index') ? 'active' : '' }}"
+                                    data-key="t-visa-type-list">
+                                    Leave List
                                 </a>
                             </li>
                         </ul>

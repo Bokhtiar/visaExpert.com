@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CustomerInvoiceController;
 use App\Http\Controllers\Admin\DailyOfficeExpenseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HolidayController;
+use App\Http\Controllers\Admin\LeaveController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\NotepedController;
 use App\Http\Controllers\Admin\PermissionUserController;
@@ -122,3 +123,7 @@ Route::post('attendance/fine-cancel-filter/{id}/{month}/{user}/{year}', [Attenda
 /** holiday */
 Route::resource('holiday', HolidayController::class);
 Route::post('holiday/filter', [HolidayController::class, 'holiday_filter'])->name('holiday.filter');
+
+/** leave */
+Route::resource('leave', LeaveController::class);
+Route::post('leave/filter', [HolidayController::class, 'leave_filter'])->name('leave.filter');
