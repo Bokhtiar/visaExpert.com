@@ -38,7 +38,7 @@
 
                                 </div>
                                 <div class="card-body">
-                                
+
                                     {{-- filter --}}
                                     <form method="POST" action="{{ route('admin.leave.filter') }}" class="mb-4">
                                         @csrf
@@ -104,7 +104,7 @@
                                             <tbody>
                                                 {{-- {{dd($leaves)}} --}}
                                                 @forelse($leaves as $leave)
-                                                {{-- {{dd($leave)}} --}}
+                                                    {{-- {{dd($leave)}} --}}
                                                     <tr>
                                                         <td>{{ $leave->user_id }}</td>
                                                         <td>{{ $leave->leave_type }}</td>
@@ -112,16 +112,26 @@
                                                         <td>{{ $leave->reason }}</td>
                                                         <td>{{ $leave->status }}</td>
                                                         <td>
-                                                            <a href="{{ route('admin.leave.edit', $leave->id) }}"
-                                                                class="btn btn-warning">Edit</a>
-                                                            <form
-                                                                action="{{ route('admin.leave.destroy', $leave->id) }}"
-                                                                method="POST" style="display:inline-block;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="btn btn-danger">Delete</button>
-                                                            </form>
+                                                            @if ($leave->status == 'pending')
+                                                                <a href="{{ route('admin.leave.approved', $leave->id) }}"
+                                                                    class="btn btn-success">Approved</a>
+
+                                                                <a href="{{ route('admin.leave.rejected', $leave->id) }}"
+                                                                    class="btn btn-danger">Reject</a>
+
+                                                                <a href="{{ route('admin.leave.edit', $leave->id) }}"
+                                                                    class="btn btn-warning">Edit</a>
+                                                                <form
+                                                                    action="{{ route('admin.leave.destroy', $leave->id) }}"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                         
+                                                            @endif
+
                                                         </td>
                                                     </tr>
                                                 @empty

@@ -36,7 +36,7 @@
 
                                 </div>
                                 <div class="card-body">
-                                
+
                                     
                                     <form method="POST" action="<?php echo e(route('admin.leave.filter')); ?>" class="mb-4">
                                         <?php echo csrf_field(); ?>
@@ -94,7 +94,7 @@
                                             <tbody>
                                                 
                                                 <?php $__empty_1 = true; $__currentLoopData = $leaves; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $leave): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                                
+                                                    
                                                     <tr>
                                                         <td><?php echo e($leave->user_id); ?></td>
                                                         <td><?php echo e($leave->leave_type); ?></td>
@@ -102,16 +102,26 @@
                                                         <td><?php echo e($leave->reason); ?></td>
                                                         <td><?php echo e($leave->status); ?></td>
                                                         <td>
-                                                            <a href="<?php echo e(route('admin.leave.edit', $leave->id)); ?>"
-                                                                class="btn btn-warning">Edit</a>
-                                                            <form
-                                                                action="<?php echo e(route('admin.leave.destroy', $leave->id)); ?>"
-                                                                method="POST" style="display:inline-block;">
-                                                                <?php echo csrf_field(); ?>
-                                                                <?php echo method_field('DELETE'); ?>
-                                                                <button type="submit"
-                                                                    class="btn btn-danger">Delete</button>
-                                                            </form>
+                                                            <?php if($leave->status == 'pending'): ?>
+                                                                <a href="<?php echo e(route('admin.leave.approved', $leave->id)); ?>"
+                                                                    class="btn btn-success">Approved</a>
+
+                                                                <a href="<?php echo e(route('admin.leave.rejected', $leave->id)); ?>"
+                                                                    class="btn btn-danger">Reject</a>
+
+                                                                <a href="<?php echo e(route('admin.leave.edit', $leave->id)); ?>"
+                                                                    class="btn btn-warning">Edit</a>
+                                                                <form
+                                                                    action="<?php echo e(route('admin.leave.destroy', $leave->id)); ?>"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <?php echo method_field('DELETE'); ?>
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                         
+                                                            <?php endif; ?>
+
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

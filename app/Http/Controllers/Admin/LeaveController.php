@@ -134,4 +134,20 @@ class LeaveController extends Controller
         return view('backend.leave.index', compact('leaves', 'month', 'year'));
     }
 
+    public function leave_approved($id)
+    {
+        $leave = Leave::find($id);
+        $leave->status = "approved";
+        $leave->save();
+        return redirect()->route('admin.leave.index')->with('success', 'Leave approved successfully.');
+    }
+
+    public function leave_rejected($id)
+    {
+        $leave = Leave::find($id);
+        $leave->status = "rejected";
+        $leave->save();
+        return redirect()->route('admin.leave.index')->with('success', 'Leave rejected successfully.');
+    }
+
 }
