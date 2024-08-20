@@ -162,89 +162,103 @@
 
         <div class="card">
             <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Attendance and Holiday Sheet</h4>
+                <h4 class="card-title mb-0 flex-grow-1">{{ $user->name }} Attendance Sheet
+                    ({{ \Carbon\Carbon::create()->month($month)->format('F') }})</h4>
+                <div>
+                    {{-- <p>Total File: {{$user->salary .-. $totalFine  .=. $user->salary - $totalFine}}</p> --}}
+                    <p>
+                        <sapn class="bg-danger rounded text-white px-2">Total Fine ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): {{ $totalFine }} Tk
+                        </sapn>
+                        <span class="bg-info text-white rounded px-2 mx-2">Salary : {{ $findUser->salary }} Tk</span>
+                        <span class="bg-success text-white rounded px-2"> Salary ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): {{$findUser->salary - $totalFine}} Tk</span>
+                    </p>
+
+                </div>
             </div>
             <div class="">
-               <table id="example" class="table table-borderless align-middle mb-0">
-    <thead class="table-light">
-        <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Status / Name</th>
-            <th>Punch In</th>
-            <th>Punch Out</th>
-            <th>Total Hours</th>
-            <th>Late Hours</th>
-            <th>Early Out Hours</th>
-            <th>Fine</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($combinedRecords as $record)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($record->date)->format('Y-m-d') }}</td>
-                <td>
-                    @if ($record instanceof \App\Models\Holiday)
-                        <span class="badge bg-primary">Holiday</span>
-                    @elseif($record instanceof \App\Models\Leave)
-                     <span class="badge bg-primary">Leave</span>
-                    @else
-                        @if ($record->status == 'late')
-                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
-                        @elseif ($record->status == 'normal')
-                            <span class="btn btn-sm btn-success">{{ $record->status }}</span>
-                        @elseif ($record->status == 'leave')
-                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
-                        @elseif ($record->status == 'early_out')
-                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
-                        @endif
-                    @endif
-                </td>
-                <td>
-                    @if ($record instanceof \App\Models\Holiday)
-                        {{ $record->name }}
-                    @else
-                        {{ $record->status }} <!-- Or other relevant info -->
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        {{ $record->punch_in ? \Carbon\Carbon::parse($record->punch_in)->format('g:i A') : 'N/A' }}
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        {{ $record->punch_out ? \Carbon\Carbon::parse($record->punch_out)->format('g:i A') : 'N/A' }}
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        {{ $record->total_hour ?? 'N/A' }}
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        {{ $record->late_hour ?? 'N/A' }}
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        {{ $record->early_out_hour ?? 'N/A' }}
-                    @endif
-                </td>
-                <td>
-                    @if (!$record instanceof \App\Models\Holiday)
-                        <form action="{{ url('admin/attendance/fine-cancel-filter', ['id' => $record->id, 'month' => $month, 'user' => $findUser->id, 'year' => $year]) }}" method="POST">
-                            @csrf
-                            <input style="width:80px" type="text" name="fine" value="{{ $record->fine }}">
-                            <input type="submit" value="Update" class="btn btn-success btn-sm">
-                        </form>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+                <table id="example" class="table table-borderless align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Status / Name</th>
+                            <th>Punch In</th>
+                            <th>Punch Out</th>
+                            <th>Total Hours</th>
+                            <th>Late Hours</th>
+                            <th>Early Out Hours</th>
+                            <th>Fine</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($combinedRecords as $record)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($record->date)->format('Y-m-d') }}</td>
+                                <td>
+                                    @if ($record instanceof \App\Models\Holiday)
+                                        <span class="badge bg-primary">Holiday</span>
+                                    @elseif($record instanceof \App\Models\Leave)
+                                        <span class="badge bg-primary">Leave</span>
+                                    @else
+                                        @if ($record->status == 'late')
+                                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
+                                        @elseif ($record->status == 'normal')
+                                            <span class="btn btn-sm btn-success">{{ $record->status }}</span>
+                                        @elseif ($record->status == 'leave')
+                                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
+                                        @elseif ($record->status == 'early_out')
+                                            <span class="btn btn-sm btn-danger">{{ $record->status }}</span>
+                                        @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($record instanceof \App\Models\Holiday)
+                                        {{ $record->name }}
+                                    @else
+                                        {{ $record->status }} <!-- Or other relevant info -->
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        {{ $record->punch_in ? \Carbon\Carbon::parse($record->punch_in)->format('g:i A') : 'N/A' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        {{ $record->punch_out ? \Carbon\Carbon::parse($record->punch_out)->format('g:i A') : 'N/A' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        {{ $record->total_hour ?? 'N/A' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        {{ $record->late_hour ?? 'N/A' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        {{ $record->early_out_hour ?? 'N/A' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (!$record instanceof \App\Models\Holiday)
+                                        <form
+                                            action="{{ url('admin/attendance/fine-cancel-filter', ['id' => $record->id, 'month' => $month, 'user' => $findUser->id, 'year' => $year]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <input style="width:80px" type="text" name="fine"
+                                                value="{{ $record->fine }}">
+                                            <input type="submit" value="Update" class="btn btn-success btn-sm">
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
             </div>
         </div>

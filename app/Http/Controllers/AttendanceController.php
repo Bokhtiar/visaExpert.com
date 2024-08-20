@@ -275,11 +275,14 @@ class AttendanceController extends Controller
         // Debugging output
         // dd($combinedRecords);
 
+        // Calculate total fine amount for the user within the selected month
+        $totalFine = $attendances->sum('fine');
+
         // Fetch all users and find the current user
         $users = User::all();
         $findUser = User::find($userId);
-
-        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year'));
+        
+        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year', 'totalFine'));
     }
 
 
