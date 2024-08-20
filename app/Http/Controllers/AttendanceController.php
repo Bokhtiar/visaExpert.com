@@ -171,68 +171,7 @@ class AttendanceController extends Controller
         return redirect()->back()->with('success', 'Attendance fine update.');
     }
 
-    /** filter */
-    // public function filter(Request $request)
-    // {
-    //     // Get the selected month and year, default to current month and year
-    //     $month = $request->input('month', date('m'));
-    //     $year = $request->input('year', date('Y'));
-    //     $findUser = User::find($request->user_id);
 
-    //     // Define the start and end dates for the selected month and year
-    //     $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
-    //     $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
-
-    //     // Fetch the attendance records for the current user within the date range
-    //     $attendances = Attendance::where('user_id', $request->user_id)
-    //         ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
-    //         ->orderBy('date', 'asc')
-    //         ->get();
-
-    //     $users = User::all();
-
-    //     return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
-
-    // }
-
-    // public function filter(Request $request)
-    // {
-    //     // Get the selected month and year, default to current month and year
-    //     $month = $request->input('month', date('m'));
-    //     $year = $request->input('year', date('Y'));
-    //     $userId = $request->input('user_id');
-
-    //     // Define the start and end dates for the selected month and year
-    //     $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
-    //     $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
-
-    //     // Fetch holidays for the selected month and year
-    //     $holidays = Holiday::whereMonth('date', $month)
-    //         ->whereYear('date', $year)
-    //         ->orderBy('date', 'asc')
-    //         ->get();
-
-    //     // Fetch the attendance records for the selected user within the date range
-    //     $attendances = Attendance::where('user_id', $userId)
-    //         ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
-    //         ->orderBy('date', 'asc')
-    //         ->get();
-
-    //     // Fetch all users
-    //     $users = User::all();
-    //     $findUser = User::find($userId);
-
-    //     // Combine holidays and attendances into a single collection and sort by date
-    //     $combinedRecords = $holidays->concat($attendances)->sortBy('date')->values();
-
-    //     return view('backend.attendance.filter', compact(
-    //         'combinedRecords',
-    //         'users',
-    //         'findUser',
-    //         'month',
-    //         'year'
-    //     ));
-    // }
 
     public function filter(Request $request)
     {
@@ -243,6 +182,52 @@ class AttendanceController extends Controller
         $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
         $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
 
+        // Fetch holidays, attendances, and leaves for the selected user and date range
+        $missHolidays = Holiday::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->orderBy('date', 'asc')
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        $missAttendances = Attendance::where('user_id', $userId)
+            ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        $missLeaves = Leave::where('user_id', $userId)
+            ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        // Determine all dates in the month
+        $allDatesInMonth = [];
+        $currentDate = Carbon::create($year, $month, 1);
+        while ($currentDate->month === (int)$month) {
+            $allDatesInMonth[] = $currentDate->format('Y-m-d');
+            $currentDate->addDay();
+        }
+        // Calculate missed dates
+        $missedDates = array_diff($allDatesInMonth, array_merge($missAttendances, $missLeaves, $missHolidays));
+        // Fetch all users and find the current user
+        $users = User::all();
+        $findUser = User::find($userId);
+        $missedDatesCount = count($missedDates);
+
+        // Get the current date
+        $today  = Carbon::create($lastDayOfMonth)->endOfMonth();
+        // Get the last day of the current month
+        $lastDayOfMonth = $today->copy()->endOfMonth();
+        // Get the total number of days in the month
+        $monthTotalDay = $lastDayOfMonth->day;
+        $deductionPerDay = $findUser->salary /  $monthTotalDay - count($missHolidays); // Fixed deduction per day
+        /** end of miss day (no activity) and calculation */
+        
+
+        /** attendance conbine marge data */
         // Fetch holidays for the selected month and year
         $holidays = Holiday::whereMonth('date', $month)
             ->whereYear('date', $year)
@@ -264,31 +249,16 @@ class AttendanceController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        // Debugging output
-      //  dd($holidays, $attendances, $leaves);
-
         // Combine all records and sort by date
         $combinedRecords = $holidays->concat($attendances)->concat($leaves)
             ->unique('date')
             ->sortBy('date');
 
-        // Debugging output
-        // dd($combinedRecords);
-
         // Calculate total fine amount for the user within the selected month
         $totalFine = $attendances->sum('fine');
 
-        // Fetch all users and find the current user
-        $users = User::all();
-        $findUser = User::find($userId);
-        
-        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year', 'totalFine'));
+        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year', 'totalFine', 'deductionPerDay', 'missedDatesCount', 'missedDates'));
     }
-
-
-
-
-
 
     /** finecalcelfilter */
     public function fineCancelFilter(Request $request, $id, $month, $user, $year)
@@ -298,22 +268,94 @@ class AttendanceController extends Controller
         $attendance->fine = $request->fine;
         $attendance->save();
 
-        // Get the selected month and year
-        $findUser = User::find($user);
+
+        $month = $month;
+        $year = $year;
+        $userId = $user;
+
         $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
         $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth()->format('Y-m-d');
 
-        // Fetch the attendance records for the specified user within the date range
-        $attendances = Attendance::where('user_id', $user)
+        // Fetch holidays, attendances, and leaves for the selected user and date range
+        $missHolidays = Holiday::whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->orderBy('date', 'asc')
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        $missAttendances = Attendance::where('user_id', $userId)
+        ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        $missLeaves = Leave::where('user_id', $userId)
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
+            ->toArray();
+
+        // Determine all dates in the month
+        $allDatesInMonth = [];
+        $currentDate = Carbon::create($year, $month, 1);
+        while ($currentDate->month === (int)$month) {
+            $allDatesInMonth[] = $currentDate->format('Y-m-d');
+            $currentDate->addDay();
+        }
+        // Calculate missed dates
+        $missedDates = array_diff($allDatesInMonth, array_merge($missAttendances, $missLeaves, $missHolidays));
+        // Fetch all users and find the current user
+        $users = User::all();
+        $findUser = User::find($userId);
+        $missedDatesCount = count($missedDates);
+
+        // Get the current date
+        $today  = Carbon::create($lastDayOfMonth)->endOfMonth();
+        // Get the last day of the current month
+        $lastDayOfMonth = $today->copy()->endOfMonth();
+        // Get the total number of days in the month
+        $monthTotalDay = $lastDayOfMonth->day;
+        $deductionPerDay = $findUser->salary /  $monthTotalDay - count($missHolidays); // Fixed deduction per day
+        /** end of miss day (no activity) and calculation */
+
+
+        /** attendance conbine marge data */
+        // Fetch holidays for the selected month and year
+        $holidays = Holiday::whereMonth('date', $month)
+            ->whereYear('date', $year)
             ->orderBy('date', 'asc')
             ->get();
 
-        $users = User::all();
+        // Fetch attendances for the selected user within the date range
+        $attendances = Attendance::where('user_id', $userId)
+            ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Fetch leaves for the selected user within the date range
+        $leaves = Leave::where('user_id', $userId)
+            ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '<=', $lastDayOfMonth)
+            ->where('status', 'approved')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Combine all records and sort by date
+        $combinedRecords = $holidays->concat($attendances)->concat($leaves)
+        ->unique('date')
+        ->sortBy('date');
+
+        // Calculate total fine amount for the user within the selected month
+        $totalFine = $attendances->sum('fine');
+
+        return view('backend.attendance.filter', compact('combinedRecords', 'users', 'findUser', 'month', 'year', 'totalFine', 'deductionPerDay', 'missedDatesCount', 'missedDates'));
 
 
         // Return the filtered view
-        return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
+        // return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
     }
 
 

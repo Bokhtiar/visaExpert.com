@@ -52,17 +52,34 @@
                 <h4 class="card-title mb-0 flex-grow-1"><?php echo e($user->name); ?> Attendance Sheet
                     (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>)</h4>
                 <div>
+                    <sapn class="bg-danger rounded text-white px-2 mx-1">Total Fine
+                        (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>): <?php echo e($totalFine); ?> Tk
+                    </sapn>
+                    <span class="bg-info text-white rounded px-2 mx-1">Salary : <?php echo e($findUser->salary); ?> Tk</span>
                     
-                    <p>
-                        <sapn class="bg-danger rounded text-white px-2">Total Fine (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>): <?php echo e($totalFine); ?> Tk
-                        </sapn>
-                        <span class="bg-info text-white rounded px-2 mx-2">Salary : <?php echo e($findUser->salary); ?> Tk</span>
-                        <span class="bg-success text-white rounded px-2"> Salary (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>): <?php echo e($findUser->salary - $totalFine); ?> Tk</span>
-                    </p>
+                    <span class="bg-warning text-white rounded px-2 mx-1"> Total Absent Day :
+                        <?php echo e($missedDatesCount); ?></span>
+                    <span class="bg-danger rounded text-white px-2 mx-1"> Total Absent fine :
+                        <?php echo e(number_format($deductionPerDay * $missedDatesCount, 2)); ?></span>
+                    <br>
+                    <span class="bg-success text-white rounded px-2 mx-1">Pay of Salary
+                        (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>):
+                        <?php echo e(number_format($findUser->salary - $totalFine - $deductionPerDay * $missedDatesCount)); ?>
+
+                        Tk</span>
+
 
                 </div>
             </div>
             <div class="">
+                <div class="px-3">
+                    <span class="bg-warning text-white px-2 rounded">Absend Date on
+                        (<?php echo e(\Carbon\Carbon::create()->month($month)->format('F')); ?>): </span>
+                    <?php $__currentLoopData = $missedDates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <span class="bg-danger px-2 text-white rounded mx-1"><?php echo e($date); ?></span>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+
                 <table id="example" class="table table-borderless align-middle mb-0">
                     <thead class="table-light">
                         <tr>
@@ -137,7 +154,9 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php if(!$record instanceof \App\Models\Holiday): ?>
+                                    <?php if($record instanceof \App\Models\Holiday): ?>
+                                    <?php elseif($record instanceof \App\Models\Leave): ?>
+                                    <?php else: ?>
                                         <form
                                             action="<?php echo e(url('admin/attendance/fine-cancel-filter', ['id' => $record->id, 'month' => $month, 'user' => $findUser->id, 'year' => $year])); ?>"
                                             method="POST">

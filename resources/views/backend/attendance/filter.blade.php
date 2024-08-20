@@ -165,17 +165,33 @@
                 <h4 class="card-title mb-0 flex-grow-1">{{ $user->name }} Attendance Sheet
                     ({{ \Carbon\Carbon::create()->month($month)->format('F') }})</h4>
                 <div>
-                    {{-- <p>Total File: {{$user->salary .-. $totalFine  .=. $user->salary - $totalFine}}</p> --}}
-                    <p>
-                        <sapn class="bg-danger rounded text-white px-2">Total Fine ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): {{ $totalFine }} Tk
-                        </sapn>
-                        <span class="bg-info text-white rounded px-2 mx-2">Salary : {{ $findUser->salary }} Tk</span>
-                        <span class="bg-success text-white rounded px-2"> Salary ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): {{$findUser->salary - $totalFine}} Tk</span>
-                    </p>
+                    <sapn class="bg-danger rounded text-white px-2 mx-1">Total Fine
+                        ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): {{ $totalFine }} Tk
+                    </sapn>
+                    <span class="bg-info text-white rounded px-2 mx-1">Salary : {{ $findUser->salary }} Tk</span>
+                    {{-- 'missedDates', 'deductionPerDay' --}}
+                    <span class="bg-warning text-white rounded px-2 mx-1"> Total Absent Day :
+                        {{ $missedDatesCount }}</span>
+                    <span class="bg-danger rounded text-white px-2 mx-1"> Total Absent fine :
+                        {{ number_format($deductionPerDay * $missedDatesCount, 2) }}</span>
+                    <br>
+                    <span class="bg-success text-white rounded px-2 mx-1">Pay of Salary
+                        ({{ \Carbon\Carbon::create()->month($month)->format('F') }}):
+                        {{ number_format($findUser->salary - $totalFine - $deductionPerDay * $missedDatesCount) }}
+                        Tk</span>
+
 
                 </div>
             </div>
             <div class="">
+                <div class="px-3">
+                    <span class="bg-warning text-white px-2 rounded">Absend Date on
+                        ({{ \Carbon\Carbon::create()->month($month)->format('F') }}): </span>
+                    @foreach ($missedDates as $date)
+                        <span class="bg-danger px-2 text-white rounded mx-1">{{ $date }}</span>
+                    @endforeach
+                </div>
+
                 <table id="example" class="table table-borderless align-middle mb-0">
                     <thead class="table-light">
                         <tr>
@@ -244,7 +260,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if (!$record instanceof \App\Models\Holiday)
+                                    @if ($record instanceof \App\Models\Holiday)
+                                    @elseif($record instanceof \App\Models\Leave)
+                                    @else
                                         <form
                                             action="{{ url('admin/attendance/fine-cancel-filter', ['id' => $record->id, 'month' => $month, 'user' => $findUser->id, 'year' => $year]) }}"
                                             method="POST">
