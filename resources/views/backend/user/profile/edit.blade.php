@@ -50,7 +50,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> 
                 <div class="card-body p-4">
                     <div class="tab-content">
                         <div class="tab-pane active" id="personalDetails" role="tabpanel">
@@ -73,6 +73,15 @@
                                                 Number</label>
                                             <input type="number" name="phone" class="form-control" id="phone"
                                                    value="{{ $user->phone }}">
+                                        </div>
+                                    </div>
+
+                                    <!--end col-->
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="salary" class="form-label">Salary</label>
+                                            <input type="number" name="salary" class="form-control" id="salary"
+                                                   value="{{ $user->salary }}">
                                         </div>
                                     </div>
                                     <!--end col-->

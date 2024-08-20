@@ -45,6 +45,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'status' => $request->filled('status'),
+            'salary' => $request->salary,
         ]);
 
         logActivity(
@@ -88,6 +89,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => isset($request->password) ? Hash::make($request->password) : $user->password,
             'status' => $request->filled('status'),
+            'salary' => $request->salary,
         ]);
 
         logActivity(

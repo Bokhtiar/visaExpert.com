@@ -75,6 +75,20 @@
                                         </span>
                                     @enderror
                                 </div>
+
+                                <div class="my-3">
+                                    <label for="salary" class="form-label">Salary</label>
+                                    <input id="salary" type="number"
+                                        class="form-control @error('salary') is-invalid @enderror" name="salary"
+                                        value="{{ $user->salary ?? old('salary') }}" required autofocus>
+
+                                    @error('salary')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
                                 <div class="my-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input id="password" type="password"

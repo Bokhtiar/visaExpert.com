@@ -40,7 +40,8 @@ class User extends Authenticatable
         'invoice',
         'expense',
         'transfer',
-        'recive'
+        'recive',
+        'salary'
     ];
 
     /**
