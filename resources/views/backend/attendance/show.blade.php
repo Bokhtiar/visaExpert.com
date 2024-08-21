@@ -40,15 +40,16 @@
                         @endfor
                     </select>
                 </div>
-
+                @hasPermission('Attendance Filter')
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
+                @endhasPermission
             </div>
         </form>
         <div class="card">
             <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Attendance Sheet</h4>
+                <h4 class="card-title mb-0 flex-grow-1">Today Attendance Sheet</h4>
             </div>
             <div class="">
                 <table id="example" class="table table-borderless align-middle mb-0">
@@ -88,6 +89,7 @@
                                 <td>{{ $attendance ? $attendance->late_hour : 'N/A' }}</td>
                                 <td>{{ $attendance ? $attendance->early_out_hour : 'N/A' }}</td>
                                 <td>
+                                    @hasPermission('Attendance Fine Update')
                                     <form action="{{ url('/admin/attendance/find-cancel', $attendance->id) }}"
                                         method="POST">
                                         @csrf
@@ -96,6 +98,7 @@
                                         <input type="submit" name="" value="Update" class="btn btn-success btn-sm"
                                             id="">
                                     </form>
+                                    @endhasPermission
                                 </td>
                             </tr>
                         @endforeach

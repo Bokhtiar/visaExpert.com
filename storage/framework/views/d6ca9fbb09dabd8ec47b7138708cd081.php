@@ -157,63 +157,7 @@
                     <?php endif; ?>
                 <?php endif; ?>
 
-                
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.holiday.*') ? 'active' : ''); ?>"
-                        href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarholiday">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">Holiday List</span>
-                    </a>
-                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.holiday.*') ? 'show' : ''); ?>"
-                        id="sidebarholiday">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.holiday.create')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.create') ? 'active' : ''); ?>"
-                                    data-key="t-add-visa-type">
-                                    Add holiday
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.holiday.index')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.index') ? 'active' : ''); ?>"
-                                    data-key="t-visa-type-list">
-                                    holiday List
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.leave.*') ? 'active' : ''); ?>"
-                        href="#sidebarleave" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarleave">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">leave Apply</span>
-                    </a>
-                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.leave.*') ? 'show' : ''); ?>"
-                        id="sidebarleave">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.leave.create')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.leave.create') ? 'active' : ''); ?>"
-                                    data-key="t-add-visa-type">
-                                    Add Leave
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('admin.leave.index')); ?>"
-                                    class="nav-link <?php echo e(request()->routeIs('admin.leave.index') ? 'active' : ''); ?>"
-                                    data-key="t-visa-type-list">
-                                    Leave List
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+               
 
 
                 <!-- balance transfer -->
@@ -270,8 +214,79 @@
                 </li>
                 <!-- balance transfer -->
 
-                
 
+                 
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Holiday List')): ?>
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.holiday.*') ? 'active' : ''); ?>"
+                        href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarholiday">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">Holiday List</span>
+                    </a>
+                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.holiday.*') ? 'show' : ''); ?>"
+                        id="sidebarholiday">
+                        <ul class="nav nav-sm flex-column">
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Holiday Create')): ?>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.holiday.create')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.create') ? 'active' : ''); ?>"
+                                    data-key="t-add-visa-type">
+                                    Add holiday
+                                </a>
+                            </li>
+                             <?php endif; ?>
+                             <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Holiday List')): ?>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.holiday.index')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.holiday.index') ? 'active' : ''); ?>"
+                                    data-key="t-visa-type-list">
+                                    holiday List
+                                </a>
+                            </li>
+                             <?php endif; ?>
+                        </ul>
+                    </div>
+                </li>
+                <?php endif; ?>
+
+                
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave List')): ?>
+                <li class="nav-item my-1">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.leave.*') ? 'active' : ''); ?>"
+                        href="#sidebarleave" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarleave">
+                        <i data-feather="divide-circle" class="icon-dual"></i>
+                        <span data-key="t-visa-types">leave Apply</span>
+                    </a>
+                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.leave.*') ? 'show' : ''); ?>"
+                        id="sidebarleave">
+                        <ul class="nav nav-sm flex-column">
+                             <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave Create')): ?>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.leave.create')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.leave.create') ? 'active' : ''); ?>"
+                                    data-key="t-add-visa-type">
+                                    Add Leave
+                                </a>
+                            </li>
+                              <?php endif; ?>
+                             <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave List')): ?>
+                            <li class="nav-item">
+                                <a href="<?php echo e(route('admin.leave.index')); ?>"
+                                    class="nav-link <?php echo e(request()->routeIs('admin.leave.index') ? 'active' : ''); ?>"
+                                    data-key="t-visa-type-list">
+                                    Leave List
+                                </a>
+                            </li>
+                             <?php endif; ?>
+                        </ul>
+                    </div>
+                </li>
+                <?php endif; ?>
+
+                
+                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Attendance List')): ?>
                 <li class="nav-item my-1">
                     <a class="nav-link menu-link <?php echo e(request()->routeIs('admin.attendance.*') ? 'active' : ''); ?>"
                         href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
@@ -282,6 +297,7 @@
                     <div class="collapse menu-dropdown <?php echo e(request()->routeIs('admin.attendance.*') ? 'show' : ''); ?>"
                         id="sidebarAttendance">
                         <ul class="nav nav-sm flex-column">
+                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Attendance List')): ?>
                             <li class="nav-item">
                                 <a href="<?php echo e(url('admin/attendance')); ?>"
                                     class="nav-link <?php echo e(request()->routeIs('admin.attendance') ? 'active' : ''); ?>"
@@ -289,9 +305,11 @@
                                     Attendance List
                                 </a>
                             </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </li>
+                <?php endif; ?>
 
 
 

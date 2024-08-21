@@ -29,10 +29,12 @@
 
                                     <div class="flex-shrink-0">
                                         <div>
+                                            @hasPermission('Leave Create')
                                             <a href="{{ route('admin.leave.create') }}"
                                                 class="btn btn-clr-red rounded-pill">
                                                 Create Leave
                                             </a>
+                                            @endhasPermission
                                         </div>
                                     </div>
 
@@ -113,23 +115,26 @@
                                                         <td>{{ $leave->status }}</td>
                                                         <td>
                                                             @if ($leave->status == 'pending')
-                                                                <a href="{{ route('admin.leave.approved', $leave->id) }}"
-                                                                    class="btn btn-success">Approved</a>
-
-                                                                <a href="{{ route('admin.leave.rejected', $leave->id) }}"
-                                                                    class="btn btn-danger">Reject</a>
-
-                                                                <a href="{{ route('admin.leave.edit', $leave->id) }}"
-                                                                    class="btn btn-warning">Edit</a>
-                                                                <form
-                                                                    action="{{ route('admin.leave.destroy', $leave->id) }}"
-                                                                    method="POST" style="display:inline-block;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">Delete</button>
-                                                                </form>
-                                                         
+                                                                @hasPermission('Leave Approve-reject')
+                                                                    <a href="{{ route('admin.leave.approved', $leave->id) }}"
+                                                                        class="btn btn-success">Approved</a>
+                                                                    <a href="{{ route('admin.leave.rejected', $leave->id) }}"
+                                                                        class="btn btn-danger">Reject</a>
+                                                                @endhasPermission
+                                                                @hasPermission('Leave Edit')
+                                                                    <a href="{{ route('admin.leave.edit', $leave->id) }}"
+                                                                        class="btn btn-warning">Edit</a>
+                                                                @endhasPermission
+                                                                @hasPermission('Leave Delete')
+                                                                    <form
+                                                                        action="{{ route('admin.leave.destroy', $leave->id) }}"
+                                                                        method="POST" style="display:inline-block;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Delete</button>
+                                                                    </form>
+                                                                @endhasPermission
                                                             @endif
 
                                                         </td>

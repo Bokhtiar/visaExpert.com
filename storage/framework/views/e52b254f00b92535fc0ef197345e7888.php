@@ -27,10 +27,12 @@
 
                                     <div class="flex-shrink-0">
                                         <div>
+                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave Create')): ?>
                                             <a href="<?php echo e(route('admin.leave.create')); ?>"
                                                 class="btn btn-clr-red rounded-pill">
                                                 Create Leave
                                             </a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 
@@ -103,23 +105,26 @@
                                                         <td><?php echo e($leave->status); ?></td>
                                                         <td>
                                                             <?php if($leave->status == 'pending'): ?>
-                                                                <a href="<?php echo e(route('admin.leave.approved', $leave->id)); ?>"
-                                                                    class="btn btn-success">Approved</a>
-
-                                                                <a href="<?php echo e(route('admin.leave.rejected', $leave->id)); ?>"
-                                                                    class="btn btn-danger">Reject</a>
-
-                                                                <a href="<?php echo e(route('admin.leave.edit', $leave->id)); ?>"
-                                                                    class="btn btn-warning">Edit</a>
-                                                                <form
-                                                                    action="<?php echo e(route('admin.leave.destroy', $leave->id)); ?>"
-                                                                    method="POST" style="display:inline-block;">
-                                                                    <?php echo csrf_field(); ?>
-                                                                    <?php echo method_field('DELETE'); ?>
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">Delete</button>
-                                                                </form>
-                                                         
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave Approve-reject')): ?>
+                                                                    <a href="<?php echo e(route('admin.leave.approved', $leave->id)); ?>"
+                                                                        class="btn btn-success">Approved</a>
+                                                                    <a href="<?php echo e(route('admin.leave.rejected', $leave->id)); ?>"
+                                                                        class="btn btn-danger">Reject</a>
+                                                                <?php endif; ?>
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave Edit')): ?>
+                                                                    <a href="<?php echo e(route('admin.leave.edit', $leave->id)); ?>"
+                                                                        class="btn btn-warning">Edit</a>
+                                                                <?php endif; ?>
+                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Leave Delete')): ?>
+                                                                    <form
+                                                                        action="<?php echo e(route('admin.leave.destroy', $leave->id)); ?>"
+                                                                        method="POST" style="display:inline-block;">
+                                                                        <?php echo csrf_field(); ?>
+                                                                        <?php echo method_field('DELETE'); ?>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Delete</button>
+                                                                    </form>
+                                                                <?php endif; ?>
                                                             <?php endif; ?>
 
                                                         </td>

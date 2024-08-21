@@ -13,16 +13,23 @@ class LeaveController extends Controller
 {
     public function index()
     {
-      
+
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
+        $user = Auth::user()->is_admin;
+        if ($user == 1) {
+            $leaves = Leave::whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->orderBy('date', 'asc')
+                ->get();
+        } else {
+            $leaves = Leave::where('user_id', Auth::id())->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->orderBy('date', 'asc')
+                ->get();
+        }
         
-        $leaves = Leave::whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->orderBy('date', 'asc')
-            ->get();
-
-        return view('backend.leave.index', compact('leaves','month', 'year'));
+        return view('backend.leave.index', compact('leaves', 'month', 'year'));
     }
 
     public function create()
@@ -33,8 +40,8 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
 
-        
-    
+
+
         $request->validate([
             'date' => 'required|date',
             'leave_type' => 'required|string',
@@ -46,16 +53,16 @@ class LeaveController extends Controller
 
         // Check if a leave already exists for the same user on the same date
         $existingLeave = Leave::where('user_id', $userId)
-        ->where('date', $leaveDate)
-        ->first();
+            ->where('date', $leaveDate)
+            ->first();
 
         if ($existingLeave) {
             return redirect()->route('admin.leave.index')
-            ->with('error', 'You have already applied for leave on this date.');
+                ->with('error', 'You have already applied for leave on this date.');
         }
 
 
-        
+
         // Include the authenticated user's ID in the request data
         $data = $request->all();
         $data['user_id'] = Auth::id();
@@ -74,7 +81,7 @@ class LeaveController extends Controller
     public function update(Request $request, Leave $leave)
     {
         $request->validate([
-           
+
             'date' => 'required|date',
             'leave_type' => 'required|string',
             'reason' => 'nullable|string',
@@ -86,15 +93,15 @@ class LeaveController extends Controller
         // Check if a leave already exists for the same user on the same date
         if ($leaveDate !== $leave->date) {
             $existingLeave = Leave::where('user_id', $userId)
-            ->where('date', $leaveDate)
-            ->first();
+                ->where('date', $leaveDate)
+                ->first();
 
             if ($existingLeave) {
                 return redirect()->route('admin.leave.index')
-                ->with('error', 'You have already applied for leave on this date.');
+                    ->with('error', 'You have already applied for leave on this date.');
             }
         }
-        
+
 
 
 
@@ -120,7 +127,7 @@ class LeaveController extends Controller
         // Get the selected month and year, default to current month and year
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
-        
+
 
         // Define the start and end dates for the selected month and year
         $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth()->format('Y-m-d');
@@ -149,5 +156,4 @@ class LeaveController extends Controller
         $leave->save();
         return redirect()->route('admin.leave.index')->with('success', 'Leave rejected successfully.');
     }
-
 }

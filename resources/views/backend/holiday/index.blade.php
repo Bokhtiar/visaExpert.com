@@ -29,10 +29,12 @@
 
                                     <div class="flex-shrink-0">
                                         <div>
-                                            <a href="{{ route('admin.holiday.create') }}"
-                                                class="btn btn-clr-red rounded-pill">
-                                                Create Holiday
-                                            </a>
+                                            @hasPermission('Holiday Create')
+                                                <a href="{{ route('admin.holiday.create') }}"
+                                                    class="btn btn-clr-red rounded-pill">
+                                                    Create Holiday
+                                                </a>
+                                            @endhasPermission
                                         </div>
                                     </div>
 
@@ -105,16 +107,20 @@
                                                         <td>{{ $holiday->name }}</td>
                                                         <td>{{ $holiday->date }}</td>
                                                         <td>
-                                                            <a href="{{ route('admin.holiday.edit', $holiday->id) }}"
-                                                                class="btn btn-warning">Edit</a>
-                                                            <form
-                                                                action="{{ route('admin.holiday.destroy', $holiday->id) }}"
-                                                                method="POST" style="display:inline-block;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="btn btn-danger">Delete</button>
-                                                            </form>
+                                                            @hasPermission('Holiday Edit')
+                                                                <a href="{{ route('admin.holiday.edit', $holiday->id) }}"
+                                                                    class="btn btn-warning">Edit</a>
+                                                            @endhasPermission
+                                                            @hasPermission('Holiday Delete')
+                                                                <form
+                                                                    action="{{ route('admin.holiday.destroy', $holiday->id) }}"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                            @endhasPermission
                                                         </td>
                                                     </tr>
                                                 @empty

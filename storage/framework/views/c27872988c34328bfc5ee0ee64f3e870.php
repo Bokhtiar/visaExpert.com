@@ -65,6 +65,7 @@
                     </div>
                 </div>
                 <div class="row">
+                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Dashboard Total Eearning')): ?>
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-animate">
                             <div class="card-body">
@@ -78,7 +79,9 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            
                                             <span class="counter-value" data-target="<?php echo e($total_earnings); ?>">0</span> BDT
+                                           
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -90,6 +93,7 @@
                             </div>
                         </div>
                     </div>
+                     <?php endif; ?>
 
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-animate">

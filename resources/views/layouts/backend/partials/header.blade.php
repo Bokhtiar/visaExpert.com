@@ -118,7 +118,7 @@
                             </span>
                         </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    {{-- <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <h6 class="dropdown-header">Balance history</h6>
 
@@ -143,7 +143,7 @@
                         </a>
 
 
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- User account -->

@@ -120,32 +120,7 @@
                             </span>
                         </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <h6 class="dropdown-header">Balance history</h6>
-
-                        <a class="dropdown-item" href="<?php echo e(route('admin.profile.edit')); ?>">
-                            <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Earn: <?php echo e(Auth::user()->invoice); ?>Tk </span>
-                        </a>
-
-                        <a class="dropdown-item" href="<?php echo e(route('admin.profile.edit')); ?>">
-                            <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Expens: <?php echo e(Auth::user()->expense); ?>Tk </span>
-                        </a>
-
-                        <a class="dropdown-item" href="<?php echo e(route('admin.profile.edit')); ?>">
-                            <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Transfer: <?php echo e(Auth::user()->transfer); ?>Tk  </span>
-                        </a>
-
-                         <a class="dropdown-item" href="<?php echo e(route('admin.profile.edit')); ?>">
-                            <i class="mdi mdi-cash text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Total Receive: <?php echo e(Auth::user()->recive); ?>Tk </span>
-                        </a>
-
-
-                    </div>
+                    
                 </div>
 
                 <!-- User account -->
