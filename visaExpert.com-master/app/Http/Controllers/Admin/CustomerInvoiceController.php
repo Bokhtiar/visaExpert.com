@@ -151,12 +151,12 @@ class CustomerInvoiceController extends Controller
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->where('invoice_id', $invoice->id)->get();
 
-        return view('backend.customer.invoice.form', compact('invoice', 'customerList', 'paymentStatus', 'roads', 'payables'));
+        return view('backend.customer.invoice.edit', compact('invoice', 'customerList', 'paymentStatus', 'roads', 'payables'));
     }
 
     public function update(Request $request, Invoice $invoice): RedirectResponse
     {
-
+        // dd($request->all());
         try {
             $authUser = Auth::id();
             $this->authorize('edit-invoice', CustomerInvoiceController::class);
