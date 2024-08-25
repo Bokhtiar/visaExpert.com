@@ -145,7 +145,224 @@
                             </div>
                         </div>
                     </div>
-                  
+                    
+                    <?php if(isset($invoice)): ?>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                    <thead>
+                                        <tr class="table-active">
+                                            <th scope="col" style="width: 50px;">#</th>
+                                            <th scope="col">Details</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col" class="text-end">Amount (BDT)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="products-list">
+                                        <?php $__currentLoopData = $invoice->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $invoiceItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <tr>
+                                                <th scope="row"><?php echo e($key + 1); ?></th>
+                                                <td class="text-center">
+                                                    <span class="fw-medium">
+                                                        <?php echo e($invoiceItem->item); ?>
+
+                                                    </span>
+                                                </td>
+                                                <td><?php echo e($invoiceItem->qty); ?></td>
+                                                <td class="text-end">
+                                                    <?php echo e($invoiceItem->amount); ?>
+
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="border-top border-top-dashed mt-2">
+                                <table class="table table-borderless table-nowrap align-middle mb-0 ms-auto"
+                                    style="width:550px">
+                                    <tbody>
+                                        
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Total Amount (BDT) :</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <?php echo e($invoice->total_amount); ?>
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+
+
+
+                                        
+                                        
+                                        <?php
+                                            $total_pay = 0;
+                                        ?>
+                                        <?php $__currentLoopData = $payables; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pay): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            
+                                            <?php
+                                                $total_pay += $pay->pay;
+                                            ?>
+                                            <tr class="border-top border-top-dashed mt-2">
+                                                <td colspan="2" class="text-end">
+                                                    <h6>Pay <?php echo e($loop->index + 1); ?> (<?php echo e($pay->created_at->format('Y-m-d')); ?>)
+                                                    </h6>
+                                                </td>
+                                                <td colspan="3" class="p-0">
+                                                    <table
+                                                        class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                        <tbody>
+                                                            <tr class="border-top border-top-dashed">
+                                                                <th scope="row"></th>
+                                                                <td>
+
+                                                                    <input type="number" name=""
+                                                                        value="<?php echo e($pay->pay); ?>"
+                                                                        class="form-control bg-light border-0" placeholder="0"
+                                                                        readonly />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Total Paid:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name=""
+                                                                    value="<?php echo e($total_pay); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                           <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Due amount:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td> 
+                                                                <input type="number" name=""
+                                                                    value="<?php echo e($invoice->total_amount -  $total_pay); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Discount (Taka) : </h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="text" name="discount"
+                                                                    value="<?php echo e($invoice->discount); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+
+
+
+
+
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Received:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name="pay"
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment" placeholder="0" required />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="hidden" name="due"
+                                                                    value="<?php echo e($invoice->total_amount - $total_pay); ?>"
+                                                                    class="form-control bg-light border-0" placeholder="0" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                                <button type="submit" class="btn btn-success"><i
+                                        class="ri-file-add-line align-bottom me-1"></i> Update
+                                </button>
+                            </div>
+                        </div>
+                    <?php else: ?>
                     
                         <div class="card-body p-4">
                             <div class="table-responsive">
@@ -311,7 +528,7 @@
                                 </button>
                             </div>
                         </div>
-                
+                    <?php endif; ?>
 
                 </form>
             </div>

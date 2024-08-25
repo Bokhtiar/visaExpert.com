@@ -179,7 +179,226 @@
                             </div>
                         </div>
                     </div>
-                  
+                    {{-- {{ dd('test s  d') }} --}}
+                    @isset($invoice)
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                                    <thead>
+                                        <tr class="table-active">
+                                            <th scope="col" style="width: 50px;">#</th>
+                                            <th scope="col">Details</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col" class="text-end">Amount (BDT)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="products-list">
+                                        @foreach ($invoice->items as $key => $invoiceItem)
+                                            <tr>
+                                                <th scope="row">{{ $key + 1 }}</th>
+                                                <td class="text-center">
+                                                    <span class="fw-medium">
+                                                        {{ $invoiceItem->item }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $invoiceItem->qty }}</td>
+                                                <td class="text-end">
+                                                    {{ $invoiceItem->amount }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="border-top border-top-dashed mt-2">
+                                <table class="table table-borderless table-nowrap align-middle mb-0 ms-auto"
+                                    style="width:550px">
+                                    <tbody>
+                                        {{-- <tr class="border-top border-top-dashed fs-15">
+                                            <th scope="row">Total Amount (BDT)</th>
+                                            <th class="text-end">
+                                                {{ $invoice->total_amount }}
+                                            </th>
+                                        </tr> --}}
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Total Amount (BDT) :</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                {{ $invoice->total_amount }}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+
+
+
+                                        {{-- new added --}}
+                                        {{-- percentage --}}
+                                        @php
+                                            $total_pay = 0;
+                                        @endphp
+                                        @foreach ($payables as $pay)
+                                            {{-- {{ dd($pay->pay) }} --}}
+                                            @php
+                                                $total_pay += $pay->pay;
+                                            @endphp
+                                            <tr class="border-top border-top-dashed mt-2">
+                                                <td colspan="2" class="text-end">
+                                                    <h6>Pay {{ $loop->index + 1 }} ({{ $pay->created_at->format('Y-m-d') }})
+                                                    </h6>
+                                                </td>
+                                                <td colspan="3" class="p-0">
+                                                    <table
+                                                        class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                        <tbody>
+                                                            <tr class="border-top border-top-dashed">
+                                                                <th scope="row"></th>
+                                                                <td>
+
+                                                                    <input type="number" name=""
+                                                                        value="{{ $pay->pay }}"
+                                                                        class="form-control bg-light border-0" placeholder="0"
+                                                                        readonly />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Total Paid:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name=""
+                                                                    value="{{ $total_pay }}"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                           <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Due amount:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td> 
+                                                                <input type="number" name=""
+                                                                    value="{{ $invoice->total_amount -  $total_pay }}"
+                                                                    class="form-control bg-light border-0" placeholder="0"
+                                                                    readonly />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        {{-- percentage --}}
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Discount (Taka) : </h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="text" name="discount"
+                                                                    value="{{ $invoice->discount }}"
+                                                                    class="form-control bg-light border-0" placeholder="0" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+
+
+
+
+
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+                                                <h6>Received:</h6>
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="number" name="pay"
+                                                                    class="form-control bg-light border-0"
+                                                                    id="receive_payment" placeholder="0" required />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr class="border-top border-top-dashed mt-2">
+                                            <td colspan="2" class="text-end">
+
+                                            </td>
+                                            <td colspan="3" class="p-0">
+                                                <table class="table table-borderless table-sm table-nowrap align-middle mb-0">
+                                                    <tbody>
+                                                        <tr class="border-top border-top-dashed">
+                                                            <th scope="row"></th>
+                                                            <td>
+                                                                <input type="hidden" name="due"
+                                                                    value="{{ $invoice->total_amount - $total_pay }}"
+                                                                    class="form-control bg-light border-0" placeholder="0" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                                <button type="submit" class="btn btn-success"><i
+                                        class="ri-file-add-line align-bottom me-1"></i> Update
+                                </button>
+                            </div>
+                        </div>
+                    @else
                     {{-- create invoice --}}
                         <div class="card-body p-4">
                             <div class="table-responsive">
@@ -397,7 +616,7 @@
                                 </button>
                             </div>
                         </div>
-                
+                    @endisset
 
                 </form>
             </div>
