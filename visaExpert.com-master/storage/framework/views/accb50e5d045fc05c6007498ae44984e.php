@@ -46,11 +46,16 @@
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
                 <?php endif; ?>
-            </div>
+            </div> 
         </form>
         <div class="card">
             <div class="card-header align-items-center d-flex">
                 <h4 class="card-title mb-0 flex-grow-1">Today Attendance Sheet</h4>
+                <form action="<?php echo e(url('admin/attendance/day/filter')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
+                <input type="date" value="<?php echo e($date); ?>" name="day" id="">
+                <input type="submit">
+                </form>
             </div>
             <div class="">
                 <table id="example" class="table table-borderless align-middle mb-0">

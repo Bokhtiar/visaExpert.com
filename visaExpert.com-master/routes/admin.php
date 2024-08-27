@@ -118,6 +118,7 @@ Route::get('attendance/punch-in', [AttendanceController::class, 'punchIn']);
 Route::get('attendance/punch-out', [AttendanceController::class, 'punchOut']);
 Route::post('attendance/find-cancel/{id}', [AttendanceController::class, 'fineCancel']);
 Route::post('attendance/filter', [AttendanceController::class, 'filter']);
+Route::post('attendance/day/filter', [AttendanceController::class, 'day_filter']);
 Route::post('attendance/fine-cancel-filter/{id}/{month}/{user}/{year}', [AttendanceController::class, 'fineCancelFilter']);
 
 /** holiday */

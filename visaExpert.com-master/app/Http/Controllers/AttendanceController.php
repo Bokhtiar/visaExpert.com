@@ -18,26 +18,54 @@ class AttendanceController extends Controller
         $user = auth()->user();
 
         // Get today's date
-        $today = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->format('Y-m-d');
         $user = Auth::user()->is_admin;
 
         if ($user == 1) {
-            // Fetch the attendance records for the current user for today
-            $attendances = Attendance::whereDate('date', $today)
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
         }else{
-            // Fetch the attendance records for the current user for today
+            // Fetch the attendance records for the current user for date
             $attendances = Attendance::where('user_id', $user->id)
-                ->whereDate('date', $today)
+                ->whereDate('date', $date)
+                ->orderBy('date', 'asc')
+                ->get();
+        }
+        $users = User::all(); 
+        
+
+        // Pass data to the view
+        return view('backend.attendance.show', compact('attendances', 'users', 'date'));
+    }
+
+    public function day_filter(Request $request)
+    {
+        // Get the current user
+        $user = auth()->user();
+
+        // Get today's date
+        $date = $request->day;
+        $user = Auth::user()->is_admin;
+
+        if ($user == 1) {
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::whereDate('date', $date)
+                ->orderBy('date', 'asc')
+                ->get();
+        } else {
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::where('user_id', $user->id)
+                ->whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
         }
         $users = User::all();
-        
+
 
         // Pass data to the view
-        return view('backend.attendance.show', compact('attendances', 'users'));
+        return view('backend.attendance.show', compact('attendances', 'users', 'date'));
     }
 
     public function punchIn(Request $request)
