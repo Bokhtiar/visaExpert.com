@@ -17,7 +17,6 @@ return new class extends Migration
             $table->date('leave_date');
             $table->string('leave_type');
             $table->text('reason')->nullable();
-            $table->string('reason')->default('pending');
             $table->timestamps();
         });
     }
