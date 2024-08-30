@@ -26,15 +26,15 @@ class AttendanceController extends Controller
             $attendances = Attendance::whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
-        }else{
+        } else {
             // Fetch the attendance records for the current user for date
             $attendances = Attendance::where('user_id', $user->id)
                 ->whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
         }
-        $users = User::all(); 
-        
+        $users = User::all();
+
 
         // Pass data to the view
         return view('backend.attendance.show', compact('attendances', 'users', 'date'));
@@ -179,7 +179,7 @@ class AttendanceController extends Controller
 
                 // Optional: Calculate the fine based on late hours and early out hours
                 $lateFine = ($lateHours * 50) + ($lateMinutes / 60 * 50);
-                $earlyOutFine = $earlyOutHours ?  $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50): 0;
+                $earlyOutFine = $earlyOutHours ?  $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50) : 0;
                 $attendance->fine = $lateFine + $earlyOutFine;
 
                 // Calculate total time worked (from punch_in to punch_out)
@@ -228,6 +228,7 @@ class AttendanceController extends Controller
 
     public function filter(Request $request)
     {
+
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
         $userId = $request->input('user_id');
@@ -243,6 +244,7 @@ class AttendanceController extends Controller
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
             ->toArray();
 
+
         $missAttendances = Attendance::where('user_id', $userId)
             ->whereDate('date', '>=', $firstDayOfMonth)
             ->whereDate('date', '<=', $lastDayOfMonth)
@@ -251,6 +253,7 @@ class AttendanceController extends Controller
             ->toArray();
 
         $missLeaves = Leave::where('user_id', $userId)
+        ->where('status', 'approved')
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
@@ -278,7 +281,7 @@ class AttendanceController extends Controller
         $monthTotalDay = $lastDayOfMonth->day;
         $deductionPerDay = $findUser->salary /  $monthTotalDay - count($missHolidays); // Fixed deduction per day
         /** end of miss day (no activity) and calculation */
-        
+
 
         /** attendance conbine marge data */
         // Fetch holidays for the selected month and year
@@ -293,7 +296,7 @@ class AttendanceController extends Controller
             ->whereDate('date', '<=', $lastDayOfMonth)
             ->orderBy('date', 'asc')
             ->get();
-
+        //    dd($userId);
         // Fetch leaves for the selected user within the date range
         $leaves = Leave::where('user_id', $userId)
             ->whereDate('date', '>=', $firstDayOfMonth)
@@ -338,13 +341,14 @@ class AttendanceController extends Controller
             ->toArray();
 
         $missAttendances = Attendance::where('user_id', $userId)
-        ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '>=', $firstDayOfMonth)
             ->whereDate('date', '<=', $lastDayOfMonth)
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
             ->toArray();
 
         $missLeaves = Leave::where('user_id', $userId)
+            ->where('status', 'approved')
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
@@ -398,8 +402,8 @@ class AttendanceController extends Controller
 
         // Combine all records and sort by date
         $combinedRecords = $holidays->concat($attendances)->concat($leaves)
-        ->unique('date')
-        ->sortBy('date');
+            ->unique('date')
+            ->sortBy('date');
 
         // Calculate total fine amount for the user within the selected month
         $totalFine = $attendances->sum('fine');
@@ -410,6 +414,4 @@ class AttendanceController extends Controller
         // Return the filtered view
         // return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
     }
-
-
 }

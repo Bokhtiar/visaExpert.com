@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->date('leave_date');
+            $table->date('date');
             $table->string('leave_type');
+            $table->string('status')->default('pending');
             $table->text('reason')->nullable();
             $table->timestamps();
         });

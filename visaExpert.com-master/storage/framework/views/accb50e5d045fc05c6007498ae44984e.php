@@ -4,7 +4,7 @@
 
     <div class="">
         <form action="<?php echo e(url('admin/attendance/filter')); ?>" method="POST">
-            <?php echo csrf_field(); ?>
+            <?php echo csrf_field(); ?> 
             <div class="row mb-4">
                 <div class="col-md-3">
                     <label for="employee" class="form-label">Employee</label>
@@ -41,11 +41,11 @@
                         <?php endfor; ?>
                     </select>
                 </div>
-                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Attendance Filter')): ?>
+                
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
-                <?php endif; ?>
+                
             </div> 
         </form>
         <div class="card">
