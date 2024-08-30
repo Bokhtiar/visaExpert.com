@@ -48,6 +48,14 @@
                                                 Customer List
                                             </a>
                                         </li>
+
+                                        <li class="nav-item">
+                                            <a href="<?php echo e(route('admin.customers-invoices.list')); ?>"
+                                                class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
+                                                data-key="t-customer-list">
+                                                Customer Invoice List
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             <?php endif; ?>

@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerInvoiceController extends Controller
 {
+    public function index()
+    {
+        $invoices = Invoice::latest()->get();
+        return view('backend.customer.invoice.index', compact('invoices'));
+    }
+
     public function create(Customer $customer): View
     {
 

@@ -55,6 +55,7 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
 
 // Customers Invoice Routes
 Route::group(['as' => 'customers-invoices.', 'prefix' => 'customers/invoice/', 'controller' => CustomerInvoiceController::class], function () {
+    Route::get('/list', 'index')->name('list');
     Route::get('/create/{customer}', 'create')->name('create');
     Route::post('/store', 'store')->name('store');
     Route::get('/{invoice}', 'show')->name('show');
