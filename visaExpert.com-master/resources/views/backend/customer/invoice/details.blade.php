@@ -197,7 +197,7 @@
                                     </p>
 
                                     <p class="d-flex justify-content-between" style="margin-bottom: 0px;">
-                                        <strong style="font-size: 16px;margin-right: 30px"> Recived </strong>
+                                        <strong style="font-size: 16px;margin-right: 30px"> Received </strong>
                                         <strong style="font-size: 16px">
                                             {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay') }}
                                         </strong>
