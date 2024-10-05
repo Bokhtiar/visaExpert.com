@@ -21,18 +21,12 @@ class AttendanceController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         $user = Auth::user()->is_admin;
 
-        if ($user == 1) {
+    
             // Fetch the attendance records for the current user for date
             $attendances = Attendance::whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
-        } else {
-            // Fetch the attendance records for the current user for date
-            $attendances = Attendance::where('user_id', $user->id)
-                ->whereDate('date', $date)
-                ->orderBy('date', 'asc')
-                ->get();
-        }
+        
         $users = User::all();
 
 

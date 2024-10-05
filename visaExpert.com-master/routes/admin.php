@@ -49,8 +49,6 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
     
     // customer
     Route::get('/search-active/{id}', 'search_active')->name('search-active');
-
-
 });
 
 // Customers Invoice Routes
@@ -63,10 +61,12 @@ Route::group(['as' => 'customers-invoices.', 'prefix' => 'customers/invoice/', '
     Route::patch('/update/{invoice}', 'update')->name('update');
     Route::delete('/delete/{invoice}', 'destroy')->name('destroy');
     Route::get('/download/{invoice}', 'download')->name('download');
-
 });
 // Visa Types
 Route::resource('visa-types', VisaTypeController::class)->except('show');
+Route::get('visa-types/admin/status/{id}', [VisaTypeController::class, 'is_admin'])->name('visa-types.admin.status');
+Route::get('visa-types/user/status/{id}', [VisaTypeController::class, 'is_user'])->name('visa-types.user.status');
+
 //Road
 Route::resource('road', RoadController::class)->except('show');
 //transfer
@@ -109,9 +109,6 @@ Route::get('activity-logs', ActivityLogController::class)->name('activity-logs')
 Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::put('password', [ProfileController::class, 'updatePassword'])->name('password.update');
-
-
-
 
 /** attendance */
 Route::get('attendance', [AttendanceController::class, 'index']);

@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="flex-shrink-1 custom-badge-style">
                                     {!! displayVisaStatusBadge($customer->forms[0]->visa_status) !!}
-                                </div>
+                                </div> 
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-grow-1">

@@ -37,7 +37,7 @@
                                 
                                 <div class="col-md-4 col-lg-4 col-sm-4 my-auto">
                                     <p class="m-0" style="font-weight: 600; font-size: 20px">Visa Expert</p>
-                                    <p class="m-0" style="font-weight: 600">Rahim Towe.Subhanighat, sylhet-3100,
+                                    <p class="m-0" style="font-weight: 600">Rahim Tower.Subhanighat, sylhet-3100,
                                         Bangladesh</p>
                                     <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
                                     <p class="m-0" style="font-weight: 600">Hotline: +8801703605660</p>

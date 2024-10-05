@@ -49,7 +49,6 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
-                                                    <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
                                                     {{-- <th scope="col">Owner</th> --}}
                                                     <th scope="col">Work Status</th>
@@ -64,13 +63,10 @@
                                                 @forelse($customers as $key=>$customer)
                                                     <tr>
                                                         <td class="fw-medium text-center">{{ $key + 1 }}</td>
-
-
-                                                        <td>#{{ $customer->unique_id }}</td>
                                                         <td>{{ $customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')' }}
                                                         </td>
                                                         {{-- <td>{{ $customer->customer ? $customer->customer->name : '' }}</td> --}}
-                                                        <td>{{ App\Models\VisaForm::customerListStatus($customer->id) }}
+                                                        <td> {!! displayVisaStatusBadge(App\Models\VisaForm::customerListStatus($customer->id)) !!}
                                                         </td>
                                                         <td>
                                                             <a href="https://wa.me/+88{{ $customer->phone }}">
@@ -149,9 +145,9 @@
                                                                 @hasPermission('Create Invoice')
                                                                     @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
                                                                         <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
-                                                                            class="btn btn-dark waves-effect waves-light">
+                                                                            class="btn btn-sm btn-dark waves-effect waves-light">
                                                                             <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                            Create Invoice
+                                                                            {{-- Create Invoice --}}
                                                                         </a>
                                                                     @endcan
                                                                 @endhasPermission
@@ -159,9 +155,9 @@
                                                                 @hasPermission('Edit Customer')
                                                                     @can(\App\Permissions::VIEW_CUSTOMER)
                                                                         <a href="{{ route('admin.customers.show', $customer->id) }}"
-                                                                            class="btn btn-clr-red waves-effect waves-light">
+                                                                            class="btn btn-sm btn-clr-red waves-effect waves-light">
                                                                             <i class="ri-eye-2-line align-bottom me-1"></i>
-                                                                            View Profile
+                                                                            {{-- View Profile --}}
                                                                         </a>
                                                                     @endcan
                                                                 @endhasPermission
@@ -169,10 +165,10 @@
                                                                 @hasPermission('Delete Customer')
                                                                     @can(\App\Permissions::DELETE_CUSTOMER)
                                                                         <button type="button"
-                                                                            class="btn btn-soft-success waves-effect waves-light"
+                                                                            class="btn btn-sm btn-soft-success waves-effect waves-light"
                                                                             onclick="deleteData({{ $customer->id }})">
                                                                             <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                            Delete Customer
+                                                                            {{-- Delete Customer --}}
                                                                         </button>
                                                                         <form id="delete-form-{{ $customer->id }}"
                                                                             action="{{ route('admin.customers.destroy', $customer->id) }}"

@@ -15,7 +15,7 @@ class FrontendController extends Controller
     public function index(Request $request): View
     {
         $user = $request->user();
-        $visaType = VisaType::all();
+        $visaType = VisaType::where('is_user',1)->get();
 
         return view('frontend.visa-application', compact('user', 'visaType'));
     }

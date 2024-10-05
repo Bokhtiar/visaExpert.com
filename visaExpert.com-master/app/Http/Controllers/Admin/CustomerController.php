@@ -43,7 +43,7 @@ class CustomerController extends Controller
     public function offline_customer_create(Request $request)
     {
         $user = $request->user();
-        $visaType = VisaType::all();
+        $visaType = VisaType::where('is_admin', 1)->get();
 
         return view('backend.customer.offline-create', compact('user', 'visaType'));
     }
@@ -92,7 +92,7 @@ class CustomerController extends Controller
         } catch (Exception $e) {
 
             DB::rollback();
-            Log::error("Error creating visa application form: {$e->getMessage()}");
+            // Log::error("Error creating visa application form: {$e->getMessage()}");
 
             // dd($e->getMessage());
 

@@ -47,7 +47,6 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
-                                                    <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
                                                     
                                                     <th scope="col">Work Status</th>
@@ -62,14 +61,11 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium text-center"><?php echo e($key + 1); ?></td>
-
-
-                                                        <td>#<?php echo e($customer->unique_id); ?></td>
                                                         <td><?php echo e($customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')'); ?>
 
                                                         </td>
                                                         
-                                                        <td><?php echo e(App\Models\VisaForm::customerListStatus($customer->id)); ?>
+                                                        <td> <?php echo displayVisaStatusBadge(App\Models\VisaForm::customerListStatus($customer->id)); ?>
 
                                                         </td>
                                                         <td>
@@ -149,9 +145,9 @@
                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Invoice')): ?>
                                                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::CREATE_CUSTOMER_INVOICE)): ?>
                                                                         <a href="<?php echo e(route('admin.customers-invoices.create', $customer->id)); ?>"
-                                                                            class="btn btn-dark waves-effect waves-light">
+                                                                            class="btn btn-sm btn-dark waves-effect waves-light">
                                                                             <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                            Create Invoice
+                                                                            
                                                                         </a>
                                                                     <?php endif; ?>
                                                                 <?php endif; ?>
@@ -159,9 +155,9 @@
                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Customer')): ?>
                                                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
                                                                         <a href="<?php echo e(route('admin.customers.show', $customer->id)); ?>"
-                                                                            class="btn btn-clr-red waves-effect waves-light">
+                                                                            class="btn btn-sm btn-clr-red waves-effect waves-light">
                                                                             <i class="ri-eye-2-line align-bottom me-1"></i>
-                                                                            View Profile
+                                                                            
                                                                         </a>
                                                                     <?php endif; ?>
                                                                 <?php endif; ?>
@@ -169,10 +165,10 @@
                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Customer')): ?>
                                                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER)): ?>
                                                                         <button type="button"
-                                                                            class="btn btn-soft-success waves-effect waves-light"
+                                                                            class="btn btn-sm btn-soft-success waves-effect waves-light"
                                                                             onclick="deleteData(<?php echo e($customer->id); ?>)">
                                                                             <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                            Delete Customer
+                                                                            
                                                                         </button>
                                                                         <form id="delete-form-<?php echo e($customer->id); ?>"
                                                                             action="<?php echo e(route('admin.customers.destroy', $customer->id)); ?>"

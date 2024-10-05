@@ -39,7 +39,7 @@
                                 {{-- contact --}}
                                 <div class="col-md-4 col-lg-4 col-sm-4 my-auto">
                                     <p class="m-0" style="font-weight: 600; font-size: 20px">Visa Expert</p>
-                                    <p class="m-0" style="font-weight: 600">Rahim Towe.Subhanighat, sylhet-3100,
+                                    <p class="m-0" style="font-weight: 600">Rahim Tower.Subhanighat, sylhet-3100,
                                         Bangladesh</p>
                                     <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
                                     <p class="m-0" style="font-weight: 600">Hotline: +8801703605660</p>
@@ -51,7 +51,7 @@
                         <div class="card-body p-4"> 
                             {{-- content --}}
                             <div style="font-size: 14px; line-height: 16px; margin-bottom: 12px">
-                               Dear {{ $customers[0]->name }},
+                               Dear {{ $customers[0]->name }}, <br/>
                                 Thank you fo choosing Visa Expert. Your invoice has been confirmed on {{ $invoice->created_at->format('D, jS M Y - H:i') }}.
                                 Your Booking ID/User ID #{{ $customers[0]->id }}, & Payment status Paid as the payable amount {{ $invoice->total_amount - $invoice->discount }}(BDT)
                             </div>

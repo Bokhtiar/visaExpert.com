@@ -45,6 +45,8 @@
                                                     <th scope="col">SL</th>
                                                     <th scope="col">Visa Type</th>
                                                     <th scope="col">Required Documents</th>
+                                                    <th scope="col">Admin</th>
+                                                    <th scope="col">User</th>
                                                     @can(\App\Permissions::EDIT_VISA_TYPE,
                                                         \App\Permissions::DELETE_VISA_TYPE)
                                                         <th scope="col">Actions</th>
@@ -69,6 +71,36 @@
                                                             @endif
                                                             {!! $visaType->required_document !!}
 
+                                                        </td>
+                                                        <td class="my-2">
+                                                            @if ($visaType->is_admin == 1)
+                                                                <a class="" 
+                                                                    href="{{ route('admin.visa-types.admin.status', $visaType->id) }}">
+                                                                    <img src="{{ asset('backend/assets/images/active.png') }}"
+                                                                        height="30px" alt="">
+                                                                </a>
+                                                            @else
+                                                                <a class=""
+                                                                    href="{{ route('admin.visa-types.admin.status', $visaType->id) }}">
+                                                                    <img src="{{ asset('backend/assets/images/inactive.png') }}"
+                                                                        height="30px" alt="">
+                                                                </a>
+                                                            @endif
+                                                        </td>
+                                                        <td class="my-2">
+                                                            @if ($visaType->is_user == 1)
+                                                                <a class="" 
+                                                                    href="{{ route('admin.visa-types.user.status', $visaType->id) }}">
+                                                                    <img src="{{ asset('backend/assets/images/active.png') }}"
+                                                                        height="30px" alt="">
+                                                                </a>
+                                                            @else
+                                                                <a class=""
+                                                                    href="{{ route('admin.visa-types.user.status', $visaType->id) }}">
+                                                                    <img src="{{ asset('backend/assets/images/inactive.png') }}"
+                                                                        height="30px" alt="">
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             @hasPermission('Visa Update Type')
