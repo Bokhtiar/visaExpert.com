@@ -96,25 +96,43 @@
                                                                     )
                                                                         ->where('due', $invoice->discount)
                                                                         ->first();
+                                                                    
                                                                 ?>
+                                                            
                                                                 <?php if($discount): ?>
                                                                     <a
                                                                         href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
-                                                                            class="btn btn-success btn-sm">Paid</span></a>
+                                                                            class="btn btn-success btn-sm">Paid
+                                                                            <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
+
+                                                                        </span></a>
                                                                 <?php else: ?>
                                                                     <?php if($invoice->status == 'Paid'): ?>
-                                                                        <a
+                                                                        <a class="btn btn-success btn-sm"
                                                                             href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
-                                                                                class="btn btn-success btn-sm">Paid</span></a>
+                                                                                class="">Paid</span>
+                                                                               <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
+
+                                                                            </a>
+                                                                     
+
                                                                     <?php elseif($invoice->status == 'Due'): ?>
                                                                         <a class="btn btn-info btn-sm"
                                                                             href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
-                                                                            Pay
+                                                                             Pay
+                                                                          
                                                                         </a>
+                                                                        
+
                                                                         <span class="">
                                                                             <a class="btn btn-danger btn-sm"
                                                                                 href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
                                                                                 Due
+
+                                                                               <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due')); ?>
+
+                               
+                                                                                   
                                                                             </a>
 
                                                                         </span>
