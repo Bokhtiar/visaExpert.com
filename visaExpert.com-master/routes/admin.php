@@ -118,6 +118,7 @@ Route::post('attendance/find-cancel/{id}', [AttendanceController::class, 'fineCa
 Route::post('attendance/filter', [AttendanceController::class, 'filter']);
 Route::post('attendance/day/filter', [AttendanceController::class, 'day_filter']);
 Route::post('attendance/fine-cancel-filter/{id}/{month}/{user}/{year}', [AttendanceController::class, 'fineCancelFilter']);
+Route::post('attendance/self-attendance', [AttendanceController::class, 'self_attandance']);
 
 /** holiday */
 Route::resource('holiday', HolidayController::class);

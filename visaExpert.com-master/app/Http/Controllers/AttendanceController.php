@@ -34,6 +34,8 @@ class AttendanceController extends Controller
         return view('backend.attendance.show', compact('attendances', 'users', 'date'));
     }
 
+    
+
     public function day_filter(Request $request)
     {
         // Get the current user
