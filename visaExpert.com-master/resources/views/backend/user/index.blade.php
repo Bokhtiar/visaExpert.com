@@ -79,9 +79,9 @@
                                                         </a>
                                                     @endcan
                                                 @endhasPermission
+                                                
                                                 @hasPermission('Delete User')
-                                                    @can(\App\Permissions::DELETE_USER)
-                                                        @if ($user->deletable == true)
+                                                        {{-- @if ($user->deletable == true) --}}
                                                             <button type="button" class="btn btn-danger waves-effect waves-light"
                                                                 onclick="deleteData({{ $user->id }})">
                                                                 <i class="ri-delete-bin-5-line align-bottom me-1"></i>
@@ -93,8 +93,8 @@
                                                                 @csrf()
                                                                 @method('DELETE')
                                                             </form>
-                                                        @endif
-                                                    @endcan
+                                                        {{-- @endif --}}
+                                                    
                                                 @endhasPermission
                                             </div>
                                         </td>

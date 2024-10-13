@@ -77,9 +77,9 @@
                                                         </a>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
+                                                
                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete User')): ?>
-                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_USER)): ?>
-                                                        <?php if($user->deletable == true): ?>
+                                                        
                                                             <button type="button" class="btn btn-danger waves-effect waves-light"
                                                                 onclick="deleteData(<?php echo e($user->id); ?>)">
                                                                 <i class="ri-delete-bin-5-line align-bottom me-1"></i>
@@ -91,8 +91,8 @@
                                                                 <?php echo csrf_field(); ?>
                                                                 <?php echo method_field('DELETE'); ?>
                                                             </form>
-                                                        <?php endif; ?>
-                                                    <?php endif; ?>
+                                                        
+                                                    
                                                 <?php endif; ?>
                                             </div>
                                         </td>
