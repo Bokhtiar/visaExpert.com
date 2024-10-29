@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ReciveController extends Controller
 {
@@ -114,11 +115,30 @@ class ReciveController extends Controller
     }
 
 
-    public function statement()
+    // public function statement()
+    // {
+
+
+    //     $transfers = Transfer::latest()->get();
+    //     return view('backend.transfer.statement', compact('transfers'));
+    // } 
+
+
+    public function statement(Request $request)
     {
-        $transfers = Transfer::latest()->get();
-        return view('backend.transfer.statement', compact('transfers'));
-    } 
+        // Get the current month and year if no filter is provided
+        $selectedMonth = $request->input('month', Carbon::now()->month);
+        $selectedYear = $request->input('year', Carbon::now()->year);
+
+        // Query transfers based on the provided or default month and year
+        $transfers = Transfer::whereYear('created_at', $selectedYear)
+            ->whereMonth('created_at', $selectedMonth)
+            ->latest()
+            ->get();
+       
+        return view('backend.transfer.statement', compact('transfers', 'selectedMonth', 'selectedYear'));
+    }
+
 
 
 }

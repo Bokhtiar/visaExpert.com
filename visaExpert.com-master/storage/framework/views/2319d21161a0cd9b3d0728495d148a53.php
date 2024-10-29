@@ -26,6 +26,37 @@
                                     <h4 class="card-title mb-0 flex-grow-1">All statement</h4>
 
                                     <div class="flex-shrink-0">
+                                        <form action="<?php echo e(route('admin.statement.index')); ?>" method="GET">
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <select name="month" class="form-control">
+                                                        <option value="">Select Month</option>
+                                                        <?php for($m = 1; $m <= 12; $m++): ?>
+                                                            <option value="<?php echo e($m); ?>"
+                                                                <?php echo e(isset($selectedMonth) && $selectedMonth == $m ? 'selected' : ''); ?>>
+                                                                <?php echo e(date('F', mktime(0, 0, 0, $m, 1))); ?>
+
+                                                            </option>
+                                                        <?php endfor; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select name="year" class="form-control">
+                                                        <option value="">Select Year</option>
+                                                        <?php for($y = date('Y'); $y >= date('Y') - 10; $y--): ?>
+                                                            <option value="<?php echo e($y); ?>"
+                                                                <?php echo e(isset($selectedYear) && $selectedYear == $y ? 'selected' : ''); ?>>
+                                                                <?php echo e($y); ?>
+
+                                                            </option>
+                                                        <?php endfor; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                                </div>
+                                            </div>
+                                        </form>
 
                                     </div>
 
@@ -58,7 +89,8 @@
                                                                 <?php echo $user->name .
                                                                     ' (' .
                                                                     ($user->role ? $user->role->name : '') .
-                                                                    ')' . " spending update ".
+                                                                    ')' .
+                                                                    ' spending update ' .
                                                                     ($transfer->expense ? $transfer->expense->description : ''); ?>
 
                                                             </td>

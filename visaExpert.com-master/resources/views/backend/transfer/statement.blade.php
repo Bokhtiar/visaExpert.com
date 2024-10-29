@@ -28,6 +28,35 @@
                                     <h4 class="card-title mb-0 flex-grow-1">All statement</h4>
 
                                     <div class="flex-shrink-0">
+                                        <form action="{{ route('admin.statement.index') }}" method="GET">
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <select name="month" class="form-control">
+                                                        <option value="">Select Month</option>
+                                                        @for ($m = 1; $m <= 12; $m++)
+                                                            <option value="{{ $m }}"
+                                                                {{ isset($selectedMonth) && $selectedMonth == $m ? 'selected' : '' }}>
+                                                                {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                                                            </option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select name="year" class="form-control">
+                                                        <option value="">Select Year</option>
+                                                        @for ($y = date('Y'); $y >= date('Y') - 10; $y--)
+                                                            <option value="{{ $y }}"
+                                                                {{ isset($selectedYear) && $selectedYear == $y ? 'selected' : '' }}>
+                                                                {{ $y }}
+                                                            </option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                                </div>
+                                            </div>
+                                        </form>
 
                                     </div>
 
@@ -60,7 +89,8 @@
                                                                 {!! $user->name .
                                                                     ' (' .
                                                                     ($user->role ? $user->role->name : '') .
-                                                                    ')' . " spending update ".
+                                                                    ')' .
+                                                                    ' spending update ' .
                                                                     ($transfer->expense ? $transfer->expense->description : '') !!}
                                                             </td>
                                                         @elseif ($transfer->type == 'invoice_recive' || $transfer->type == 'invoice_due' || $transfer->type == 'invoice_delete')
