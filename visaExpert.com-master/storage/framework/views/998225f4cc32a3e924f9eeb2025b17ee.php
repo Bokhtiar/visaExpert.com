@@ -24,17 +24,10 @@
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">All Customer Invoice</h4>
-
-                               
-
-                                </div>
+                                </div> 
                                 <div class="card-body">
-
-                                   
-
-
                                     <div class="table-responsive">
-                                        <table class="table table-borderless align-middle mb-0">
+                                        <table id="example" class="table table-borderless align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
                                                     <td>Customer</td>
@@ -51,14 +44,20 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     
                                                     <tr>
-                                                        <td><?php echo e($invoice->customer  ?$invoice->customer->name : ""); ?></td>
+                                                        <td>
+                                                            <?php echo e($invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : ''); ?>
+
+                                                        </td>
+
                                                         <td><?php echo e($invoice->invoice_number); ?></td>
                                                         <td>
-                                                            <?php if($invoice->status == "Paid"): ?>
-                                                                <span class="bg-success btn btn-sm"><?php echo e($invoice->status); ?></span>
+                                                            <?php if($invoice->status == 'Paid'): ?>
+                                                                <span
+                                                                    class="bg-success btn btn-sm"><?php echo e($invoice->status); ?></span>
                                                             <?php else: ?>
-                                                            <span class="bg-danger btn btn-sm"><?php echo e($invoice->status); ?></span>
-                                                                <?php endif; ?>
+                                                                <span
+                                                                    class="bg-danger btn btn-sm"><?php echo e($invoice->status); ?></span>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td>Tk <?php echo e($invoice->total_amount); ?></td>
                                                         <td><?php echo e($invoice->discount); ?></td>
@@ -82,5 +81,21 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('js'); ?>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="<?php echo e(asset('backend/assets/js/pages/datatables.init.js')); ?>"></script>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#example').DataTable();
+            table.page.len(100).draw(); // Set the default pagination limit to 100
+        });
+    </script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/bokhtiartoshar/Desktop/Project/Sajon Bhai/visxpert/visaExpert.com-master/resources/views/backend/customer/invoice/index.blade.php ENDPATH**/ ?>

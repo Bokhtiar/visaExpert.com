@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\VisaForm;
 use App\Models\VisaType;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -125,6 +126,39 @@ class VisaTypeController extends Controller
         } catch (Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
+    }
+
+
+    // public function updateVisaStatus(Request $request, $id)
+    // {
+       
+    //     $customer = VisaForm::where('customer_id', $id)->first();
+    //     $customer->visa_status = $request->input('visa_status');
+    //     $customer->save();
+
+    //     // Return the updated status
+    //     // return response()->json(['new_status' => displayVisaStatusBadge($customer->visa_status)]);
+    //     return response()->json(['new_status' => $customer]);
+
+    // }
+
+    public function updateVisaStatus(Request $request, $customerId)
+    {
+        // Validate and update the status
+        $request->validate([
+            'visa_status' => 'required|string',
+        ]);
+
+        $customer = VisaForm::where('customer_id', $customerId)->first();
+        $customer->visa_status = $request->visa_status;
+        $customer->save();
+
+        // Generate the status badge HTML
+        $statusBadge = displayVisaStatusBadge($customer->visa_status);
+
+        return response()->json([
+            'statusBadge' => $statusBadge,
+        ]);
     }
 
 

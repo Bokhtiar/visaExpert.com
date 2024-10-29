@@ -29,6 +29,7 @@ Route::get('dashboard', DashboardController::class)->name('dashboard');
 // Customer Routes
 Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => CustomerController::class], function () {
     Route::get('/', 'index')->name('index');
+    Route::get('/all', 'customer_all')->name('all');
     
     /** offline customer create*/
     Route::get('offline', 'offline_customer_create')->name('offline');
@@ -129,3 +130,7 @@ Route::resource('leave', LeaveController::class);
 Route::post('leave/filter', [LeaveController::class, 'leave_filter'])->name('leave.filter');
 Route::get('leave/approved/{id}', [LeaveController::class, 'leave_approved'])->name('leave.approved');
 Route::get('leave/rejected/{id}', [LeaveController::class, 'leave_rejected'])->name('leave.rejected');
+
+// status update
+Route::put('/visa-status/{id}', [VisaTypeController::class, 'updateVisaStatus'])->name('update.visa.status');
+

@@ -49,6 +49,14 @@
                                                 Customer List
                                             </a>
                                         </li>
+
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.customers.all') }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                All Customer List
+                                            </a>
+                                        </li>
                                     @endhasPermission
                                     @hasPermission('Customer invoice')
                                         <li class="nav-item">
@@ -59,6 +67,8 @@
                                             </a>
                                         </li>
                                     @endhasPermission
+
+                                   
                                 </ul>
                             </div>
 

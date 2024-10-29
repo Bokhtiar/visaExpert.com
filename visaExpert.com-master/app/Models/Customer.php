@@ -29,8 +29,12 @@ class Customer extends Model
 
     public static function countChaild($id)
     {
-        return Customer::where('parent_customer_id', $id)->count();
+        $childCustomers = Customer::where('parent_customer_id', $id)->pluck('id'); // Get the list of child customer IDs
+        $count = $childCustomers->count(); // Count the number of child customers
+
+        return ['count' => $count, 'ids' => $childCustomers];
     }
+
 
     public function customer()
     {

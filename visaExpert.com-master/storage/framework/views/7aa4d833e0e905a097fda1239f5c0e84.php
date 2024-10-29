@@ -605,7 +605,7 @@
                                                                         <th scope="col">View</th>
                                                                         <th scope="col">Upload</th>
                                                                         <th scope="col">Action</th>
-                                                                    </tr>
+                                                                    </tr> 
                                                                 </thead>
                                                                 <?php $__currentLoopData = json_decode($documents, true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <?php
@@ -613,8 +613,7 @@
                                                                             $file,
                                                                             $customer_form_id,
                                                                         );
-
-                                                                    ?>
+                                                                    ?> 
 
                                                                     <?php if($exist): ?>
                                                                         <form
@@ -661,7 +660,7 @@
                                                                             <input type="file" name="doc"
                                                                                 id="">
                                                                         </td>
-
+                                                                      
                                                                         <input type="hidden" name="customer_form_id"
                                                                             value="<?php echo e($customer_form_id); ?>"
                                                                             id="">

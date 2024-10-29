@@ -33,9 +33,9 @@
 
                                     <!-- create new cusmer offline mood -->
                                     <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Create Customer')): ?>
-                                    <a href="<?php echo e(route('admin.customers.offline')); ?>" class="btn btn-success">
-                                        Create New Customer (Offline mood)
-                                    </a>
+                                        <a href="<?php echo e(route('admin.customers.offline')); ?>" class="btn btn-success">
+                                            Create New Customer (Offline mood)
+                                        </a>
                                     <?php endif; ?>
 
 
@@ -61,13 +61,94 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium text-center"><?php echo e($key + 1); ?></td>
-                                                        <td><?php echo e($customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')'); ?>
+                                                        <?php
+                                                            $childData = App\Models\Customer::countChaild(
+                                                                $customer->id,
+                                                            );
+                                                        ?>
 
+                                                        <td><?php echo e($customer->name . ' (' . $childData['count'] . ')'); ?>
+
+                                                            <?php if($childData['count'] > 0): ?>
+                                                                <span style="font-size: 12px; color: gray;">
+                                                                    (<?php echo e($childData['ids']->implode(', ')); ?>)
+                                                                    <!-- Display the list of child IDs -->
+                                                                </span>
+                                                            <?php endif; ?>
                                                         </td>
+
                                                         
-                                                        <td> <?php echo displayVisaStatusBadge(App\Models\VisaForm::customerListStatus($customer->id)); ?>
 
+
+
+
+                                                        <td class="visa-status-badge"
+                                                            id="visaStatusBadge<?php echo e($customer->id); ?>"
+                                                            data-customer-id="<?php echo e($customer->id); ?>">
+                                                            <?php echo displayVisaStatusBadge(App\Models\VisaForm::customerListStatus($customer->id)); ?>
+
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal<?php echo e($customer->id); ?>">
+                                                                <i class="ri-pencil-line align-bottom me-1"></i>
+                                                            </button>
                                                         </td>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal<?php echo e($customer->id); ?>"
+                                                            tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                                            Update Visa Status</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <!-- Dropdown to select status -->
+                                                                        <form id="updateStatusForm<?php echo e($customer->id); ?>"
+                                                                            action="<?php echo e(route('admin.update.visa.status', $customer->id)); ?>"
+                                                                            method="POST">
+                                                                            <?php echo csrf_field(); ?>
+                                                                            <?php echo method_field('PUT'); ?>
+                                                                            <div class="form-group">
+                                                                                <label for="visa_status">Visa Status</label>
+                                                                                <select class="form-control"
+                                                                                    id="visa_status<?php echo e($customer->id); ?>"
+                                                                                    name="visa_status">
+                                                                                    <option value="Pending">Pending</option>
+                                                                                    <option value="Processing">Processing
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Checking Completed almost Ready">
+                                                                                        Checking</option>
+                                                                                    <option value="Ready to Delivery">Ready
+                                                                                        to Delivery</option>
+                                                                                    <option value="Delivered">Delivered
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="button"
+                                                                            id="saveChangesBtn<?php echo e($customer->id); ?>"
+                                                                            class="btn btn-primary"
+                                                                            data-customer-id="<?php echo e($customer->id); ?>">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
                                                         <td>
                                                             <a href="https://wa.me/+88<?php echo e($customer->phone); ?>">
                                                                 <img height="40" width="40"
@@ -75,7 +156,8 @@
                                                                     alt="">
                                                             </a>
                                                         </td>
-                                                        <td><a href="tel:<?php echo e($customer->phone); ?>"><?php echo e($customer->phone); ?></a>
+                                                        <td><a
+                                                                href="tel:<?php echo e($customer->phone); ?>"><?php echo e($customer->phone); ?></a>
                                                         </td>
                                                         <td>
                                                             <?php
@@ -96,9 +178,9 @@
                                                                     )
                                                                         ->where('due', $invoice->discount)
                                                                         ->first();
-                                                                    
+
                                                                 ?>
-                                                            
+
                                                                 <?php if($discount): ?>
                                                                     <a
                                                                         href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
@@ -111,28 +193,26 @@
                                                                         <a class="btn btn-success btn-sm"
                                                                             href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"><span
                                                                                 class="">Paid</span>
-                                                                               <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
+                                                                            <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay')); ?>
 
-                                                                            </a>
-                                                                     
-
+                                                                        </a>
                                                                     <?php elseif($invoice->status == 'Due'): ?>
                                                                         <a class="btn btn-info btn-sm"
                                                                             href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>">
-                                                                             Pay
-                                                                          
+                                                                            Pay
+
                                                                         </a>
-                                                                        
+
 
                                                                         <span class="">
                                                                             <a class="btn btn-danger btn-sm"
                                                                                 href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
                                                                                 Due
 
-                                                                               <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due')); ?>
+                                                                                <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due')); ?>
 
-                               
-                                                                                   
+
+
                                                                             </a>
 
                                                                         </span>
@@ -231,6 +311,46 @@
         $(document).ready(function() {
             var table = $('#example').DataTable();
             table.page.len(100).draw(); // Set the default pagination limit to 100
+        });
+    </script>
+
+
+
+
+
+    
+    <script>
+        $(document).ready(function() {
+            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                $('#saveChangesBtn<?php echo e($customer->id); ?>').click(function() {
+                    var customerId = $(this).data('customer-id');
+                    var formData = $('#updateStatusForm' + customerId).serialize(); // Serialize form data
+
+                    $.ajax({
+                        url: "<?php echo e(route('admin.update.visa.status', $customer->id)); ?>",
+                        type: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            // Update the visa status badge in real-time
+                            $('#visaStatusBadge' + customerId).html(response
+                                .statusBadge); // Update the badge
+
+                            // Change the "Update Status" button text to indicate success
+                            $('#saveChangesBtn' + customerId).text(
+                                'Status Updated'); // Change button text
+
+                            // Optionally, disable the button to prevent further clicks
+                            $('#saveChangesBtn' + customerId).prop('disabled', true);
+
+                            // Close the modal
+                            $('#exampleModal' + customerId).modal('hide');
+                        },
+                        error: function(xhr) {
+                            alert('An error occurred. Please try again.');
+                        }
+                    });
+                });
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         });
     </script>
 <?php $__env->stopPush(); ?>

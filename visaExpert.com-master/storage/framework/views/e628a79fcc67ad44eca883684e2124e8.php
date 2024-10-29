@@ -49,6 +49,14 @@
                                                 Customer List
                                             </a>
                                         </li>
+
+                                        <li class="nav-item">
+                                            <a href="<?php echo e(route('admin.customers.all')); ?>"
+                                                class="nav-link <?php echo e(request()->routeIs('admin.customers.index') ? 'active' : ''); ?>"
+                                                data-key="t-customer-list">
+                                                All Customer List
+                                            </a>
+                                        </li>
                                     <?php endif; ?>
                                     <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer invoice')): ?>
                                         <li class="nav-item">
@@ -59,6 +67,8 @@
                                             </a>
                                         </li>
                                     <?php endif; ?>
+
+                                   
                                 </ul>
                             </div>
 

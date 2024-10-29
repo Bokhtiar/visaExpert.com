@@ -36,9 +36,18 @@ class CustomerController extends Controller
         //$customers = Customer::where()->latest()->get();
         $customers = Customer::whereColumn('parent_customer_id', 'id')->latest()->get();
         return view('backend.customer.index', compact('customers'));
-
     }
 
+    public function customer_all(): View
+    {
+        $this->authorize('index', CustomerController::class);
+
+       
+        $customers = Customer::latest()->get();
+        return view('backend.customer.all-customer', compact('customers'));
+    }
+
+    
     /*offline customer create*/
     public function offline_customer_create(Request $request)
     {
@@ -108,22 +117,17 @@ class CustomerController extends Controller
         $this->authorize('view', CustomerController::class);
         $visaStatuses = VisaStatus::collection();
 
-       
-
         $customer = Customer::with('forms.visaType')
             ->with('forms.invoice')
             ->with('forms.documents')
             ->findOrFail($customer->id);
-
-
-
-
 
         $customer_service_type = VisaForm::where('customer_id', $customer->id)->first();
 
         $customer_visa = VisaType::find($customer_service_type->visa_type_id);
 
         $documents = $customer_visa->required_documents;
+        
 
         $customer_form_id = $customer_service_type->id;
 
