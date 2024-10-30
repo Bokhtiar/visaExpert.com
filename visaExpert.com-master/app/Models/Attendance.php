@@ -28,4 +28,8 @@ class Attendance extends Model
         'punch_out' => 'datetime',
         'date' => 'date'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
