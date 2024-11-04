@@ -47,6 +47,26 @@ class DashboardController extends Controller
         // attendance
         $date = now()->format('Y-m-d');
         $data['attendance'] = Attendance::where('user_id', Auth::id())->where('date', $date)->first();
+
+
+
+
+        // bar chart
+        $monthlyCustomers = Customer::select(
+            DB::raw('MONTH(created_at) as month'), 
+            DB::raw('COUNT(id) as count')
+        )
+        ->whereYear('created_at', Carbon::now()->year)
+        ->groupBy('month')
+        ->orderBy('month')
+        ->pluck('count', 'month');
+
+    // Fill in any missing months with zero counts
+    $bar_monthly_customer_data = [];
+    for ($month = 1; $month <= 12; $month++) {
+        $data['labels'][] = Carbon::create()->month($month)->format('F'); // Month name (January, February, etc.)
+        $data['data'][] = $monthlyCustomers->get($month, 0); // Get the count for the month, or 0 if no data
+    }
  
         return view('backend.dashboard', $data );
     }
