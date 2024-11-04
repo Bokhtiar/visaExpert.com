@@ -1,6 +1,6 @@
 @extends('layouts.backend.master')
 
-@section('title',  isset($visaType) ? 'Edit Visa Type' : 'Create New Visa Type')
+@section('title', isset($visaType) ? 'Edit Visa Type' : 'Create New Visa Type')
 
 @section('content')
     <div class="row">
@@ -38,8 +38,8 @@
                         </div>
                         <div class="card-body">
                             <form id="visa-form"
-                                  action="{{ isset($visaType) ? route('admin.visa-types.update', $visaType->id) : route('admin.visa-types.store') }}"
-                                  method="POST">
+                                action="{{ isset($visaType) ? route('admin.visa-types.update', $visaType->id) : route('admin.visa-types.store') }}"
+                                method="POST">
                                 @csrf
                                 @if (isset($visaType))
                                     @method('PUT')
@@ -47,25 +47,26 @@
                                 <div>
                                     <label for="title" class="form-label">Name</label>
                                     <input type="text" id="title"
-                                           class="form-control mb-3 @error('title') is-invalid @enderror"
-                                           name="title" value="{{ $visaType->title ?? old('title') }}">
+                                        class="form-control mb-3 @error('title') is-invalid @enderror" name="title"
+                                        value="{{ $visaType->title ?? old('title') }}">
 
                                     @error('title')
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </div>
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
                                     @enderror
                                 </div>
                                 <div class="my-2">
                                     <label for="required_documents" class="form-label">Required Documents</label>
-                                    <textarea name="required_documents" class="form-control"
-                                              rows="3">{{ isset($visaType) ? implode(", ", json_decode($visaType->required_documents)) : "" }}</textarea>
+                                    <textarea name="required_documents" class="form-control" rows="3">{{ isset($visaType) ? implode(', ', json_decode($visaType->required_documents)) : '' }}</textarea>
                                     @error('description')
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </div>
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
                                     @enderror
                                 </div>
+                                
+
                                 <div class="mt-3">
                                     @isset($visaType)
                                         <button type="submit" class="btn btn-success">
@@ -89,24 +90,21 @@
 @endsection
 
 @push('js')
-
-
     <!-- ckeditor -->
     <script src="{{ asset('backend/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
-    
+
     <script>
-    ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .then( editor => {
-            console.log( editor );
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
 
     <!-- init js -->
     <script src="{{ asset('backend/assets/js/pages/form-editor.init.js') }}"></script>
 @endpush
-

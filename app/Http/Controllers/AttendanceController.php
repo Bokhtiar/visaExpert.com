@@ -8,6 +8,7 @@ use App\Models\Leave;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -17,19 +18,50 @@ class AttendanceController extends Controller
         $user = auth()->user();
 
         // Get today's date
-        $today = Carbon::now()->format('Y-m-d');
+        $date = Carbon::now()->format('Y-m-d');
+        $user = Auth::user()->is_admin;
 
-        // Fetch the attendance records for the current user for today
-        $attendances = Attendance::where('user_id', $user->id)
-            ->whereDate('date', $today)
-            ->orderBy('date', 'asc')
-            ->get();
-
-        $users = User::all();
+    
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::whereDate('date', $date)
+                ->orderBy('date', 'asc')
+                ->get();
         
+        $users = User::all();
+
 
         // Pass data to the view
-        return view('backend.attendance.show', compact('attendances', 'users'));
+        return view('backend.attendance.show', compact('attendances', 'users', 'date'));
+    }
+
+    
+
+    public function day_filter(Request $request)
+    {
+        // Get the current user
+        $user = auth()->user();
+
+        // Get today's date
+        $date = $request->day;
+        $user = Auth::user()->is_admin;
+
+        if ($user == 1) {
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::whereDate('date', $date)
+                ->orderBy('date', 'asc')
+                ->get();
+        } else {
+            // Fetch the attendance records for the current user for date
+            $attendances = Attendance::where('user_id', $user->id)
+                ->whereDate('date', $date)
+                ->orderBy('date', 'asc')
+                ->get();
+        }
+        $users = User::all();
+
+
+        // Pass data to the view
+        return view('backend.attendance.show', compact('attendances', 'users', 'date'));
     }
 
     public function punchIn(Request $request)
@@ -39,25 +71,35 @@ class AttendanceController extends Controller
             $date = now()->format('Y-m-d');
             $time = now()->format('H:i:s');
 
+            // // Define the cutoff time for punch-in (5:30 PM)
+            $punchInCutoff = now()->setTime(17, 30); // 5:30 PM
+
+            // Check if the current time is after 5:30 PM
+            if (now()->greaterThan($punchInCutoff)) {
+                return redirect()->back()->with('error', 'Punch-in is not allowed after 5:30 PM.');
+            }
+
             // Define the threshold time for being late (9:30 AM)
             $lateThreshold = now()->setTime(9, 30);
 
             // Determine the status based on punch-in time
             $status = now()->greaterThan($lateThreshold) ? 'late' : 'normal';
 
+            // Step 1: Calculate late hours (only if punch-in time is after 9:30 AM)
+            $lateHours = 0;
+            $lateMinutes = 0;
+            $lateSeconds = 0;
 
+            if (now()->greaterThan($lateThreshold)) {
+                $current = \Carbon\Carbon::parse($time);  // Current punch-in time
+                $lateMinutes = max(0, $current->diffInMinutes($lateThreshold, true));
+                $lateSeconds = max(0, $current->diffInSeconds($lateThreshold, true) % 60);
 
-            // Step 1: Calculate late hours (after 9:30 AM) with seconds precision
-            $current = \Carbon\Carbon::parse($time);  // Current punch-in time
-            $lateMinutes = max(0, $current->diffInMinutes($lateThreshold, true));
-            $lateSeconds = max(0, $current->diffInSeconds($lateThreshold, true) % 60);
-
-            // Convert to hours, minutes, and seconds
-            $lateHours = floor($lateMinutes / 60);
-            $lateMinutes = $lateMinutes % 60;
-            $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
-
-            
+                // Convert to hours, minutes, and seconds
+                $lateHours = floor($lateMinutes / 60);
+                $lateMinutes = $lateMinutes % 60;
+                $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
+            }
 
             // Update or create the attendance record with status
             $attendance = Attendance::updateOrCreate(
@@ -69,11 +111,12 @@ class AttendanceController extends Controller
                 ]
             );
 
-            return redirect()->back()->with('success', 'Punch successfully done.');
+            return redirect()->back()->with('success', 'Punch-in successfully done.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
 
 
 
@@ -99,19 +142,19 @@ class AttendanceController extends Controller
                 $earlyOutMinutes = 0;
                 $earlyOutSeconds = 0;
 
-                // Step 1: Calculate late hours (after 9:30 AM) with seconds precision
-                $lateMinutes = max(0, $attendance->punch_in->diffInMinutes($lateThreshold, true));
-                $lateSeconds = max(0, $attendance->punch_in->diffInSeconds($lateThreshold, true) % 60);
+                // // Step 1: Calculate late hours (after 9:30 AM) with seconds precision
+                // $lateMinutes = max(0, $attendance->punch_in->diffInMinutes($lateThreshold, true));
+                // $lateSeconds = max(0, $attendance->punch_in->diffInSeconds($lateThreshold, true) % 60);
 
-                // Convert to hours, minutes, and seconds
-                $lateHours = floor($lateMinutes / 60);
-                $lateMinutes = $lateMinutes % 60;
-                $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
+                // // Convert to hours, minutes, and seconds
+                // $lateHours = floor($lateMinutes / 60);
+                // $lateMinutes = $lateMinutes % 60;
+                // $lateSeconds = round($lateSeconds / 60); // Convert remaining seconds to minutes for rounding
 
-                $attendance->late_hour = sprintf('%02d:%02d:%02d', $lateHours, $lateMinutes, $lateSeconds);
+                // $attendance->late_hour = sprintf('%02d:%02d:%02d', $lateHours, $lateMinutes, $lateSeconds);
 
                 // Check if punch-out time is before 5:30 PM
-                if ($attendance->punch_out < $earlyOutThreshold) {
+                if ($attendance->punch_out <= $earlyOutThreshold) {
                     // Calculate early out time only if punch-out is before 5:30 PM
                     $earlyOutMinutes = abs($earlyOutThreshold->diffInMinutes($attendance->punch_out, false));
                     $earlyOutSeconds = abs($earlyOutThreshold->diffInSeconds($attendance->punch_out, false) % 60);
@@ -124,9 +167,15 @@ class AttendanceController extends Controller
                 // Format early out time with hours, minutes, and seconds
                 $attendance->early_out_hour = sprintf('%02d:%02d:%02d', $earlyOutHours, $earlyOutMinutes, $earlyOutSeconds);
 
-                // Optional: Calculate the fine based on rounded hours
-                $lateFine = $lateHours ?  $lateHours * 50 + ($lateMinutes / 60 * 50) : 0;
-                $earlyOutFine = $earlyOutHours ?  $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50): 0;
+                // Retrieve the existing late_hour from attendance record
+                $lateHourParts = explode(':', $attendance->late_hour);
+                $lateHours = (int)$lateHourParts[0];
+                $lateMinutes = (int)$lateHourParts[1];
+                $lateSeconds = (int)$lateHourParts[2];
+
+                // Optional: Calculate the fine based on late hours and early out hours
+                $lateFine = ($lateHours * 50) + ($lateMinutes / 60 * 50);
+                $earlyOutFine = $earlyOutHours ?  $earlyOutHours * 50 + ($earlyOutMinutes / 60 * 50) : 0;
                 $attendance->fine = $lateFine + $earlyOutFine;
 
                 // Calculate total time worked (from punch_in to punch_out)
@@ -175,6 +224,7 @@ class AttendanceController extends Controller
 
     public function filter(Request $request)
     {
+
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
         $userId = $request->input('user_id');
@@ -190,6 +240,7 @@ class AttendanceController extends Controller
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
             ->toArray();
 
+
         $missAttendances = Attendance::where('user_id', $userId)
             ->whereDate('date', '>=', $firstDayOfMonth)
             ->whereDate('date', '<=', $lastDayOfMonth)
@@ -198,6 +249,7 @@ class AttendanceController extends Controller
             ->toArray();
 
         $missLeaves = Leave::where('user_id', $userId)
+        ->where('status', 'approved')
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
@@ -225,7 +277,7 @@ class AttendanceController extends Controller
         $monthTotalDay = $lastDayOfMonth->day;
         $deductionPerDay = $findUser->salary /  $monthTotalDay - count($missHolidays); // Fixed deduction per day
         /** end of miss day (no activity) and calculation */
-        
+
 
         /** attendance conbine marge data */
         // Fetch holidays for the selected month and year
@@ -240,7 +292,7 @@ class AttendanceController extends Controller
             ->whereDate('date', '<=', $lastDayOfMonth)
             ->orderBy('date', 'asc')
             ->get();
-
+        //    dd($userId);
         // Fetch leaves for the selected user within the date range
         $leaves = Leave::where('user_id', $userId)
             ->whereDate('date', '>=', $firstDayOfMonth)
@@ -285,13 +337,14 @@ class AttendanceController extends Controller
             ->toArray();
 
         $missAttendances = Attendance::where('user_id', $userId)
-        ->whereDate('date', '>=', $firstDayOfMonth)
+            ->whereDate('date', '>=', $firstDayOfMonth)
             ->whereDate('date', '<=', $lastDayOfMonth)
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
             ->toArray();
 
         $missLeaves = Leave::where('user_id', $userId)
+            ->where('status', 'approved')
             ->whereBetween('date', [$firstDayOfMonth, $lastDayOfMonth])
             ->pluck('date')
             ->map(fn($date) => Carbon::parse($date)->format('Y-m-d')) // Ensure date format
@@ -345,8 +398,8 @@ class AttendanceController extends Controller
 
         // Combine all records and sort by date
         $combinedRecords = $holidays->concat($attendances)->concat($leaves)
-        ->unique('date')
-        ->sortBy('date');
+            ->unique('date')
+            ->sortBy('date');
 
         // Calculate total fine amount for the user within the selected month
         $totalFine = $attendances->sum('fine');
@@ -357,6 +410,4 @@ class AttendanceController extends Controller
         // Return the filtered view
         // return view('backend.attendance.filter', compact('attendances', 'users', 'findUser', 'month', 'year'));
     }
-
-
 }

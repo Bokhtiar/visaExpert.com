@@ -35,9 +35,9 @@
 
                                     <!-- create new cusmer offline mood -->
                                     @hasPermission('Create Customer')
-                                    <a href="{{ route('admin.customers.offline') }}" class="btn btn-success">
-                                        Create New Customer (Offline mood)
-                                    </a>
+                                        <a href="{{ route('admin.customers.offline') }}" class="btn btn-success">
+                                            Create New Customer (Offline mood)
+                                        </a>
                                     @endhasPermission
 
 
@@ -49,7 +49,6 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
-                                                    <th scope="col">User ID</th>
                                                     <th scope="col">Name</th>
                                                     {{-- <th scope="col">Owner</th> --}}
                                                     <th scope="col">Work Status</th>
@@ -64,14 +63,92 @@
                                                 @forelse($customers as $key=>$customer)
                                                     <tr>
                                                         <td class="fw-medium text-center">{{ $key + 1 }}</td>
+                                                        @php
+                                                            $childData = App\Models\Customer::countChaild(
+                                                                $customer->id,
+                                                            );
+                                                        @endphp
 
-
-                                                        <td>#{{ $customer->unique_id }}</td>
-                                                        <td>{{ $customer->name . '(' . App\Models\Customer::countChaild($customer->id) . ')' }}
+                                                        <td>{{ $customer->name . ' (' . $childData['count'] . ')' }}
+                                                            @if ($childData['count'] > 0)
+                                                                <span style="font-size: 12px; color: gray;">
+                                                                    ({{ $childData['ids']->implode(', ') }})
+                                                                    <!-- Display the list of child IDs -->
+                                                                </span>
+                                                            @endif
                                                         </td>
+
                                                         {{-- <td>{{ $customer->customer ? $customer->customer->name : '' }}</td> --}}
-                                                        <td>{{ App\Models\VisaForm::customerListStatus($customer->id) }}
+
+
+
+
+                                                        <td class="visa-status-badge"
+                                                            id="visaStatusBadge{{ $customer->id }}"
+                                                            data-customer-id="{{ $customer->id }}">
+                                                            {!! displayVisaStatusBadge(App\Models\VisaForm::customerListStatus($customer->id)) !!}
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal{{ $customer->id }}">
+                                                                <i class="ri-pencil-line align-bottom me-1"></i>
+                                                            </button>
                                                         </td>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal{{ $customer->id }}"
+                                                            tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                                            Update Visa Status</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <!-- Dropdown to select status -->
+                                                                        <form id="updateStatusForm{{ $customer->id }}"
+                                                                            action="{{ route('admin.update.visa.status', $customer->id) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('PUT')
+                                                                            <div class="form-group">
+                                                                                <label for="visa_status">Visa Status</label>
+                                                                                <select class="form-control"
+                                                                                    id="visa_status{{ $customer->id }}"
+                                                                                    name="visa_status">
+                                                                                    <option value="Pending">Pending</option>
+                                                                                    <option value="Processing">Processing
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Checking Completed almost Ready">
+                                                                                        Checking</option>
+                                                                                    <option value="Ready to Delivery">Ready
+                                                                                        to Delivery</option>
+                                                                                    <option value="Delivered">Delivered
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="button"
+                                                                            id="saveChangesBtn{{ $customer->id }}"
+                                                                            class="btn btn-primary"
+                                                                            data-customer-id="{{ $customer->id }}">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
                                                         <td>
                                                             <a href="https://wa.me/+88{{ $customer->phone }}">
                                                                 <img height="40" width="40"
@@ -79,7 +156,8 @@
                                                                     alt="">
                                                             </a>
                                                         </td>
-                                                        <td><a href="tel:{{ $customer->phone }}">{{ $customer->phone }}</a>
+                                                        <td><a
+                                                                href="tel:{{ $customer->phone }}">{{ $customer->phone }}</a>
                                                         </td>
                                                         <td>
                                                             @php
@@ -100,25 +178,38 @@
                                                                     )
                                                                         ->where('due', $invoice->discount)
                                                                         ->first();
+
                                                                 @endphp
+
                                                                 @if ($discount)
                                                                     <a
                                                                         href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span
-                                                                            class="btn btn-success btn-sm">Paid</span></a>
+                                                                            class="btn btn-success btn-sm">Paid
+                                                                            {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay') }}
+                                                                        </span></a>
                                                                 @else
                                                                     @if ($invoice->status == 'Paid')
-                                                                        <a
+                                                                        <a class="btn btn-success btn-sm"
                                                                             href="{{ route('admin.customers-invoices.show', $invoice->id) }}"><span
-                                                                                class="btn btn-success btn-sm">Paid</span></a>
+                                                                                class="">Paid</span>
+                                                                            {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('pay') }}
+                                                                        </a>
                                                                     @elseif($invoice->status == 'Due')
                                                                         <a class="btn btn-info btn-sm"
                                                                             href="{{ route('admin.customers-invoices.edit', $invoice->id) }}">
                                                                             Pay
+
                                                                         </a>
+
+
                                                                         <span class="">
                                                                             <a class="btn btn-danger btn-sm"
                                                                                 href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
                                                                                 Due
+
+                                                                                {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due') }}
+
+
                                                                             </a>
 
                                                                         </span>
@@ -149,9 +240,9 @@
                                                                 @hasPermission('Create Invoice')
                                                                     @can(\App\Permissions::CREATE_CUSTOMER_INVOICE)
                                                                         <a href="{{ route('admin.customers-invoices.create', $customer->id) }}"
-                                                                            class="btn btn-dark waves-effect waves-light">
+                                                                            class="btn btn-sm btn-dark waves-effect waves-light">
                                                                             <i class="ri-file-add-line align-bottom me-1"></i>
-                                                                            Create Invoice
+                                                                            {{-- Create Invoice --}}
                                                                         </a>
                                                                     @endcan
                                                                 @endhasPermission
@@ -159,9 +250,9 @@
                                                                 @hasPermission('Edit Customer')
                                                                     @can(\App\Permissions::VIEW_CUSTOMER)
                                                                         <a href="{{ route('admin.customers.show', $customer->id) }}"
-                                                                            class="btn btn-clr-red waves-effect waves-light">
+                                                                            class="btn btn-sm btn-clr-red waves-effect waves-light">
                                                                             <i class="ri-eye-2-line align-bottom me-1"></i>
-                                                                            View Profile
+                                                                            {{-- View Profile --}}
                                                                         </a>
                                                                     @endcan
                                                                 @endhasPermission
@@ -169,10 +260,10 @@
                                                                 @hasPermission('Delete Customer')
                                                                     @can(\App\Permissions::DELETE_CUSTOMER)
                                                                         <button type="button"
-                                                                            class="btn btn-soft-success waves-effect waves-light"
+                                                                            class="btn btn-sm btn-soft-success waves-effect waves-light"
                                                                             onclick="deleteData({{ $customer->id }})">
                                                                             <i class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                            Delete Customer
+                                                                            {{-- Delete Customer --}}
                                                                         </button>
                                                                         <form id="delete-form-{{ $customer->id }}"
                                                                             action="{{ route('admin.customers.destroy', $customer->id) }}"
@@ -217,6 +308,47 @@
         $(document).ready(function() {
             var table = $('#example').DataTable();
             table.page.len(100).draw(); // Set the default pagination limit to 100
+        });
+    </script>
+
+
+
+
+
+    {{-- 
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script>
+        $(document).ready(function() {
+            @foreach ($customers as $customer)
+                $('#saveChangesBtn{{ $customer->id }}').click(function() {
+                    var customerId = $(this).data('customer-id');
+                    var formData = $('#updateStatusForm' + customerId).serialize(); // Serialize form data
+
+                    $.ajax({
+                        url: "{{ route('admin.update.visa.status', $customer->id) }}",
+                        type: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            // Update the visa status badge in real-time
+                            $('#visaStatusBadge' + customerId).html(response
+                                .statusBadge); // Update the badge
+
+                            // Change the "Update Status" button text to indicate success
+                            $('#saveChangesBtn' + customerId).text(
+                                'Status Updated'); // Change button text
+
+                            // Optionally, disable the button to prevent further clicks
+                            $('#saveChangesBtn' + customerId).prop('disabled', true);
+
+                            // Close the modal
+                            $('#exampleModal' + customerId).modal('hide');
+                        },
+                        error: function(xhr) {
+                            alert('An error occurred. Please try again.');
+                        }
+                    });
+                });
+            @endforeach
         });
     </script>
 @endpush

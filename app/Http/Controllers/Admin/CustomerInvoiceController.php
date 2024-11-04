@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerInvoiceController extends Controller
 {
+    public function index()
+    {
+        $invoices = Invoice::latest()->get();
+        return view('backend.customer.invoice.index', compact('invoices'));
+    }
+
     public function create(Customer $customer): View
     {
 
@@ -151,12 +157,12 @@ class CustomerInvoiceController extends Controller
         $roads = Road::all();
         $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->where('invoice_id', $invoice->id)->get();
 
-        return view('backend.customer.invoice.form', compact('invoice', 'customerList', 'paymentStatus', 'roads', 'payables'));
+        return view('backend.customer.invoice.edit', compact('invoice', 'customerList', 'paymentStatus', 'roads', 'payables'));
     }
 
     public function update(Request $request, Invoice $invoice): RedirectResponse
     {
-
+        // dd($request->all());
         try {
             $authUser = Auth::id();
             $this->authorize('edit-invoice', CustomerInvoiceController::class);
@@ -271,10 +277,36 @@ class CustomerInvoiceController extends Controller
         }
     }
 
+    // public function download(Invoice $invoice): Response
+    // {
+    //     $this->authorize('download-invoice', CustomerInvoiceController::class);
+    //     $pdf = Pdf::loadView('backend.customer.invoice.pdf', compact('invoice'))
+    //         ->setOption([
+    //             'defaultFont' => 'sans-serif',
+    //             'defaultMediaType' => 'print',
+    //         ]);
+    //     $roads = Road::all();
+    //     $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->get();
+    //     $customers = Customer::where('parent_customer_id', $invoice->customer_id)->get();
+    //     logActivity(
+    //         (Auth::user()->name . ' downloaded an invoice.'),
+    //         $invoice->id,
+    //         'downloaded',
+    //         'invoices'
+    //     );
+
+    //     return $pdf->download('invoice.pdf');
+    // }
     public function download(Invoice $invoice): Response
     {
+   
         $this->authorize('download-invoice', CustomerInvoiceController::class);
-        $pdf = Pdf::loadView('backend.customer.invoice.pdf', compact('invoice'))
+
+        $roads = Road::all();
+        $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->get();
+        $customers = Customer::where('parent_customer_id', $invoice->customer_id)->get();
+       
+        $pdf = Pdf::loadView('backend.customer.invoice.pdf', compact('invoice', 'roads', 'payables', 'customers'))
             ->setOption([
                 'defaultFont' => 'sans-serif',
                 'defaultMediaType' => 'print',
@@ -288,5 +320,7 @@ class CustomerInvoiceController extends Controller
         );
 
         return $pdf->download('invoice.pdf');
+        // return $pdf->stream('invoice.pdf');
     }
+
 }
