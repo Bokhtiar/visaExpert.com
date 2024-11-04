@@ -115,11 +115,53 @@ class ReciveController extends Controller
     }
 
 
-    public function statement()
+    // public function statement()
+    // {
+    //     $transfers = Transfer::latest()->get();
+    //     return view('backend.transfer.statement', compact('transfers'));
+    // } 
+
+    public function statement(Request $request)
     {
-        $transfers = Transfer::latest()->get();
-        return view('backend.transfer.statement', compact('transfers'));
-    } 
+        $users = User::latest()->get();
+        
+        // Get the current month and year if no filter is provided
+        // $selectedMonth = $request->input('month', Carbon::now()->month);
+        // $selectedYear = $request->input('year', Carbon::now()->year);
+
+        // Retrieve start and end dates, and created_by from the request
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $createdBy = $request->input('created_by');
+
+        // Build the query
+        $query = Transfer::query();
+
+        // Apply filters based on month and year if provided
+        // if ($selectedMonth) {
+        //     $query->whereMonth('created_at', $selectedMonth);
+        // }
+        // if ($selectedYear) {
+        //     $query->whereYear('created_at', $selectedYear);
+        // }
+
+        // Apply start and end date filters
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        // Filter by created_by if provided
+        if ($createdBy) {
+            $query->where('created_by', $createdBy);
+        }
+
+        // Fetch the filtered results
+        $transfers = $query->latest()->get();
+       
+        // Pass the data to the view
+        return view('backend.transfer.statement', compact('users','transfers', 'startDate', 'endDate', 'createdBy'));
+    }
+
 
 
 }
