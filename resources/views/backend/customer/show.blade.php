@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="flex-shrink-1 custom-badge-style">
                                     {!! displayVisaStatusBadge($customer->forms[0]->visa_status) !!}
-                                </div>
+                                </div> 
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-grow-1">
@@ -607,7 +607,7 @@
                                                                         <th scope="col">View</th>
                                                                         <th scope="col">Upload</th>
                                                                         <th scope="col">Action</th>
-                                                                    </tr>
+                                                                    </tr> 
                                                                 </thead>
                                                                 @foreach (json_decode($documents, true) as $file)
                                                                     @php
@@ -615,8 +615,7 @@
                                                                             $file,
                                                                             $customer_form_id,
                                                                         );
-
-                                                                    @endphp
+                                                                    @endphp 
 
                                                                     @if ($exist)
                                                                         <form
@@ -662,7 +661,7 @@
                                                                             <input type="file" name="doc"
                                                                                 id="">
                                                                         </td>
-
+                                                                      
                                                                         <input type="hidden" name="customer_form_id"
                                                                             value="{{ $customer_form_id }}"
                                                                             id="">

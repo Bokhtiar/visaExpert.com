@@ -553,7 +553,7 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="discount" value=""
-                                                                    class="form-control bg-light border-0" id=""
+                                                                    class="form-control bg-light border-0" id="discount_amount"
                                                                     placeholder="0" />
                                                             </td>
                                                         </tr>
@@ -723,60 +723,79 @@
 
 
 
-    <script>
-        function calculateTotal() {
-            let total = 0;
-            $('.product-line-price').each(function() {
-                let amount = parseFloat($(this).val()) || 0;
-                total += amount;
-            });
-            $('#cart-total').val(total.toFixed(2));
-        }
-
-        function calculateRow(row) {
-            let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
-            let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
-            let total = price * qty;
-            row.find('.product-line-price').val(total.toFixed(2));
-            calculateTotal();
-        }
-
-        $(document).ready(function() {
-            // Initial calculation
-            calculateTotal();
-
-            // Service dropdown change
-            $('#newlink').on('change', 'select[name="items[]"]', function() {
-                let row = $(this).closest('tr');
-                calculateRow(row);
-            });
-
-            // Quantity change
-            $('#newlink').on('input', 'input[name="qty[]"]', function() {
-                let row = $(this).closest('tr');
-                calculateRow(row);
-            });
-
-            // Remove row
-            $('#newlink').on('click', 'a.btn-danger', function() {
-                $(this).closest('tr').remove();
-                calculateTotal();
-            });
-
-            // Add new row
-            $('#add-item').on('click', function() {
-                let tr = $('#newlink tr:first').clone();
-                let currentId = parseInt(tr.attr('id'));
-                let newId = currentId + 1;
-                tr.attr('id', newId);
-                tr.find('.product-id').text(newId);
-                tr.find('input, textarea').val('');
-                tr.find('.product-line-price').val('0.00');
-                tr.appendTo('#newlink');
-                calculateTotal();
-            });
+<script>
+    function calculateTotal() {
+        let total = 0;
+        
+        // Calculate the total from all product line prices
+        $('.product-line-price').each(function() {
+            let amount = parseFloat($(this).val()) || 0;
+            total += amount;
         });
-    </script>
+
+        // Get the discount and payment amounts
+        let discount = parseFloat($('#discount_amount').val()) || 0;
+        let payment = parseFloat($('#receive_payment_save').val()) || 0;
+
+        // Subtract the discount and payment from the total
+        total -= (discount + payment);
+
+        // Ensure total is not negative
+        total = total < 0 ? 0 : total;
+
+        // Update the total display
+        $('#cart-total').val(total.toFixed(2));
+    }
+
+    function calculateRow(row) {
+        let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
+        let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
+        let total = price * qty;
+        row.find('.product-line-price').val(total.toFixed(2));
+        calculateTotal();
+    }
+
+    $(document).ready(function() {
+        // Initial calculation
+        calculateTotal();
+
+        // Service dropdown change
+        $('#newlink').on('change', 'select[name="items[]"]', function() {
+            let row = $(this).closest('tr');
+            calculateRow(row);
+        });
+
+        // Quantity change
+        $('#newlink').on('input', 'input[name="qty[]"]', function() {
+            let row = $(this).closest('tr');
+            calculateRow(row);
+        });
+
+        // Remove row
+        $('#newlink').on('click', 'a.btn-danger', function() {
+            $(this).closest('tr').remove();
+            calculateTotal();
+        });
+
+        // Add new row
+        $('#add-item').on('click', function() {
+            let tr = $('#newlink tr:first').clone();
+            let currentId = parseInt(tr.attr('id'));
+            let newId = currentId + 1;
+            tr.attr('id', newId);
+            tr.find('.product-id').text(newId);
+            tr.find('input, textarea').val('');
+            tr.find('.product-line-price').val('0.00');
+            tr.appendTo('#newlink');
+            calculateTotal();
+        });
+
+        // Handle changes in discount and payment input fields
+        $('#discount_amount, #receive_payment_save').on('input', function() {
+            calculateTotal();
+        });
+    });
+</script>
 
   
 @endpush

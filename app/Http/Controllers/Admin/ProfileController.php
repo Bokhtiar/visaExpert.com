@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\Transfer;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +28,23 @@ class ProfileController extends Controller
         $receivedTransfers = Transfer::where('recive_id', Auth::id())->get();
         $transfers = $createdTransfers->merge($receivedTransfers);
         $transfers = $transfers->unique('id');
+
+        // Attendance record
+        $userId = auth()->id();
+        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year', Carbon::now()->year);
+        $attendanceRecords = Attendance::where('user_id', $userId)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->orderBy('date', 'asc')
+        ->get();
+
         return view('backend.user.profile.edit', [
             'user' => $request->user(),
-            'transfers' => $transfers
+            'transfers' => $transfers,
+            'attendanceRecords' => $attendanceRecords,
+            'month' => $month,
+            'year' => $year,
         ]);
     }
 

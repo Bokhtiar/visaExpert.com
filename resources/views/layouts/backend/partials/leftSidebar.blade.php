@@ -37,10 +37,11 @@
                                 <span data-key="t-customers">Customers</span>
                             </a>
 
-                            @hasPermission('Customer List')
-                                <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
-                                    id="sidebarCustomers">
-                                    <ul class="nav nav-sm flex-column">
+
+                            <div class="collapse menu-dropdown {{ request()->routeIs('admin.customers.*') ? 'show' : '' }}"
+                                id="sidebarCustomers">
+                                <ul class="nav nav-sm flex-column">
+                                    @hasPermission('Customer List')
                                         <li class="nav-item">
                                             <a href="{{ route('admin.customers.index') }}"
                                                 class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
@@ -48,23 +49,44 @@
                                                 Customer List
                                             </a>
                                         </li>
-                                    </ul>
-                                </div>
-                            @endhasPermission
+
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.customers.all') }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                All Customer List
+                                            </a>
+                                        </li>
+                                    @endhasPermission
+                                    @hasPermission('Customer invoice')
+                                        <li class="nav-item">
+                                            <a href="{{ route('admin.customers-invoices.list') }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                Customer Invoice List
+                                            </a>
+                                        </li>
+                                    @endhasPermission
+
+                                   
+                                </ul>
+                            </div>
+
                         </li>
                     @endcan
                 @endhasPermission
 
                 {{-- notepad --}}
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link {{ request()->routeIs('admin.notepad.*') ? 'active' : '' }}"
-                        href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarNotepad">
-                        <i data-feather="file" class="icon-dual"></i>
-                        <span data-key="t-customers">Notepad</span>
-                    </a>
+                @hasPermission('Notepad List')
+                    <li class="nav-item my-1">
+                        <a class="nav-link menu-link {{ request()->routeIs('admin.notepad.*') ? 'active' : '' }}"
+                            href="#sidebarNotepad" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarNotepad">
+                            <i data-feather="file" class="icon-dual"></i>
+                            <span data-key="t-customers">Notepad</span>
+                        </a>
 
-                    @hasPermission('Notepad List')
+
                         <div class="collapse menu-dropdown {{ request()->routeIs('admin.notepad.*') ? 'show' : '' }}"
                             id="sidebarNotepad">
                             <ul class="nav nav-sm flex-column">
@@ -77,8 +99,8 @@
                                 </li>
                             </ul>
                         </div>
-                    @endhasPermission
-                </li>
+                    </li>
+                @endhasPermission
 
 
                 @hasPermission('Visa Type List')
@@ -157,158 +179,160 @@
                     @endcan
                 @endhasPermission
 
-               
+
 
 
                 <!-- balance transfer -->
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link {{ request()->routeIs('admin.transfer.*') ? 'active' : '' }}"
-                        href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarBalance">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">Balance</span>
-                    </a>
-                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.transfer.*') ? 'show' : '' }}"
-                        id="sidebarBalance">
-                        <ul class="nav nav-sm flex-column">
-                            @hasPermission('Transfer Create')
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.transfer.create') }}"
-                                        class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
-                                        data-key="t-add-visa-type">
-                                        Transfer Balance Create
-                                    </a>
-                                </li>
-                            @endhasPermission
-                            @hasPermission('Transfer List')
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.transfer.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
-                                        data-key="t-add-visa-type">
-                                        Transfer Balance List
-                                    </a>
-                                </li>
-                            @endhasPermission
+                @hasPermission('Transfer List')
+                    <li class="nav-item my-1">
+                        <a class="nav-link menu-link {{ request()->routeIs('admin.transfer.*') ? 'active' : '' }}"
+                            href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarBalance">
+                            <i data-feather="divide-circle" class="icon-dual"></i>
+                            <span data-key="t-visa-types">Balance</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.transfer.*') ? 'show' : '' }}"
+                            id="sidebarBalance">
+                            <ul class="nav nav-sm flex-column">
+                                @hasPermission('Transfer Create')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.transfer.create') }}"
+                                            class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
+                                            data-key="t-add-visa-type">
+                                            Transfer Balance Create
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                                @hasPermission('Transfer List')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.transfer.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
+                                            data-key="t-add-visa-type">
+                                            Transfer Balance List
+                                        </a>
+                                    </li>
+                                @endhasPermission
 
-                            @hasPermission('Recive List')
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.recive.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
-                                        data-key="t-visa-type-list">
-                                        Receive Balance List
-                                    </a>
-                                </li>
-                            @endhasPermission
+                                @hasPermission('Recive List')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.recive.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
+                                            data-key="t-visa-type-list">
+                                            Receive Balance List
+                                        </a>
+                                    </li>
+                                @endhasPermission
 
-                            @hasPermission('Statement List')
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.statement.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
-                                        data-key="t-visa-type-list">
-                                        Statement List
-                                    </a>
-                                </li>
-                            @endhasPermission
-                        </ul>
-                    </div>
-                </li>
-                <!-- balance transfer -->
+                                @hasPermission('Statement List')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.statement.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
+                                            data-key="t-visa-type-list">
+                                            Statement List
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- balance transfer -->
+                @endhasPermission
 
 
-                 {{-- holiday --}}
+                {{-- holiday --}}
                 @hasPermission('Holiday List')
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link {{ request()->routeIs('admin.holiday.*') ? 'active' : '' }}"
-                        href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarholiday">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">Holiday List</span>
-                    </a>
-                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.holiday.*') ? 'show' : '' }}"
-                        id="sidebarholiday">
-                        <ul class="nav nav-sm flex-column">
-                            @hasPermission('Holiday Create')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.holiday.create') }}"
-                                    class="nav-link {{ request()->routeIs('admin.holiday.create') ? 'active' : '' }}"
-                                    data-key="t-add-visa-type">
-                                    Add holiday
-                                </a>
-                            </li>
-                             @endhasPermission
-                             @hasPermission('Holiday List')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.holiday.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.holiday.index') ? 'active' : '' }}"
-                                    data-key="t-visa-type-list">
-                                    holiday List
-                                </a>
-                            </li>
-                             @endhasPermission
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item my-1">
+                        <a class="nav-link menu-link {{ request()->routeIs('admin.holiday.*') ? 'active' : '' }}"
+                            href="#sidebarholiday" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarholiday">
+                            <i data-feather="divide-circle" class="icon-dual"></i>
+                            <span data-key="t-visa-types">Holiday List</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.holiday.*') ? 'show' : '' }}"
+                            id="sidebarholiday">
+                            <ul class="nav nav-sm flex-column">
+                                @hasPermission('Holiday Create')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.holiday.create') }}"
+                                            class="nav-link {{ request()->routeIs('admin.holiday.create') ? 'active' : '' }}"
+                                            data-key="t-add-visa-type">
+                                            Add holiday
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                                @hasPermission('Holiday List')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.holiday.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.holiday.index') ? 'active' : '' }}"
+                                            data-key="t-visa-type-list">
+                                            holiday List
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                            </ul>
+                        </div>
+                    </li>
                 @endhasPermission
 
                 {{-- leave --}}
                 @hasPermission('Leave List')
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link {{ request()->routeIs('admin.leave.*') ? 'active' : '' }}"
-                        href="#sidebarleave" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarleave">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">leave Apply</span>
-                    </a>
-                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.leave.*') ? 'show' : '' }}"
-                        id="sidebarleave">
-                        <ul class="nav nav-sm flex-column">
-                             @hasPermission('Leave Create')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.leave.create') }}"
-                                    class="nav-link {{ request()->routeIs('admin.leave.create') ? 'active' : '' }}"
-                                    data-key="t-add-visa-type">
-                                    Add Leave
-                                </a>
-                            </li>
-                              @endhasPermission
-                             @hasPermission('Leave List')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.leave.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.leave.index') ? 'active' : '' }}"
-                                    data-key="t-visa-type-list">
-                                    Leave List
-                                </a>
-                            </li>
-                             @endhasPermission
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item my-1">
+                        <a class="nav-link menu-link {{ request()->routeIs('admin.leave.*') ? 'active' : '' }}"
+                            href="#sidebarleave" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarleave">
+                            <i data-feather="divide-circle" class="icon-dual"></i>
+                            <span data-key="t-visa-types">leave Apply</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.leave.*') ? 'show' : '' }}"
+                            id="sidebarleave">
+                            <ul class="nav nav-sm flex-column">
+                                @hasPermission('Leave Create')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.leave.create') }}"
+                                            class="nav-link {{ request()->routeIs('admin.leave.create') ? 'active' : '' }}"
+                                            data-key="t-add-visa-type">
+                                            Add Leave
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                                @hasPermission('Leave List')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.leave.index') }}"
+                                            class="nav-link {{ request()->routeIs('admin.leave.index') ? 'active' : '' }}"
+                                            data-key="t-visa-type-list">
+                                            Leave List
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                            </ul>
+                        </div>
+                    </li>
                 @endhasPermission
 
                 {{-- attendance --}}
                 @hasPermission('Attendance List')
-                <li class="nav-item my-1">
-                    <a class="nav-link menu-link {{ request()->routeIs('admin.attendance.*') ? 'active' : '' }}"
-                        href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sidebarAttendance">
-                        <i data-feather="divide-circle" class="icon-dual"></i>
-                        <span data-key="t-visa-types">Attendance</span>
-                    </a>
-                    <div class="collapse menu-dropdown {{ request()->routeIs('admin.attendance.*') ? 'show' : '' }}"
-                        id="sidebarAttendance">
-                        <ul class="nav nav-sm flex-column">
-                            @hasPermission('Attendance List')
-                            <li class="nav-item">
-                                <a href="{{ url('admin/attendance') }}"
-                                    class="nav-link {{ request()->routeIs('admin.attendance') ? 'active' : '' }}"
-                                    data-key="t-add-visa-type">
-                                    Attendance List
-                                </a>
-                            </li>
-                            @endhasPermission
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item my-1">
+                        <a class="nav-link menu-link {{ request()->routeIs('admin.attendance.*') ? 'active' : '' }}"
+                            href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarAttendance">
+                            <i data-feather="divide-circle" class="icon-dual"></i>
+                            <span data-key="t-visa-types">Attendance</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.attendance.*') ? 'show' : '' }}"
+                            id="sidebarAttendance">
+                            <ul class="nav nav-sm flex-column">
+                                @hasPermission('Attendance List')
+                                    <li class="nav-item">
+                                        <a href="{{ url('admin/attendance') }}"
+                                            class="nav-link {{ request()->routeIs('admin.attendance') ? 'active' : '' }}"
+                                            data-key="t-add-visa-type">
+                                            Attendance List
+                                        </a>
+                                    </li>
+                                @endhasPermission
+                            </ul>
+                        </div>
+                    </li>
                 @endhasPermission
 
 

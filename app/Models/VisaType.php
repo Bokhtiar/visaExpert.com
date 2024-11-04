@@ -12,7 +12,7 @@ class VisaType extends Model
     protected $table = 'visa_types';
 
     protected $fillable = [
-        'title', 'required_documents',
+        'title', 'required_documents','is_admin', 'is_user'
     ];
 
     public function getRequiredDocumentsAttributeForFronted(): string

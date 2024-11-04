@@ -4,9 +4,9 @@
 
 @section('content')
 
-    <div class="">
+    <div class=""> 
         <form action="{{ url('admin/attendance/filter') }}" method="POST">
-            @csrf
+            @csrf 
             <div class="row mb-4">
                 <div class="col-md-3">
                     <label for="employee" class="form-label">Employee</label>
@@ -40,16 +40,21 @@
                         @endfor
                     </select>
                 </div>
-                @hasPermission('Attendance Filter')
+                {{-- @hasPermission('Attendance Filter') --}}
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
-                @endhasPermission
-            </div>
+                {{-- @endhasPermission --}}
+            </div> 
         </form>
         <div class="card">
             <div class="card-header align-items-center d-flex">
                 <h4 class="card-title mb-0 flex-grow-1">Today Attendance Sheet</h4>
+                <form action="{{url('admin/attendance/day/filter')}}" method="POST">
+                    @csrf
+                <input type="date" value="{{$date}}" name="day" id="">
+                <input type="submit">
+                </form>
             </div>
             <div class="">
                 <table id="example" class="table table-borderless align-middle mb-0">
