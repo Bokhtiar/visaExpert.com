@@ -115,30 +115,11 @@ class ReciveController extends Controller
     }
 
 
-    // public function statement()
-    // {
-
-
-    //     $transfers = Transfer::latest()->get();
-    //     return view('backend.transfer.statement', compact('transfers'));
-    // } 
-
-
-    public function statement(Request $request)
+    public function statement()
     {
-        // Get the current month and year if no filter is provided
-        $selectedMonth = $request->input('month', Carbon::now()->month);
-        $selectedYear = $request->input('year', Carbon::now()->year);
-
-        // Query transfers based on the provided or default month and year
-        $transfers = Transfer::whereYear('created_at', $selectedYear)
-            ->whereMonth('created_at', $selectedMonth)
-            ->latest()
-            ->get();
-        
-        return view('backend.transfer.statement', compact('transfers', 'selectedMonth', 'selectedYear'));
-    }
-
+        $transfers = Transfer::latest()->get();
+        return view('backend.transfer.statement', compact('transfers'));
+    } 
 
 
 }

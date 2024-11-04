@@ -8,6 +8,7 @@
     data-sidebar-image="none"
     data-preloader="enable">
 <head>
+    <?php echo $__env->yieldContent('css'); ?>
     <?php echo $__env->make('layouts.backend.partials.includes.metas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <title><?php echo $__env->yieldContent('title'); ?> | <?php echo e(config('app.name')); ?></title>
     <link rel="shortcut icon" href="<?php echo e(asset('backend/assets/images/favicon.ico')); ?>">
@@ -83,7 +84,7 @@
 </div>
 
 <?php echo $__env->make('layouts.backend.partials.includes.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+<?php echo $__env->yieldContent('js'); ?>
 </body>
 </html>
 <?php /**PATH /Users/bokhtiartoshar/Desktop/Project/Sajon Bhai/visaExpert.com-master/resources/views/layouts/backend/master.blade.php ENDPATH**/ ?>

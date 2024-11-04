@@ -8,11 +8,14 @@ use App\Models\Attendance;
 use App\Models\Customer;
 use App\Models\DailyOfficeExpense;
 use App\Models\Invoice;
+use App\Models\PaymentLog;
 use App\Models\Service;
 use App\Models\VisaForm;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -20,17 +23,54 @@ class DashboardController extends Controller
     {
         $this->authorize('access', DashboardController::class);
 
-        //$data['total_earnings'] = Invoice::where('status', PaymentStatus::PAID->toString())->sum('total_amount');
-        $data['total_earnings'] = Invoice::sum('total_amount');
-        $data['total_forms'] = VisaForm::all()->count();
-        $data['total_customers'] = Customer::query()->count();
-        $data['total_services'] = Service::all()->count();
-        $data['total_spending'] = DailyOfficeExpense::sum('amount');
+        // Other data retrieval logic
+        $dashboardData = [];
+        $dashboardData['total_earnings'] = Invoice::sum('total_amount');
+        $dashboardData['total_forms'] = VisaForm::count();
+        $dashboardData['total_customers'] = Customer::count();
+        $dashboardData['total_services'] = Service::count();
+        $dashboardData['total_spending'] = DailyOfficeExpense::sum('amount');
+        $dashboardData['monthly_client'] = Customer::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
+        $dashboardData['monthly_bills'] = DailyOfficeExpense::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('amount');
+        $dashboardData['current_month_collected_bill'] = PaymentLog::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('pay');
+        $dashboardData['current_month_due_bill'] = PaymentLog::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('due'); // 'due' instead of 'pay'
+        $dashboardData['monthly_discount'] = Invoice::whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->sum('discount');
 
-        // attendance
+        // Attendance
         $date = now()->format('Y-m-d');
-        $data['attendance'] = Attendance::where('user_id', Auth::id())->where('date', $date)->first();
+        $dashboardData['attendance'] = Attendance::where('user_id', Auth::id())->where('date', $date)->first();
 
-        return view('backend.dashboard', $data );
+        // Bar chart data
+        $monthlyCustomers = Customer::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(id) as count')
+        )
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('count', 'month');
+
+        $barChartData = [
+            'labels' => [],
+            'data' => []
+        ];
+        for ($month = 1; $month <= 12; $month++) {
+            $barChartData['labels'][] = Carbon::create()->month($month)->format('F');
+            $barChartData['data'][] = $monthlyCustomers->get($month, 0);
+        }
+    //    dd($dashboardData['total_earnings']);
+        // Pass both `dashboardData` and `barChartData` to the view
+        return view('backend.dashboard', compact('dashboardData', 'barChartData'));
     }
+
 }

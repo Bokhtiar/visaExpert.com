@@ -13,7 +13,7 @@
                                 <li class="breadcrumb-item active">Transfer</li>
                             </ol>
                         </div>
-
+ 
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                                     <h4 class="card-title mb-0 flex-grow-1">All statement</h4>
 
                                     <div class="flex-shrink-0">
-                                        <form action="<?php echo e(route('admin.statement.index')); ?>" method="GET">
+                                        <!-- <form action="<?php echo e(route('admin.statement.index')); ?>" method="GET">
                                             <div class="row mb-3">
                                                 <div class="col-md-4">
                                                     <select name="month" class="form-control">
@@ -56,7 +56,57 @@
                                                     <button type="submit" class="btn btn-primary">Filter</button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form> -->
+
+                                        <form action="<?php echo e(route('admin.statement.index')); ?>" method="GET">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <select name="month" class="form-control">
+                <option value="">Select Month</option>
+                <?php for($m = 1; $m <= 12; $m++): ?>
+                    <option value="<?php echo e($m); ?>"
+                        <?php echo e(isset($selectedMonth) && $selectedMonth == $m ? 'selected' : ''); ?>>
+                        <?php echo e(date('F', mktime(0, 0, 0, $m, 1))); ?>
+
+                    </option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="year" class="form-control">
+                <option value="">Select Year</option>
+                <?php for($y = date('Y'); $y >= date('Y') - 10; $y--): ?>
+                    <option value="<?php echo e($y); ?>"
+                        <?php echo e(isset($selectedYear) && $selectedYear == $y ? 'selected' : ''); ?>>
+                        <?php echo e($y); ?>
+
+                    </option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="start_date" class="form-control" value="<?php echo e(request('start_date')); ?>" placeholder="Start Date">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="end_date" class="form-control" value="<?php echo e(request('end_date')); ?>" placeholder="End Date">
+        </div>
+        <div class="col-md-3 mt-2">
+            <select name="created_by" class="form-control">
+                <option value="">Select User</option>
+                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($user->id); ?>" <?php echo e(@$createdBy == $user->id ? 'selected' : ''); ?>>
+                        <?php echo e($user->name); ?>
+
+                    </option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+        </div>
+        <div class="col-md-3 mt-2">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+
 
                                     </div>
 

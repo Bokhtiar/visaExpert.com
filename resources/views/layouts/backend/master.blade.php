@@ -8,6 +8,7 @@
     data-sidebar-image="none"
     data-preloader="enable">
 <head>
+    @yield('css')
     @include('layouts.backend.partials.includes.metas')
     <title>@yield('title') | {{ config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.ico') }}">
@@ -83,6 +84,6 @@
 </div>
 
 @include('layouts.backend.partials.includes.scripts')
-
+@yield('js')
 </body>
 </html>

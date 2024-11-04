@@ -2,6 +2,11 @@
 
 @section('title', 'Dashboard')
 
+@section('css')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endsection
+
+
 @section('content')
     <div class="row">
         <div class="col">
@@ -26,7 +31,7 @@
                             {{-- attendance  --}}
                             <div class="mx-2">
                                 
-                                @if ($attendance)
+                                @if ($dashboardData['attendance'])
                                     <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
                                         style="pointer-events: none; opacity: 0.5;">
                                         Punch In
@@ -66,6 +71,8 @@
                         </div>
                     </div>
                 </div>
+{{-- {{ dd($dashboardData['total_earnings']) }} --}}
+               
                 <div class="row">
                     @hasPermission('Dashboard Total Eearning')
                     <div class="col-xl-3 col-md-6">
@@ -82,7 +89,7 @@
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
                                             
-                                            <span class="counter-value" data-target="{{ $total_earnings }}">0</span> BDT
+                                            <span class="counter-value" data-target="{{ $dashboardData['total_earnings'] }}">0</span> BDT
                                            
                                         </h4>
                                     </div>
@@ -110,7 +117,7 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="{{ $total_spending }}">0</span> BDT
+                                            <span class="counter-value" data-target="{{ $dashboardData['total_spending'] }}">0</span> BDT
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -136,7 +143,7 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="{{ $total_forms }}">0</span>
+                                            <span class="counter-value" data-target="{{ $dashboardData['total_forms'] }}">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -154,14 +161,14 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Customers
+                                           Total Customers
                                         </p>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="{{ $total_customers }}">0</span>
+                                            <span class="counter-value" data-target="{{ $dashboardData['total_customers'] }}">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -186,7 +193,7 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="{{ $total_services }}">0</span>
+                                            <span class="counter-value" data-target="{{ $dashboardData['total_services'] }}">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -198,6 +205,143 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- monthly_client --}}
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Client
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value" data-target="{{ $dashboardData['monthly_client'] }}">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{--monthly_bills--}}
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Bills
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value" data-target="{{ $dashboardData['monthly_bills'] }}">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- current_month_collected_bill --}}
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Collected Bill
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value" data-target="{{ $dashboardData['current_month_collected_bill'] }}">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- current_month_due_bill --}}
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Due Bill
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value" data-target="{{ $dashboardData['current_month_due_bill'] }}">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     {{-- monthly_discount --}}
+                     <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Discount
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value" data-target="{{ $dashboardData['monthly_discount'] }}">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                 </div>
             </div>
         </div>
@@ -242,5 +386,41 @@
                 </div>
             </div>
         @endcan
-    </div>
+
+
+
+
+
+        {{-- bar chant --}}
+        <div style="width: 80%; margin: auto;">
+            <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    @section('js')
+   <script>
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @json($barChartData['labels']),
+            datasets: [{
+                label: 'Monthly New Customers',
+                data: @json($barChartData['data']),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+    @endsection
+  
 @endsection
