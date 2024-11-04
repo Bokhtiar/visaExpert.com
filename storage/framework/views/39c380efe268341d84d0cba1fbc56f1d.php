@@ -57,6 +57,14 @@
                                                 All Customer List
                                             </a>
                                         </li>
+
+                                         <li class="nav-item">
+                                            <a href="<?php echo e(route('admin.customers.web-file')); ?>"
+                                                class="nav-link <?php echo e(request()->routeIs('admin.customers.web-file') ? 'active' : ''); ?>"
+                                                data-key="t-customer-list">
+                                                Customer web file
+                                            </a>
+                                        </li>
                                     <?php endif; ?>
                                     <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Customer invoice')): ?>
                                         <li class="nav-item">

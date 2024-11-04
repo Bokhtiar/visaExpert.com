@@ -33,6 +33,9 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
     
     /** offline customer create*/
     Route::get('offline', 'offline_customer_create')->name('offline');
+    Route::get('web-file', 'webfileuploadList')->name('web-file');
+    Route::post('webfileupload/{id}', 'webFileUpload')->name('webfileupload');
+    
     /** add-more customer */
     Route::get('add-more/{id}', 'add_more')->name('add-more');
     /** customer crud */ 
@@ -51,6 +54,8 @@ Route::group(['as' => 'customers.', 'prefix' => 'customers', 'controller' => Cus
     // customer
     Route::get('/search-active/{id}', 'search_active')->name('search-active');
 });
+
+// Route::post('admin/customers/webfileupload/{id}', [CustomerController::class, 'webFileUpload'])->name('admin.customers.webfileupload');
 
 // Customers Invoice Routes
 Route::group(['as' => 'customers-invoices.', 'prefix' => 'customers/invoice/', 'controller' => CustomerInvoiceController::class], function () {

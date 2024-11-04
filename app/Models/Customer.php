@@ -40,4 +40,11 @@ class Customer extends Model
     {
         return $this->BelongsTo(Customer::class, 'parent_customer_id', 'id');
     }
+
+    
+    public static function webFileAppId($id)
+    {
+        return VisaForm::where('customer_id', $id)->first('web_file_app_id');
+    }
+
 }

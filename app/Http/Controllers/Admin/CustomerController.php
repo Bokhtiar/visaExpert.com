@@ -38,6 +38,13 @@ class CustomerController extends Controller
         return view('backend.customer.index', compact('customers'));
     }
 
+    public function webfileuploadList(): View
+    {
+        $this->authorize('index', CustomerController::class);
+        $customers = Customer::whereColumn('parent_customer_id', 'id')->latest()->get();
+        return view('backend.customer.webfileuploadList', compact('customers'));
+    }
+
     public function customer_all(): View
     {
         $this->authorize('index', CustomerController::class);
@@ -493,5 +500,29 @@ class CustomerController extends Controller
             dd($th->getMessage());
             throw $th;
         }
+    }
+
+
+    /** customer webfile upload */
+    public function webfileupload(Request $request, $id)
+    {
+        $visaForm = VisaForm::where('customer_id', $id)->first();
+
+        if ($request->hasFile('uploaded_file')) {
+            $files = $request->file('uploaded_file');
+            $destinationPath = public_path('uploads/visa-forms/documents/');
+
+            if ($files->isValid()) {
+                $extension = $files->getClientOriginalExtension();
+                $originalName = pathinfo($files->getClientOriginalName(), PATHINFO_FILENAME);
+                $pdf_url = $originalName . '-' . uniqid() . '.' . $extension;
+                $files->move($destinationPath, $pdf_url);
+            }
+        }
+        
+        $visaForm->update([
+            'web_file_app_id' => $pdf_url,
+        ]);
+        return redirect()->back()->with('success', 'Document update successfully');
     }
 }

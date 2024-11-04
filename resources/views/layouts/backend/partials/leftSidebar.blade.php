@@ -57,6 +57,14 @@
                                                 All Customer List
                                             </a>
                                         </li>
+
+                                         <li class="nav-item">
+                                            <a href="{{ route('admin.customers.web-file') }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.web-file') ? 'active' : '' }}"
+                                                data-key="t-customer-list">
+                                                Customer web file
+                                            </a>
+                                        </li>
                                     @endhasPermission
                                     @hasPermission('Customer invoice')
                                         <li class="nav-item">
