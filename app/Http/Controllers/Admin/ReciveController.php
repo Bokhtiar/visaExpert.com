@@ -22,7 +22,7 @@ class ReciveController extends Controller
     {
         DB::beginTransaction();
 
-        try {
+        try { 
             $user = User::find(Auth::id());
             $transfer = Transfer::find($id);
 
@@ -40,19 +40,19 @@ class ReciveController extends Controller
             $user->save();
 
             // Update transfer status
-            $transfer->status = 'Approved';
+            $transfer->status = 'approved';
             $transfer->save();
 
 
             //balance log table transfer
-            $userBalance = User::find(Auth::id());
-            Transfer::create([
-                'type' => 'transfer_recieve',
-                'amount' => $transfer->amount,
-                'current_amount' => $userBalance->balance,
-                'created_by' => $transfer->created_by,
-                'recive_id' => $transfer->recive_id,
-            ]);
+            // $userBalance = User::find(Auth::id());
+            // Transfer::create([
+            //     'type' => 'transfer_recieve',
+            //     'amount' => $transfer->amount,
+            //     'current_amount' => $userBalance->balance,
+            //     'created_by' => $transfer->created_by,
+            //     'recive_id' => $transfer->recive_id,
+            // ]);
 
             // Log activity
             logActivity(
@@ -86,14 +86,18 @@ class ReciveController extends Controller
             $user->save();
 
 
-            $userBalance = User::find(Auth::id());
-            Transfer::create([
-                'type' => 'transfer_rejected',
-                'amount' => $transfer->amount,
-                'current_amount' => $userBalance->balance,
-                'created_by' => $transfer->created_by,
-                'recive_id' => $transfer->recive_id,
-            ]);
+            // Update transfer status
+            $transfer->status = 'rejected';
+            $transfer->save();
+
+            // $userBalance = User::find(Auth::id());
+            // Transfer::create([
+            //     'type' => 'transfer_rejected',
+            //     'amount' => $transfer->amount,
+            //     'current_amount' => $userBalance->balance,
+            //     'created_by' => $transfer->created_by,
+            //     'recive_id' => $transfer->recive_id,
+            // ]);
 
 
 

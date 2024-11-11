@@ -76,9 +76,6 @@
                                                                             Reject
                                                                         </a>
                                                                     @endhasPermission
-
-
-
                                                                 </div>
                                                             @endif
                                                         </td>

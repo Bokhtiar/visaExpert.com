@@ -65,7 +65,33 @@
                                         </div>
                                     @enderror
                                 </div>
-                                
+
+                                <div class="my-2">
+                                    <label for="is_admin" class="form-label">Is Admin</label>
+                                    <input type="checkbox" name="is_admin" value="1"
+                                        {{ old('is_admin', @$visaType->is_admin) ? 'checked' : '' }} id="is_admin"> Is
+                                    Admin
+                                    @error('is_admin')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <div class="my-2">
+                                    <label for="is_user" class="form-label">Is User</label>
+                                    <input type="checkbox" name="is_user" value="1"
+                                        {{ old('is_user', @$visaType->is_user) ? 'checked' : '' }} id="is_user"> Is User
+                                    @error('is_user')
+                                        <div class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </div>
+
+
+
+
 
                                 <div class="mt-3">
                                     @isset($visaType)

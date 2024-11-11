@@ -52,7 +52,7 @@
 
                                         <li class="nav-item">
                                             <a href="{{ route('admin.customers.all') }}"
-                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers.all') ? 'active' : '' }}"
                                                 data-key="t-customer-list">
                                                 All Customer List
                                             </a>
@@ -69,7 +69,7 @@
                                     @hasPermission('Customer invoice')
                                         <li class="nav-item">
                                             <a href="{{ route('admin.customers-invoices.list') }}"
-                                                class="nav-link {{ request()->routeIs('admin.customers.index') ? 'active' : '' }}"
+                                                class="nav-link {{ request()->routeIs('admin.customers-invoices.list') ? 'active' : '' }}"
                                                 data-key="t-customer-list">
                                                 Customer Invoice List
                                             </a>
@@ -82,7 +82,10 @@
 
                         </li>
                     @endcan
-                @endhasPermission
+                @endhasPermission 
+                {{-- Customer Menu
+
+
 
                 {{-- notepad --}}
                 @hasPermission('Notepad List')
@@ -190,61 +193,57 @@
 
 
 
-                <!-- balance transfer -->
-                @hasPermission('Transfer List')
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link {{ request()->routeIs('admin.transfer.*') ? 'active' : '' }}"
-                            href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarBalance">
-                            <i data-feather="divide-circle" class="icon-dual"></i>
-                            <span data-key="t-visa-types">Balance</span>
-                        </a>
-                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.transfer.*') ? 'show' : '' }}"
-                            id="sidebarBalance">
-                            <ul class="nav nav-sm flex-column">
-                                @hasPermission('Transfer Create')
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.transfer.create') }}"
-                                            class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
-                                            data-key="t-add-visa-type">
-                                            Transfer Balance Create
-                                        </a>
-                                    </li>
-                                @endhasPermission
-                                @hasPermission('Transfer List')
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.transfer.index') }}"
-                                            class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
-                                            data-key="t-add-visa-type">
-                                            Transfer Balance List
-                                        </a>
-                                    </li>
-                                @endhasPermission
 
-                                @hasPermission('Recive List')
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.recive.index') }}"
-                                            class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
-                                            data-key="t-visa-type-list">
-                                            Receive Balance List
-                                        </a>
-                                    </li>
-                                @endhasPermission
+                <li class="nav-item my-1">
+    <a class="nav-link menu-link {{ request()->routeIs('admin.transfer.*') || request()->routeIs('admin.recive.*') || request()->routeIs('admin.statement.*') ? 'active' : '' }}"
+        href="#sidebarBalance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+        aria-controls="sidebarBalance">
+        <i data-feather="divide-circle" class="icon-dual"></i>
+        <span data-key="t-visa-types">Balance</span>
+    </a>
+    <div class="collapse menu-dropdown {{ request()->routeIs('admin.transfer.*') || request()->routeIs('admin.recive.*') || request()->routeIs('admin.statement.*') ? 'show' : '' }}"
+        id="sidebarBalance">
+        <ul class="nav nav-sm flex-column">
+            @hasPermission('Transfer Create')
+                <li class="nav-item">
+                    <a href="{{ route('admin.transfer.create') }}"
+                        class="nav-link {{ request()->routeIs('admin.transfer.create') ? 'active' : '' }}"
+                        data-key="t-add-visa-type">
+                        Transfer Balance Create
+                    </a>
+                </li>
+            @endhasPermission
+            @hasPermission('Transfer List')
+                <li class="nav-item">
+                    <a href="{{ route('admin.transfer.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.transfer.index') ? 'active' : '' }}"
+                        data-key="t-add-visa-type">
+                        Transfer Balance List
+                    </a>
+                </li>
+            @endhasPermission
+            @hasPermission('Recive List')
+                <li class="nav-item">
+                    <a href="{{ route('admin.recive.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.recive.index') ? 'active' : '' }}"
+                        data-key="t-visa-type-list1">
+                        Receive Balance List
+                    </a>
+                </li>
+            @endhasPermission
+            @hasPermission('Statement List')
+                <li class="nav-item">
+                    <a href="{{ route('admin.statement.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
+                        data-key="t-visa-type-list2">
+                        Statement List
+                    </a>
+                </li>
+            @endhasPermission
+        </ul>
+    </div>
+</li>
 
-                                @hasPermission('Statement List')
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.statement.index') }}"
-                                            class="nav-link {{ request()->routeIs('admin.statement.index') ? 'active' : '' }}"
-                                            data-key="t-visa-type-list">
-                                            Statement List
-                                        </a>
-                                    </li>
-                                @endhasPermission
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- balance transfer -->
-                @endhasPermission
 
 
                 {{-- holiday --}}
@@ -318,30 +317,33 @@
                 @endhasPermission
 
                 {{-- attendance --}}
+     
+@hasPermission('Attendance List')
+    <li class="nav-item my-1">
+        <a class="nav-link menu-link {{ request()->is('admin/attendance') ? 'active' : '' }}"
+            href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
+            aria-controls="sidebarAttendance">
+            <i data-feather="divide-circle" class="icon-dual"></i>
+            <span data-key="t-visa-types">Attendance</span>
+        </a>
+        <div class="collapse menu-dropdown {{ request()->is('admin/attendance') ? 'show' : '' }}"
+            id="sidebarAttendance">
+            <ul class="nav nav-sm flex-column">
                 @hasPermission('Attendance List')
-                    <li class="nav-item my-1">
-                        <a class="nav-link menu-link {{ request()->routeIs('admin.attendance.*') ? 'active' : '' }}"
-                            href="#sidebarAttendance" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarAttendance">
-                            <i data-feather="divide-circle" class="icon-dual"></i>
-                            <span data-key="t-visa-types">Attendance</span>
+                    <li class="nav-item">
+                        <a href="{{ url('admin/attendance') }}"
+                            class="nav-link {{ request()->is('admin/attendance') ? 'active' : '' }}"
+                            data-key="t-add-visa-type">
+                            Attendance List
                         </a>
-                        <div class="collapse menu-dropdown {{ request()->routeIs('admin.attendance.*') ? 'show' : '' }}"
-                            id="sidebarAttendance">
-                            <ul class="nav nav-sm flex-column">
-                                @hasPermission('Attendance List')
-                                    <li class="nav-item">
-                                        <a href="{{ url('admin/attendance') }}"
-                                            class="nav-link {{ request()->routeIs('admin.attendance') ? 'active' : '' }}"
-                                            data-key="t-add-visa-type">
-                                            Attendance List
-                                        </a>
-                                    </li>
-                                @endhasPermission
-                            </ul>
-                        </div>
                     </li>
                 @endhasPermission
+            </ul>
+        </div>
+    </li>
+@endhasPermission
+
+
 
 
 

@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', 'Dashboard'); ?>
 
 <?php $__env->startSection('css'); ?>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <?php $__env->stopSection(); ?>
 
 
@@ -28,7 +28,7 @@
 
                             
                             <div class="mx-2">
-                                
+
                                 <?php if($dashboardData['attendance']): ?>
                                     <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
                                         style="pointer-events: none; opacity: 0.5;">
@@ -36,12 +36,12 @@
                                         (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
                                     </a>
 
-                                    <a href="<?php echo e(url('admin/attendance/punch-out')); ?>" class="bg-danger text-white p-2 rounded">
+                                    <a href="<?php echo e(url('admin/attendance/punch-out')); ?>"
+                                        class="bg-danger text-white p-2 rounded">
                                         Punch Out
                                         (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
                                     </a>
                                 <?php else: ?>
-                          
                                     <a href="<?php echo e(url('admin/attendance/punch-in')); ?>"
                                         class="font-bold bg-success text-white p-2 rounded">
                                         Punch In
@@ -69,38 +69,39 @@
                         </div>
                     </div>
                 </div>
+                
 
-               
                 <div class="row">
                     <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Dashboard Total Eearning')): ?>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card card-animate">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Total Earnings
-                                        </p>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                                Total Earnings
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                    <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['total_earnings']); ?>">0</span> BDT
-                                           
-                                        </h4>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                            <i class="bx bx-dollar-circle text-primary"></i>
-                                        </span>
+                                    <div class="d-flex align-items-end justify-content-between mt-4">
+                                        <div>
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+
+                                                <span class="counter-value"
+                                                    data-target="<?php echo e($dashboardData['total_earnings']); ?>">0</span> BDT
+
+                                            </h4>
+                                        </div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                <i class="bx bx-dollar-circle text-primary"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                     <?php endif; ?>
+                    <?php endif; ?>
 
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-animate">
@@ -115,7 +116,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['total_spending']); ?>">0</span> BDT
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['total_spending']); ?>">0</span> BDT
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -141,7 +143,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['total_forms']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['total_forms']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -159,14 +162,15 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                           Total Customers
+                                            Total Customers
                                         </p>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['total_customers']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['total_customers']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -191,7 +195,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['total_services']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['total_services']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -218,7 +223,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['monthly_client']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['monthly_client']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -245,7 +251,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['monthly_bills']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['monthly_bills']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -272,7 +279,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['current_month_collected_bill']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['current_month_collected_bill']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -299,34 +307,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
                                         <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['current_month_due_bill']); ?>">0</span>
-                                        </h4>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                            <i class="bx bx-user-circle text-primary"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                     
-                     <div class="col-xl-3 col-md-6">
-                        <div class="card card-animate">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Current Month Discount
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
-                                    <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                            <span class="counter-value" data-target="<?php echo e($dashboardData['monthly_discount']); ?>">0</span>
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['current_month_due_bill']); ?>">0</span>
                                         </h4>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
@@ -340,6 +322,34 @@
                     </div>
 
                     
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                            Current Month Discount
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                    <div>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            <span class="counter-value"
+                                                data-target="<?php echo e($dashboardData['monthly_discount']); ?>">0</span>
+                                        </h4>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                            <i class="bx bx-user-circle text-primary"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -391,39 +401,71 @@
 
 
 
+        <section class="container py-4">
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+            <canvas id="barChart" style="max-width:100%; height: 330px"></canvas>
+        </div>
+        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+            <canvas id="newCustomerBarChart" style="max-width:100%; height: 330px"></canvas>
+        </div>
+    </div>
+</section>
+
 
         
-        <div style="width: 80%; margin: auto;">
-            <canvas id="barChart"></canvas>
-        </div>
-      </div>
-    <?php $__env->startSection('js'); ?>
-   <script>
-    var ctx = document.getElementById('barChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: <?php echo json_encode($barChartData['labels'], 15, 512) ?>,
-            datasets: [{
-                label: 'Monthly New Customers',
-                data: <?php echo json_encode($barChartData['data'], 15, 512) ?>,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
 
+    </div>
+    <?php $__env->startSection('js'); ?>
+        <script>
+            var ctx = document.getElementById('barChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode($barChartData['labels'], 15, 512) ?>,
+                    datasets: [{
+                        label: 'Monthly New Customers',
+                        data: <?php echo json_encode($barChartData['data'], 15, 512) ?>,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            var ctx = document.getElementById('newCustomerBarChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode($newCustomerChartData['monthLabels'], 15, 512) ?>,
+                    datasets: [{
+                        label: 'New Customers Per Month',
+                        data: <?php echo json_encode($newCustomerChartData['newCustomerData'], 15, 512) ?>,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
     <?php $__env->stopSection(); ?>
-  
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/bokhtiartoshar/Desktop/Project/Sajon Bhai/visaExpert.com-master/resources/views/backend/dashboard.blade.php ENDPATH**/ ?>

@@ -34,14 +34,13 @@ class VisaTypeController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        
         $this->authorize('create', VisaType::class);
         $requiredDocuments = explode(', ', $request->input('required_documents'));
         $visaType = VisaType::create([
             'title' => $request->title,
             'required_documents' => json_encode(array_map('trim', $requiredDocuments)),
-            'is_admin' => $request->is_admin,
-            'is_user' => $request->is_user
+            'is_admin' => $request->is_admin ? $request->is_admin : 0,
+            'is_user' => $request->is_user ? $request->is_user : 0 ,
         ]);
 
         logActivity(
@@ -69,8 +68,8 @@ class VisaTypeController extends Controller
         $visaType->update([
             'title' => $request->get('title'),
             'required_documents' => json_encode($requiredDocuments),
-            'is_admin' => $request->is_admin,
-            'is_user' => $request->is_user
+            'is_admin' => $request->is_admin ? $request->is_admin : 0,
+            'is_user' => $request->is_user ? $request->is_user : 0,
         ]);
 
         logActivity(

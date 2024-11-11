@@ -68,9 +68,45 @@ class DashboardController extends Controller
             $barChartData['labels'][] = Carbon::create()->month($month)->format('F');
             $barChartData['data'][] = $monthlyCustomers->get($month, 0);
         }
-    //    dd($dashboardData['total_earnings']);
-        // Pass both `dashboardData` and `barChartData` to the view
-        return view('backend.dashboard', compact('dashboardData', 'barChartData'));
-    }
+        /** var char code there monthly how much customer onboard  - previce month  = total number show on bar chart*/
+        // Fetch monthly customer counts, using December as the base for January
+        $monthlyCustomerCounts = Customer::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(id) as count')
+        )
+        ->whereYear('created_at', Carbon::now()->year)
+        ->orWhere(function ($query) {
+            // Include December of last year as the base month
+            $query->whereMonth('created_at', 12)
+            ->whereYear('created_at', Carbon::now()->subYear()->year);
+        })
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('count', 'month');
+
+        $newCustomerChartData = [
+            'monthLabels' => [],
+            'newCustomerData' => []
+        ];
+
+        // Track the previous month’s customer count, starting with December’s
+        $previousMonthCount = $monthlyCustomerCounts->get(12, 0); // December count of the previous year
+
+        for ($month = 1; $month <= 12; $month++) {
+            $newCustomerChartData['monthLabels'][] = Carbon::create()->month($month)->format('F');
+
+            // Calculate new customers added compared to the previous month
+            $currentMonthCount = $monthlyCustomerCounts->get($month, 0);
+            $newCustomersThisMonth = $currentMonthCount - $previousMonthCount;
+            $newCustomerChartData['newCustomerData'][] = $newCustomersThisMonth;
+
+            // Update previous count for the next iteration
+            $previousMonthCount = $currentMonthCount;
+        }
+
+
+
+        return view('backend.dashboard', compact('dashboardData', 'barChartData', 'newCustomerChartData'));
+    } 
 
 }

@@ -46,6 +46,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                    <th scope="col">Date & Time</th>
                                                     <th scope="col">Transfer</th>
                                                     <th scope="col">Amount</th>
                                                     <th scope="col">Status</th>
@@ -56,6 +57,7 @@
                                                 @forelse($transfers as $key=>$transfer)
                                                     <tr>
                                                         <td class="fw-medium">{{ $key + 1 }}</td>
+                                                           <td>{{ $transfer->created_at->diffForHumans() }}</td>
                                                         <td>{{ $transfer->reciver ? $transfer->reciver->name : '' }}</td>
                                                         <td>{{ $transfer->amount }} Tk</td>
                                                         <td>{{ $transfer->status }}</td>
