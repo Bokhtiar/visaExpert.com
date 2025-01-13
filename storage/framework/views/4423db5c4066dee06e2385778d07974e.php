@@ -86,45 +86,46 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
 
-<div class="my-2">
-    <label for="is_admin" class="form-label">Is Admin</label>
-    <input type="checkbox" name="is_admin" value="1" 
-           <?php echo e(old('is_admin', @$visaType->is_admin) ? 'checked' : ''); ?> id="is_admin"> Is Admin
-    <?php $__errorArgs = ['is_admin'];
+                                <div class="my-2">
+                                    <label for="is_admin" class="form-label">Is Admin</label>
+                                    <input type="checkbox" name="is_admin" value="1"
+                                        <?php echo e(old('is_admin', @$visaType->is_admin) ? 'checked' : ''); ?> id="is_admin"> Is
+                                    Admin
+                                    <?php $__errorArgs = ['is_admin'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-        <div class="invalid-feedback">
-            <strong><?php echo e($message); ?></strong>
-        </div>
-    <?php unset($message);
+                                        <div class="invalid-feedback">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </div>
+                                    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-</div>
+                                </div>
 
-<div class="my-2">
-    <label for="is_user" class="form-label">Is User</label>
-    <input type="checkbox" name="is_user" value="1" 
-           <?php echo e(old('is_user', @$visaType->is_user) ? 'checked' : ''); ?> id="is_user"> Is User
-    <?php $__errorArgs = ['is_user'];
+                                <div class="my-2">
+                                    <label for="is_user" class="form-label">Is User</label>
+                                    <input type="checkbox" name="is_user" value="1"
+                                        <?php echo e(old('is_user', @$visaType->is_user) ? 'checked' : ''); ?> id="is_user"> Is User
+                                    <?php $__errorArgs = ['is_user'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-        <div class="invalid-feedback">
-            <strong><?php echo e($message); ?></strong>
-        </div>
-    <?php unset($message);
+                                        <div class="invalid-feedback">
+                                            <strong><?php echo e($message); ?></strong>
+                                        </div>
+                                    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-</div>
+                                </div>
 
 
 
-                                
+
 
                                 <div class="mt-3">
                                     <?php if(isset($visaType)): ?>

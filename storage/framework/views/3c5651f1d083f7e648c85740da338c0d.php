@@ -47,19 +47,22 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                    <th scope="col">ID Number</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
+                                                    <th scope="col">Action</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium text-center"><?php echo e($key + 1); ?></td>
-                                                      
+                                                        <th scope="col"><?php echo e($customer->id); ?></th>
 
                                                         <td><?php echo e($customer->name); ?></td>
-       
+
                                                         <td>
                                                             <a href="https://wa.me/+88<?php echo e($customer->phone); ?>">
                                                                 <img height="40" width="40"
@@ -67,10 +70,19 @@
                                                                     alt="">
                                                             </a>
                                                         </td>
-                                                        <td><a
-                                                                href="tel:<?php echo e($customer->phone); ?>"><?php echo e($customer->phone); ?></a>
+                                                        <td><a href="tel:<?php echo e($customer->phone); ?>"><?php echo e($customer->phone); ?></a>
                                                         </td>
-
+                                                        <td>
+                                                            <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Edit Customer')): ?>
+                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::VIEW_CUSTOMER)): ?>
+                                                                    <a href="<?php echo e(route('admin.customers.show', $customer->id)); ?>"
+                                                                        class="btn btn-sm btn-clr-red waves-effect waves-light">
+                                                                        <i class="ri-eye-2-line align-bottom me-1"></i>
+                                                                        
+                                                                    </a>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                     <tr>

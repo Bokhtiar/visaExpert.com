@@ -40,6 +40,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                               
                                                 
                                                 <?php $__empty_1 = true; $__currentLoopData = $invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     

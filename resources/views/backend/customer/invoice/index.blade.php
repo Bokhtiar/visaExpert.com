@@ -42,6 +42,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                               
                                                 {{-- {{dd($leaves)}} --}}
                                                 @forelse($invoices as $invoice)
                                                     {{-- {{dd($leave)}} --}}

@@ -42,7 +42,7 @@
                                     <p class="m-0" style="font-weight: 600">Rahim Tower.Subhanighat, sylhet-3100,
                                         Bangladesh</p>
                                     <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
-                                    <p class="m-0" style="font-weight: 600">Hotline: +8801703605660</p>
+                                    <p class="m-0" style="font-weight: 600">Helpline: 09617447744</p>
                                 </div>
                             </div>
                         </div>

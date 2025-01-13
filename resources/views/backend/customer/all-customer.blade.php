@@ -49,19 +49,22 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                    <th scope="col">ID Number</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Whatsapp</th>
                                                     <th scope="col">Phone Number</th>
+                                                    <th scope="col">Action</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @forelse($customers as $key=>$customer)
                                                     <tr>
                                                         <td class="fw-medium text-center">{{ $key + 1 }}</td>
-                                                      
+                                                        <th scope="col">{{ $customer->id }}</th>
 
-                                                        <td>{{ $customer->name}}</td>
-       
+                                                        <td>{{ $customer->name }}</td>
+
                                                         <td>
                                                             <a href="https://wa.me/+88{{ $customer->phone }}">
                                                                 <img height="40" width="40"
@@ -69,10 +72,19 @@
                                                                     alt="">
                                                             </a>
                                                         </td>
-                                                        <td><a
-                                                                href="tel:{{ $customer->phone }}">{{ $customer->phone }}</a>
+                                                        <td><a href="tel:{{ $customer->phone }}">{{ $customer->phone }}</a>
                                                         </td>
-
+                                                        <td>
+                                                            @hasPermission('Edit Customer')
+                                                                @can(\App\Permissions::VIEW_CUSTOMER)
+                                                                    <a href="{{ route('admin.customers.show', $customer->id) }}"
+                                                                        class="btn btn-sm btn-clr-red waves-effect waves-light">
+                                                                        <i class="ri-eye-2-line align-bottom me-1"></i>
+                                                                        {{-- View Profile --}}
+                                                                    </a>
+                                                                @endcan
+                                                            @endhasPermission
+                                                        </td>
                                                     </tr>
                                                 @empty
                                                     <tr>

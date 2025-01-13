@@ -57,7 +57,23 @@
                                 <td><?php echo e($cus->phone); ?></td>
                                 <td>
                                     <a href="<?php echo e(route('admin.customers.show', $cus->id)); ?>"
-                                        class="btn btn-clr-red waves-effect waves-light"> Show</a>
+                                        class="btn btn-sm btn-clr-red waves-effect waves-light px-4"> <i class="ri-eye-2-line align-bottom me-1"></i></a>
+
+                                    <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Customer')): ?>
+                                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER)): ?>
+                                            <button type="button" class="btn btn-sm btn-soft-success waves-effect waves-li"
+                                                onclick="deleteData(<?php echo e($customer->id); ?>)">
+                                                <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                
+                                            </button>
+                                            <form id="delete-form-<?php echo e($customer->id); ?>"
+                                                action="<?php echo e(route('admin.customers.destroy', $customer->id)); ?>" method="POST"
+                                                style="display: none;">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
+                                            </form>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -104,7 +120,7 @@
                                 <div class="flex-shrink-1 custom-badge-style">
                                     <?php echo displayVisaStatusBadge($customer->forms[0]->visa_status); ?>
 
-                                </div> 
+                                </div>
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-grow-1">
@@ -282,14 +298,14 @@
                                                             <input type="text" name="application_id"
                                                                 id="application_id" class="form-control"
                                                                 value="<?php echo e($customer->forms[0]->application_id); ?>"
-                                                                maxlength="15" placeholder="max 15 chr.">
+                                                                 placeholder="type here temporary application ID ">
                                                         </div>
                                                     </div>
 
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-3">
-                                                            <label for="web_file_app_id" class="form-label">Web File /
+                                                            <label for="" class="form-label">Web File /
                                                                 Application ID :</label>
                                                         </div>
                                                         <div class="col-lg-9">
@@ -324,7 +340,7 @@
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-3">
-                                                            <label for="image" class="form-label">Image Upload
+                                                            <label for="" class="form-label">Image Upload
                                                                 :</label>
                                                         </div>
                                                         <div class="col-lg-9">
@@ -348,7 +364,7 @@
 
 
 
-                                                    <button type="submit" class="btn btn-clr-red">Save</button>
+                                                    <button type="submit" class="btn btn-clr-red px-5">Save</button>
                                                     <button type="button" class="btn btn-outline-danger"
                                                         onclick="cancelUpdate()">Cancel
                                                     </button>
@@ -537,7 +553,7 @@
                                                     <label for="customerPhone" class="form-label">Phone Number :</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="phone" id="customerPhone"
+                                                    <input type="text" name="phone" id="customerPhone"
                                                         class="form-control" value="<?php echo e($customer->phone); ?>">
                                                 </div>
                                             </div>
@@ -566,7 +582,7 @@
 
 
 
-                                            <button type="submit" class="btn btn-clr-red">Save</button>
+                                            <button type="submit" class="btn btn-clr-red px-10">Save</button>
                                             <button type="button" class="btn btn-outline-danger"
                                                 onclick="cancelUpdate()">Cancel
                                             </button>
@@ -605,7 +621,7 @@
                                                                         <th scope="col">View</th>
                                                                         <th scope="col">Upload</th>
                                                                         <th scope="col">Action</th>
-                                                                    </tr> 
+                                                                    </tr>
                                                                 </thead>
                                                                 <?php $__currentLoopData = json_decode($documents, true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <?php
@@ -613,7 +629,7 @@
                                                                             $file,
                                                                             $customer_form_id,
                                                                         );
-                                                                    ?> 
+                                                                    ?>
 
                                                                     <?php if($exist): ?>
                                                                         <form
@@ -660,7 +676,7 @@
                                                                             <input type="file" name="doc"
                                                                                 id="">
                                                                         </td>
-                                                                      
+
                                                                         <input type="hidden" name="customer_form_id"
                                                                             value="<?php echo e($customer_form_id); ?>"
                                                                             id="">
@@ -863,7 +879,7 @@
                                                                                         <td><?php echo e(ucfirst($invoice->customer->name)); ?>
 
                                                                                         </td>
-                                                                                        <td><?php echo e($invoice->created_at->format('d M Y')); ?>
+                                                                                        <td><?php echo e($invoice->created_at); ?>
 
                                                                                         </td>
                                                                                         <td><?php echo e(number_format($invoice->total_amount)); ?>
@@ -873,42 +889,42 @@
                                                                                         <td>
                                                                                             <div class="hstack gap-1">
                                                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Update Invoice')): ?>
-                                                                                                <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"
-                                                                                                    class="btn btn-sm btn-clr-red waves-effect waves-light">
-                                                                                                    <i
-                                                                                                        class="ri-eye-2-line align-bottom me-1"></i>
-                                                                                                    View
-                                                                                                </a>
-                                                                                                 <?php endif; ?>
-                                                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Update Invoice')): ?>
-                                                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_CUSTOMER_INVOICE)): ?>
-                                                                                                    <a href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>"
-                                                                                                        class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                    <a href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>"
+                                                                                                        class="btn btn-sm btn-clr-red waves-effect waves-light">
                                                                                                         <i
-                                                                                                            class="ri-pencil-line align-bottom me-1"></i>
-                                                                                                        Edit
+                                                                                                            class="ri-eye-2-line align-bottom me-1"></i>
+                                                                                                        View
                                                                                                     </a>
                                                                                                 <?php endif; ?>
+                                                                                                <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Update Invoice')): ?>
+                                                                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::EDIT_CUSTOMER_INVOICE)): ?>
+                                                                                                        <a href="<?php echo e(route('admin.customers-invoices.edit', $invoice->id)); ?>"
+                                                                                                            class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                            <i
+                                                                                                                class="ri-pencil-line align-bottom me-1"></i>
+                                                                                                            Edit
+                                                                                                        </a>
+                                                                                                    <?php endif; ?>
                                                                                                 <?php endif; ?>
                                                                                                 <?php if (\Illuminate\Support\Facades\Blade::check('hasPermission', 'Delete Invoice')): ?>
-                                                                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER_INVOICE)): ?>
-                                                                                                    <button type="button"
-                                                                                                        class="btn btn-sm btn-outline-danger waves-effect waves-light"
-                                                                                                        onclick="deleteData(<?php echo e($invoice->id); ?>)">
-                                                                                                        <i
-                                                                                                            class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                                                        Delete
-                                                                                                    </button>
-                                                                                                    <form
-                                                                                                        id="delete-form-<?php echo e($invoice->id); ?>"
-                                                                                                        action="<?php echo e(route('admin.customers-invoices.destroy', $invoice->id)); ?>"
-                                                                                                        method="POST"
-                                                                                                        style="display: none;">
-                                                                                                        <?php echo csrf_field(); ?>
-                                                                                                        <?php echo method_field('DELETE'); ?>
-                                                                                                    </form>
+                                                                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check(\App\Permissions::DELETE_CUSTOMER_INVOICE)): ?>
+                                                                                                        <button type="button"
+                                                                                                            class="btn btn-sm btn-outline-danger waves-effect waves-light"
+                                                                                                            onclick="deleteData(<?php echo e($invoice->id); ?>)">
+                                                                                                            <i
+                                                                                                                class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                                                            Delete
+                                                                                                        </button>
+                                                                                                        <form
+                                                                                                            id="delete-form-<?php echo e($invoice->id); ?>"
+                                                                                                            action="<?php echo e(route('admin.customers-invoices.destroy', $invoice->id)); ?>"
+                                                                                                            method="POST"
+                                                                                                            style="display: none;">
+                                                                                                            <?php echo csrf_field(); ?>
+                                                                                                            <?php echo method_field('DELETE'); ?>
+                                                                                                        </form>
+                                                                                                    <?php endif; ?>
                                                                                                 <?php endif; ?>
-                                                                                                 <?php endif; ?>
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>

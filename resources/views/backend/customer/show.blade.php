@@ -57,7 +57,23 @@
                                 <td>{{ $cus->phone }}</td>
                                 <td>
                                     <a href="{{ route('admin.customers.show', $cus->id) }}"
-                                        class="btn btn-clr-red waves-effect waves-light"> Show</a>
+                                        class="btn btn-sm btn-clr-red waves-effect waves-light px-4"> <i class="ri-eye-2-line align-bottom me-1"></i></a>
+
+                                    @hasPermission('Delete Customer')
+                                        @can(\App\Permissions::DELETE_CUSTOMER)
+                                            <button type="button" class="btn btn-sm btn-soft-success waves-effect waves-li"
+                                                onclick="deleteData({{ $customer->id }})">
+                                                <i class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                {{-- Delete Customer --}}
+                                            </button>
+                                            <form id="delete-form-{{ $customer->id }}"
+                                                action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        @endcan
+                                    @endhasPermission
                                 </td>
                             </tr>
                         @endforeach
@@ -101,7 +117,7 @@
                                 </div>
                                 <div class="flex-shrink-1 custom-badge-style">
                                     {!! displayVisaStatusBadge($customer->forms[0]->visa_status) !!}
-                                </div> 
+                                </div>
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-grow-1">
@@ -274,14 +290,14 @@
                                                             <input type="text" name="application_id"
                                                                 id="application_id" class="form-control"
                                                                 value="{{ $customer->forms[0]->application_id }}"
-                                                                maxlength="15" placeholder="max 15 chr.">
+                                                                 placeholder="type here temporary application ID ">
                                                         </div>
                                                     </div>
 
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-3">
-                                                            <label for="web_file_app_id" class="form-label">Web File /
+                                                            <label for="" class="form-label">Web File /
                                                                 Application ID :</label>
                                                         </div>
                                                         <div class="col-lg-9">
@@ -316,7 +332,7 @@
 
                                                     <div class="row mb-3">
                                                         <div class="col-lg-3">
-                                                            <label for="image" class="form-label">Image Upload
+                                                            <label for="" class="form-label">Image Upload
                                                                 :</label>
                                                         </div>
                                                         <div class="col-lg-9">
@@ -340,7 +356,7 @@
 
 
 
-                                                    <button type="submit" class="btn btn-clr-red">Save</button>
+                                                    <button type="submit" class="btn btn-clr-red px-5">Save</button>
                                                     <button type="button" class="btn btn-outline-danger"
                                                         onclick="cancelUpdate()">Cancel
                                                     </button>
@@ -519,7 +535,7 @@
                                                     <label for="customerPhone" class="form-label">Phone Number :</label>
                                                 </div>
                                                 <div class="col-lg-9">
-                                                    <input type="number" name="phone" id="customerPhone"
+                                                    <input type="text" name="phone" id="customerPhone"
                                                         class="form-control" value="{{ $customer->phone }}">
                                                 </div>
                                             </div>
@@ -562,7 +578,7 @@
 
 
 
-                                            <button type="submit" class="btn btn-clr-red">Save</button>
+                                            <button type="submit" class="btn btn-clr-red px-10">Save</button>
                                             <button type="button" class="btn btn-outline-danger"
                                                 onclick="cancelUpdate()">Cancel
                                             </button>
@@ -607,7 +623,7 @@
                                                                         <th scope="col">View</th>
                                                                         <th scope="col">Upload</th>
                                                                         <th scope="col">Action</th>
-                                                                    </tr> 
+                                                                    </tr>
                                                                 </thead>
                                                                 @foreach (json_decode($documents, true) as $file)
                                                                     @php
@@ -615,7 +631,7 @@
                                                                             $file,
                                                                             $customer_form_id,
                                                                         );
-                                                                    @endphp 
+                                                                    @endphp
 
                                                                     @if ($exist)
                                                                         <form
@@ -661,7 +677,7 @@
                                                                             <input type="file" name="doc"
                                                                                 id="">
                                                                         </td>
-                                                                      
+
                                                                         <input type="hidden" name="customer_form_id"
                                                                             value="{{ $customer_form_id }}"
                                                                             id="">
@@ -862,7 +878,7 @@
                                                                                         </td>
                                                                                         <td>{{ ucfirst($invoice->customer->name) }}
                                                                                         </td>
-                                                                                        <td>{{ $invoice->created_at->format('d M Y') }}
+                                                                                        <td>{{ $invoice->created_at }}
                                                                                         </td>
                                                                                         <td>{{ number_format($invoice->total_amount) }}
                                                                                         </td>
@@ -870,42 +886,42 @@
                                                                                         <td>
                                                                                             <div class="hstack gap-1">
                                                                                                 @hasPermission('Update Invoice')
-                                                                                                <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"
-                                                                                                    class="btn btn-sm btn-clr-red waves-effect waves-light">
-                                                                                                    <i
-                                                                                                        class="ri-eye-2-line align-bottom me-1"></i>
-                                                                                                    View
-                                                                                                </a>
-                                                                                                 @endhasPermission
-                                                                                                @hasPermission('Update Invoice')
-                                                                                                @can(\App\Permissions::EDIT_CUSTOMER_INVOICE)
-                                                                                                    <a href="{{ route('admin.customers-invoices.edit', $invoice->id) }}"
-                                                                                                        class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                    <a href="{{ route('admin.customers-invoices.show', $invoice->id) }}"
+                                                                                                        class="btn btn-sm btn-clr-red waves-effect waves-light">
                                                                                                         <i
-                                                                                                            class="ri-pencil-line align-bottom me-1"></i>
-                                                                                                        Edit
+                                                                                                            class="ri-eye-2-line align-bottom me-1"></i>
+                                                                                                        View
                                                                                                     </a>
-                                                                                                @endcan
+                                                                                                @endhasPermission
+                                                                                                @hasPermission('Update Invoice')
+                                                                                                    @can(\App\Permissions::EDIT_CUSTOMER_INVOICE)
+                                                                                                        <a href="{{ route('admin.customers-invoices.edit', $invoice->id) }}"
+                                                                                                            class="btn btn-sm btn-outline-primary waves-effect waves-light">
+                                                                                                            <i
+                                                                                                                class="ri-pencil-line align-bottom me-1"></i>
+                                                                                                            Edit
+                                                                                                        </a>
+                                                                                                    @endcan
                                                                                                 @endhasPermission
                                                                                                 @hasPermission('Delete Invoice')
-                                                                                                @can(\App\Permissions::DELETE_CUSTOMER_INVOICE)
-                                                                                                    <button type="button"
-                                                                                                        class="btn btn-sm btn-outline-danger waves-effect waves-light"
-                                                                                                        onclick="deleteData({{ $invoice->id }})">
-                                                                                                        <i
-                                                                                                            class="ri-delete-bin-5-line align-bottom me-1"></i>
-                                                                                                        Delete
-                                                                                                    </button>
-                                                                                                    <form
-                                                                                                        id="delete-form-{{ $invoice->id }}"
-                                                                                                        action="{{ route('admin.customers-invoices.destroy', $invoice->id) }}"
-                                                                                                        method="POST"
-                                                                                                        style="display: none;">
-                                                                                                        @csrf
-                                                                                                        @method('DELETE')
-                                                                                                    </form>
-                                                                                                @endcan
-                                                                                                 @endhasPermission
+                                                                                                    @can(\App\Permissions::DELETE_CUSTOMER_INVOICE)
+                                                                                                        <button type="button"
+                                                                                                            class="btn btn-sm btn-outline-danger waves-effect waves-light"
+                                                                                                            onclick="deleteData({{ $invoice->id }})">
+                                                                                                            <i
+                                                                                                                class="ri-delete-bin-5-line align-bottom me-1"></i>
+                                                                                                            Delete
+                                                                                                        </button>
+                                                                                                        <form
+                                                                                                            id="delete-form-{{ $invoice->id }}"
+                                                                                                            action="{{ route('admin.customers-invoices.destroy', $invoice->id) }}"
+                                                                                                            method="POST"
+                                                                                                            style="display: none;">
+                                                                                                            @csrf
+                                                                                                            @method('DELETE')
+                                                                                                        </form>
+                                                                                                    @endcan
+                                                                                                @endhasPermission
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>
