@@ -55,6 +55,13 @@
                                 Attendance
                             </a>
                         </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Duty_Time_Salary" role="tab">
+                                <i class="far fa-user"></i>
+                                Duty Time & Salary
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -195,7 +202,7 @@
                         </div>
 
                         <div class="tab-pane" id="attendance" role="tabpanel">
-                            <h5>Current Month Attendance History: ({{ $year }}-{{$month}})</h5>
+                            <h5>Current Month Attendance History: ({{ $year }}-{{ $month }})</h5>
                             <div class="table-responsive">
                                 <table class="table table-borderless align-middle mb-0">
                                     <thead class="table-light">
@@ -224,6 +231,42 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+
+
+                        <div class="tab-pane active" id="Duty_Time_Salary" role="tabpanel">
+                            <form action="{{ route('admin.profile.update') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PATCH')
+                                <div class="row">
+                                    <!--end col-->
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="salary" class="form-label">Salary</label>
+                                            <input type="number" name="salary" class="form-control" id="salary"
+                                                value="{{ $user->salary }}">
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="duty_time" class="form-label">Duty Time </label>
+                                            <input type="duty_time" name="duty_time" class="form-control" id="duty_time"
+                                                value="{{ $user->duty_time }}">
+                                        </div>
+                                    </div>
+
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <button type="button" class="btn btn-soft-secondary">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end row-->
+                            </form>
                         </div>
 
 

@@ -7,6 +7,8 @@ use App\Http\Requests\Customer\CustomerStoreRequest;
 use App\Models\Customer;
 use App\Models\Document;
 use App\Models\Invoice;
+use App\Models\PaymentLog;
+use App\Models\Road;
 use App\Services\VisaFormService;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -150,12 +152,25 @@ class CustomerController extends Controller
 
     public function invoiceDetails($encodedInvoice): View
     {
+        // dd($encodedInvoice);
+        // $invoiceId = base64_decode($encodedInvoice);
+
+
+        // $invoice = Invoice::findOrFail($invoiceId);
+
+        // $invoice->load('customer');
+
+        // return view('frontend.invoice-details', compact('invoice'));
+
         $invoiceId = base64_decode($encodedInvoice);
-
         $invoice = Invoice::findOrFail($invoiceId);
-
+        
         $invoice->load('customer');
+        $roads = Road::all();
+        $payables  = PaymentLog::where('customer_id', $invoice->customer_id)->get();
+        $customers = Customer::where('parent_customer_id', $invoice->customer_id)->get();
 
-        return view('frontend.invoice-details', compact('invoice'));
+        return view('frontend.invoice-details', compact('invoice', 'roads', 'payables', 'customers'));
+        // return view('backend.customer.invoice.details', compact('invoice', 'roads', 'payables', 'customers'));
     }
 }

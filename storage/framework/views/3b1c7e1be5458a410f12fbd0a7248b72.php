@@ -33,7 +33,7 @@
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <img src="<?php echo e(asset('backend/assets/images/visiting-card.jpg')); ?>" alt="Visiting Card"
                                         class="" height="180px" width="100%">
-                                </div>
+                                </div> 
                                 
                                 <div class="col-md-4 col-lg-4 col-sm-4 my-auto">
                                     <p class="m-0" style="font-weight: 600; font-size: 20px">Visa Expert</p>
@@ -42,7 +42,7 @@
                                     <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
                                     <p class="m-0" style="font-weight: 600">Helpline: 09617447744</p>
                                 </div>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                     <div class="col-lg-12">
