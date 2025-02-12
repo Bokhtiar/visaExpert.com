@@ -43,6 +43,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col">SL</th>
+                                                     <th scope="col">Date & Time</th>
                                                     <th scope="col">Transfer</th>
                                                     <th scope="col">Amount</th>
                                                     <th scope="col">Status</th>
@@ -53,6 +54,7 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $transfers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$transfer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium"><?php echo e($key + 1); ?></td>
+                                                         <td><?php echo e($transfer->created_at); ?></td>
                                                         <td><?php echo e($transfer->transfer ? $transfer->transfer->name : ''); ?></td>
                                                         <td><?php echo e($transfer->amount); ?> Tk</td>
                                                         <td><?php echo e($transfer->status); ?></td>

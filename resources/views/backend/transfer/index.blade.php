@@ -57,7 +57,7 @@
                                                 @forelse($transfers as $key=>$transfer)
                                                     <tr>
                                                         <td class="fw-medium">{{ $key + 1 }}</td>
-                                                           <td>{{ $transfer->created_at->diffForHumans() }}</td>
+                                                           <td>{{ $transfer->created_at }}</td>
                                                         <td>{{ $transfer->reciver ? $transfer->reciver->name : '' }}</td>
                                                         <td>{{ $transfer->amount }} Tk</td>
                                                         <td>{{ $transfer->status }}</td>

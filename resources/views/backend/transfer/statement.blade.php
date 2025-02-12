@@ -83,7 +83,7 @@
                                                 @forelse($transfers as $key=>$transfer)
                                                     <tr>
                                                         <td class="fw-medium">{{ $key + 1 }}</td>
-                                                        <td>{{ $transfer->created_at->diffForHumans() }}</td>
+                                                        <td>{{ $transfer->created_at }}</td>
                                                         @php
                                                             $user = App\Models\User::find($transfer->created_by);
                                                         @endphp

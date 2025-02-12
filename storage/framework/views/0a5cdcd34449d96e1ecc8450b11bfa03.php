@@ -55,7 +55,7 @@
                                                 <?php $__empty_1 = true; $__currentLoopData = $transfers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$transfer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <tr>
                                                         <td class="fw-medium"><?php echo e($key + 1); ?></td>
-                                                           <td><?php echo e($transfer->created_at->diffForHumans()); ?></td>
+                                                           <td><?php echo e($transfer->created_at); ?></td>
                                                         <td><?php echo e($transfer->reciver ? $transfer->reciver->name : ''); ?></td>
                                                         <td><?php echo e($transfer->amount); ?> Tk</td>
                                                         <td><?php echo e($transfer->status); ?></td>
