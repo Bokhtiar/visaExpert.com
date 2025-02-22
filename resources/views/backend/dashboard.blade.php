@@ -29,7 +29,7 @@
                             </div>
 
                             {{-- attendance  --}}
-                            <div class="mx-2">
+                            {{-- <div class="mx-2">
 
                                 @if ($dashboardData['attendance'])
                                     <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
@@ -49,7 +49,7 @@
                                         Punch In
                                     </a>
                                 @endif
-                            </div>
+                            </div> --}}
 
 
 
