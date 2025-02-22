@@ -26,9 +26,34 @@
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">All Customer Invoice</h4>
-                                </div> 
+                                </div>
+
                                 <div class="card-body">
                                     <div class="table-responsive">
+
+                                        <form action="{{ route('admin.customers-invoices.filter') }}" method="POST">
+
+                                            @csrf
+                                            <div class="row mb-4">
+
+
+                                                <div class="col-md-3">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="date" name="date" id="date" class="form-control"
+                                                        value="{{ @$date ? $date : now()->toDateString() }}">
+                                                </div>
+
+
+                                                {{-- @hasPermission('Attendance Filter') --}}
+                                                <div class="col-md-3 d-flex align-items-end">
+                                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                                </div>
+                                                {{-- @endhasPermission --}}
+                                            </div>
+                                        </form>
+
+
+
                                         <table id="example" class="table table-borderless align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
@@ -42,7 +67,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                               
+
                                                 {{-- {{dd($leaves)}} --}}
                                                 @forelse($invoices as $invoice)
                                                     {{-- {{dd($leave)}} --}}

@@ -24,9 +24,34 @@
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
                                     <h4 class="card-title mb-0 flex-grow-1">All Customer Invoice</h4>
-                                </div> 
+                                </div>
+
                                 <div class="card-body">
                                     <div class="table-responsive">
+
+                                        <form action="<?php echo e(route('admin.customers-invoices.filter')); ?>" method="POST">
+
+                                            <?php echo csrf_field(); ?>
+                                            <div class="row mb-4">
+
+
+                                             <div class="col-md-3">
+    <label for="date" class="form-label">Date</label>
+    <input type="date" name="date" id="date" class="form-control"
+        value="<?php echo e(@$date ? $date : now()->toDateString()); ?>">
+</div>
+
+
+                                                
+                                                <div class="col-md-3 d-flex align-items-end">
+                                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                                </div>
+                                                
+                                            </div>
+                                        </form>
+
+
+
                                         <table id="example" class="table table-borderless align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
@@ -40,7 +65,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                               
+
                                                 
                                                 <?php $__empty_1 = true; $__currentLoopData = $invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     

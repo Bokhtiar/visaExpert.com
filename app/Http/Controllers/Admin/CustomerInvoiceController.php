@@ -25,9 +25,30 @@ class CustomerInvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::latest()->get();
+        $invoices = Invoice::whereNotNull('created_at') // Ignore NULL timestamps
+        ->orderBy('created_at', 'desc') // Order by latest date first
+        ->get();
+
         return view('backend.customer.invoice.index', compact('invoices'));
     }
+
+    public function filter(Request $request)
+    {
+        $date = $request->date; // Selected date
+
+        // If date is provided, filter by the specific date
+        $invoices = Invoice::when($date, function ($query) use ($date) {
+            return $query->whereDate('created_at', $date); // Filter by exact date
+        })
+            ->orderBy('created_at', 'desc') // Order by latest date first
+            ->get();
+
+        return view('backend.customer.invoice.index', compact('invoices', 'date'));
+    }
+
+
+
+
 
     public function create(Customer $customer): View
     {
