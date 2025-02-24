@@ -104,7 +104,7 @@ class DashboardController extends Controller
             $previousMonthCount = $currentMonthCount;
         }
 
-
+     
 
         return view('backend.dashboard', compact('dashboardData', 'barChartData', 'newCustomerChartData'));
     } 

@@ -42,9 +42,9 @@ class AttendanceController extends Controller
         $user = auth()->user();
 
         // Get today's date
-        $date = $request->day;
+        $date = Carbon::parse($request->day)->format('Y-m-d');
+        // dd($date);
         $user = Auth::user()->is_admin;
-
         if ($user == 1) {
             // Fetch the attendance records for the current user for date
             $attendances = Attendance::whereDate('date', $date)
@@ -52,13 +52,12 @@ class AttendanceController extends Controller
                 ->get();
         } else {
             // Fetch the attendance records for the current user for date
-            $attendances = Attendance::where('user_id', $user->id)
+            $attendances = Attendance::where('user_id', Auth::id())
                 ->whereDate('date', $date)
                 ->orderBy('date', 'asc')
                 ->get();
         }
         $users = User::all();
-
 
         // Pass data to the view
         return view('backend.attendance.show', compact('attendances', 'users', 'date'));
@@ -70,17 +69,23 @@ class AttendanceController extends Controller
             $user = auth()->user();
             $date = now()->format('Y-m-d');
             $time = now()->format('H:i:s');
-
+            // dd(Auth::user()->duty_time_start);
             // // Define the cutoff time for punch-in (5:30 PM)
-            $punchInCutoff = now()->setTime(17, 30); // 5:30 PM
+            $punchInCutoff = now()->setTime(
+                Carbon::parse(Auth::user()->duty_time_end)->hour,
+                Carbon::parse(Auth::user()->duty_time_end)->minute
+            );
 
             // Check if the current time is after 5:30 PM
             if (now()->greaterThan($punchInCutoff)) {
-                return redirect()->back()->with('error', 'Punch-in is not allowed after 5:30 PM.');
+                return redirect()->back()->with('error', 'Punch-in is not allowed after ' . $punchInCutoff->format('h:i A') . '.');
             }
 
             // Define the threshold time for being late (9:30 AM)
-            $lateThreshold = now()->setTime(9, 30);
+            $lateThreshold = now()->setTime(
+                Carbon::parse(Auth::user()->duty_time_start)->hour,
+                Carbon::parse(Auth::user()->duty_time_start)->minute
+            );
 
             // Determine the status based on punch-in time
             $status = now()->greaterThan($lateThreshold) ? 'late' : 'normal';
@@ -134,8 +139,12 @@ class AttendanceController extends Controller
                 $attendance->punch_out = $time;
 
                 // Define the threshold times
-                $lateThreshold = now()->setTime(9, 30);   // 9:30 AM
-                $earlyOutThreshold = now()->setTime(17, 30);  // 5:30 PM
+                // $lateThreshold = now()->setTime(9, 30);   // 9:30 AM
+                // $earlyOutThreshold = now()->setTime(17, 30);  // 5:30 PM
+                $earlyOutThreshold = now()->setTime(
+                    Carbon::parse(Auth::user()->duty_time_end)->hour,
+                    Carbon::parse(Auth::user()->duty_time_end)->minute
+                );
 
                 // Initialize variables
                 $earlyOutHours = 0;

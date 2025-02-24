@@ -241,7 +241,7 @@
                                 @method('PATCH')
                                 <div class="row">
                                     <!--end col-->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="salary" class="form-label">Salary</label>
                                             <input type="number" name="salary" class="form-control" id="salary"
@@ -251,9 +251,17 @@
                                     <!--end col-->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="duty_time" class="form-label">Duty Time </label>
-                                            <input type="duty_time" name="duty_time" class="form-control" id="duty_time"
-                                                value="{{ $user->duty_time }}">
+                                            <label for="duty_time_start" class="form-label">Duty Time Start</label>
+                                            <input type="time" name="duty_time_start" class="form-control" id="duty_time_start"
+                                                value="{{ $user->duty_time_start }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="duty_time_end" class="form-label">Duty Time End</label>
+                                            <input type="time" name="duty_time_end" class="form-control" id="duty_time_end"
+                                                value="{{ $user->duty_time_end }}">
                                         </div>
                                     </div>
 

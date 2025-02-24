@@ -28,18 +28,19 @@
 
                             
                             <div class="mx-2">
+                                
 
                                 <?php if($dashboardData['attendance']): ?>
                                     <a href="#" class="font-bold bg-success text-white p-2 rounded mx-2"
                                         style="pointer-events: none; opacity: 0.5;">
                                         Punch In
-                                        (<?php echo e($attendance->punch_in ? \Carbon\Carbon::parse($attendance->punch_in)->format('g:i A') : ''); ?>)
+                                        (<?php echo e($dashboardData['attendance']->punch_in ? \Carbon\Carbon::parse($dashboardData['attendance']->punch_in)->format('g:i A') : ''); ?>)
                                     </a>
 
                                     <a href="<?php echo e(url('admin/attendance/punch-out')); ?>"
                                         class="bg-danger text-white p-2 rounded">
                                         Punch Out
-                                        (<?php echo e($attendance->punch_out ? \Carbon\Carbon::parse($attendance->punch_out)->format('g:i A') : ''); ?>)
+                                        (<?php echo e($dashboardData['attendance']->punch_out ? \Carbon\Carbon::parse($dashboardData['attendance']->punch_out)->format('g:i A') : ''); ?>)
                                     </a>
                                 <?php else: ?>
                                     <a href="<?php echo e(url('admin/attendance/punch-in')); ?>"
@@ -402,15 +403,15 @@
 
 
         <section class="container py-4">
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
-            <canvas id="barChart" style="max-width:100%; height: 330px"></canvas>
-        </div>
-        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
-            <canvas id="newCustomerBarChart" style="max-width:100%; height: 330px"></canvas>
-        </div>
-    </div>
-</section>
+            <div class="row">
+                <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+                    <canvas id="barChart" style="max-width:100%; height: 330px"></canvas>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+                    <canvas id="newCustomerBarChart" style="max-width:100%; height: 330px"></canvas>
+                </div>
+            </div>
+        </section>
 
 
         

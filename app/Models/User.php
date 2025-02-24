@@ -42,7 +42,8 @@ class User extends Authenticatable
         'transfer',
         'recive',
         'salary',
-        'duty_time'
+        'duty_time_start',
+        'duty_time_end',
     ];
 
     /**
