@@ -35,11 +35,11 @@
                                             <div class="row mb-4">
 
 
-                                             <div class="col-md-3">
-    <label for="date" class="form-label">Date</label>
-    <input type="date" name="date" id="date" class="form-control"
-        value="<?php echo e(@$date ? $date : now()->toDateString()); ?>">
-</div>
+                                                <div class="col-md-3">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="date" name="date" id="date" class="form-control"
+                                                        value="<?php echo e(@$date ? $date : now()->toDateString()); ?>">
+                                                </div>
 
 
                                                 

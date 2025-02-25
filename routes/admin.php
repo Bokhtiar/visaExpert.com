@@ -78,12 +78,15 @@ Route::get('visa-types/user/status/{id}', [VisaTypeController::class, 'is_user']
 Route::resource('road', RoadController::class)->except('show');
 //transfer
 Route::resource('transfer', TransferController::class);
+Route::get('statement/all-users-transfer', [TransferController::class, 'statement_all_users'])->name('statement.all-users-transfer');
+
 //reciver
 Route::get('recive/index', [ReciveController::class, 'index'])->name('recive.index');
 Route::get('recive/approved/{id}', [ReciveController::class, 'approved'])->name('recive.approved');
 Route::get('recive/rejected/{id}', [ReciveController::class, 'rejected'])->name('recive.rejected');
 //statement
 Route::get('statement/index', [ReciveController::class, 'statement'])->name('statement.index');
+
 // notepad 
 Route::resource('notepad', NotepedController::class);
 

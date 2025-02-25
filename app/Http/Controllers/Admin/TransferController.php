@@ -16,12 +16,26 @@ class TransferController extends Controller
      */
     public function index()
     {
-       $transfers = Transfer::latest()
-        ->whereIn('type', ['transfer_rejected', 'transfer_recieve', 'balance_transfer_updated', 'balance_transfer'])
-        ->get();
+        $transfers = Transfer::latest()
+            ->whereIn('type', ['transfer_rejected', 'transfer_recieve', 'balance_transfer_updated', 'balance_transfer'])
+            ->where(function ($query) {
+                $query->where('recive_id', Auth::id())
+                    ->orWhere('created_by', Auth::id());
+            })
+            ->get();
 
         return view('backend.transfer.index', compact('transfers'));
     }
+
+    public function statement_all_users()
+    {
+        $transfers = Transfer::latest()
+            ->whereIn('type', ['transfer_rejected', 'transfer_recieve', 'balance_transfer_updated', 'balance_transfer'])
+            ->get();
+
+        return view('backend.transfer.all_statement_list', compact('transfers'));
+    }
+    
 
     /**
      * Show the form for creating a new resource.
