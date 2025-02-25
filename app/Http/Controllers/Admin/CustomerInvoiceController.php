@@ -84,8 +84,10 @@ class CustomerInvoiceController extends Controller
                 'road_id' => 'nullable|numeric',
                 'discount' => 'nullable : numeric',
                 'pay' => 'required|numeric',
+                'remarks' => 'nullable|string',
             ]);
             $validatedData['created_by'] = $authUser;
+
             $invoice = Invoice::create($validatedData);
             //dd($validatedData['qty'][0]);
             foreach ($validatedData['items'] as $key => $itemName) {
@@ -192,6 +194,7 @@ class CustomerInvoiceController extends Controller
                 'road_id' => 'nullable|numeric',
                 'discount' => 'nullable : numeric',
                 'pay' => 'required|numeric',
+                'remarks' => 'nullable|string',
             ], [
                 'pay.required' => 'The revice field is required.',
                 'pay.numeric' => 'The revice field must be a number.',

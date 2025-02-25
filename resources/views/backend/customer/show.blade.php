@@ -389,7 +389,7 @@
 
                                         <div class="row mb-3">
                                             <div class="col-lg-3">
-                                                <label for="web_file_app_id" class="form-label">Web File / Application ID
+                                                <label for="" class="form-label">Web File / Application ID
                                                     :</label>
                                             </div>
                                             <div class="col-lg-9">
@@ -420,7 +420,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-lg-3">
-                                                <label for="image" class="form-label">Image Upload :</label>
+                                                <label for="" class="form-label">Image Upload :</label>
                                             </div>
                                             <div class="col-lg-9">
 

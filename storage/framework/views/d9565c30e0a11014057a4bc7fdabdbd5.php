@@ -295,7 +295,8 @@ $payAmountWithDiscount = $invoice->total_amount - $invoice->discount; ?>
                                                         <td>
                                                             <input type="text" name="discount"
                                                                 value="<?php echo e($invoice->discount); ?>"
-                                                                class="form-control bg-light border-0" placeholder="0" id="discount_value" />
+                                                                class="form-control bg-light border-0" placeholder="0"
+                                                                id="discount_value" />
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -345,6 +346,12 @@ $payAmountWithDiscount = $invoice->total_amount - $invoice->discount; ?>
                                 </tbody>
                             </table>
                         </div>
+
+                        <div>
+                            <label for="">Remarks</label>
+                            <input type="text" name="remarks" class="form-control" id="">
+                        </div>
+
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                             <button type="submit" class="btn btn-success"><i
                                     class="ri-file-add-line align-bottom me-1"></i> Update
@@ -362,83 +369,81 @@ $payAmountWithDiscount = $invoice->total_amount - $invoice->discount; ?>
 
 
 <?php $__env->startPush('js'); ?>
-<script>
-    let initialTotalAmount = parseFloat('<?php echo e($invoice->total_amount); ?>') || 0;
-    let initialDiscount = parseFloat('<?php echo e($invoice->discount); ?>') || 0;
-    let initialTotalPay = parseFloat('<?php echo e($total_pay); ?>') || 0;
+    <script>
+        let initialTotalAmount = parseFloat('<?php echo e($invoice->total_amount); ?>') || 0;
+        let initialDiscount = parseFloat('<?php echo e($invoice->discount); ?>') || 0;
+        let initialTotalPay = parseFloat('<?php echo e($total_pay); ?>') || 0;
 
-    function calculateDuePayment() {
-        let receivedPayment = parseFloat($('#receive_payment').val()) || 0;
-        let discountValue = parseFloat($('#discount_value').val()) || 0;
-        let totalDue = initialTotalAmount - discountValue - initialTotalPay - receivedPayment;
+        function calculateDuePayment() {
+            let receivedPayment = parseFloat($('#receive_payment').val()) || 0;
+            let discountValue = parseFloat($('#discount_value').val()) || 0;
+            let totalDue = initialTotalAmount - discountValue - initialTotalPay - receivedPayment;
 
-        $('#due_payment_id').val(totalDue.toFixed(2));
-    }
+            $('#due_payment_id').val(totalDue.toFixed(2));
+        }
 
-    $(document).ready(function() {
-        // Update due payment on receive payment or discount value input change
-        $('#receive_payment, #discount_value').on('input', function() {
-            calculateDuePayment();
-        });
-
-        // Initial calculation of due payment
-        calculateDuePayment();
-
-        // Existing functions
-        function calculateTotal() {
-            let total = 0;
-            $('.product-line-price').each(function() {
-                let amount = parseFloat($(this).val()) || 0;
-                total += amount;
+        $(document).ready(function() {
+            // Update due payment on receive payment or discount value input change
+            $('#receive_payment, #discount_value').on('input', function() {
+                calculateDuePayment();
             });
-            $('#cart-total').val(total.toFixed(2));
-        }
 
-        function calculateRow(row) {
-            let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
-            let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
-            let total = price * qty;
-            row.find('.product-line-price').val(total.toFixed(2));
+            // Initial calculation of due payment
+            calculateDuePayment();
+
+            // Existing functions
+            function calculateTotal() {
+                let total = 0;
+                $('.product-line-price').each(function() {
+                    let amount = parseFloat($(this).val()) || 0;
+                    total += amount;
+                });
+                $('#cart-total').val(total.toFixed(2));
+            }
+
+            function calculateRow(row) {
+                let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
+                let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
+                let total = price * qty;
+                row.find('.product-line-price').val(total.toFixed(2));
+                calculateTotal();
+            }
+
+            // Initial calculation
             calculateTotal();
-        }
 
-        // Initial calculation
-        calculateTotal();
+            // Service dropdown change
+            $('#newlink').on('change', 'select[name="items[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
 
-        // Service dropdown change
-        $('#newlink').on('change', 'select[name="items[]"]', function() {
-            let row = $(this).closest('tr');
-            calculateRow(row);
+            // Quantity change
+            $('#newlink').on('input', 'input[name="qty[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
+
+            // Remove row
+            $('#newlink').on('click', 'a.btn-danger', function() {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            });
+
+            // Add new row
+            $('#add-item').on('click', function() {
+                let tr = $('#newlink tr:first').clone();
+                let currentId = parseInt(tr.attr('id'));
+                let newId = currentId + 1;
+                tr.attr('id', newId);
+                tr.find('.product-id').text(newId);
+                tr.find('input, textarea').val('');
+                tr.find('.product-line-price').val('0.00');
+                tr.appendTo('#newlink');
+                calculateTotal();
+            });
         });
-
-        // Quantity change
-        $('#newlink').on('input', 'input[name="qty[]"]', function() {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Remove row
-        $('#newlink').on('click', 'a.btn-danger', function() {
-            $(this).closest('tr').remove();
-            calculateTotal();
-        });
-
-        // Add new row
-        $('#add-item').on('click', function() {
-            let tr = $('#newlink tr:first').clone();
-            let currentId = parseInt(tr.attr('id'));
-            let newId = currentId + 1;
-            tr.attr('id', newId);
-            tr.find('.product-id').text(newId);
-            tr.find('input, textarea').val('');
-            tr.find('.product-line-price').val('0.00');
-            tr.appendTo('#newlink');
-            calculateTotal();
-        });
-    });
-</script>
+    </script>
 <?php $__env->stopPush(); ?>
-
-
 
 <?php echo $__env->make('layouts.backend.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/bokhtiartoshar/Desktop/Project/Sajon Bhai/visaExpert.com-master/resources/views/backend/customer/invoice/edit.blade.php ENDPATH**/ ?>

@@ -135,7 +135,7 @@
                                 <div>
                                     <label for="cart-total">By Road</label>
                                     @isset($invoice)
-                                        <select class="form-control" name="road_id"  id="">
+                                        <select class="form-control" name="road_id" id="">
                                             @foreach ($roads as $road)
                                                 <option value="{{ $road->id }}"
                                                     {{ $road->id == $invoice->road_id ? 'selected' : '' }}>{{ $road->name }}
@@ -168,8 +168,8 @@
                                         readonly="readonly">
                                 </div>
                                 <div class="mb-2">
-                                    <input type="text" class="form-control bg-light border-0"
-                                        data-plugin="cleave-phone" id="billingPhoneno"
+                                    <input type="text" class="form-control bg-light border-0" data-plugin="cleave-phone"
+                                        id="billingPhoneno"
                                         value="{{ isset($invoice) ? $invoice->customer->phone : $customer->phone }}"
                                         readonly="readonly">
                                     <div class="invalid-feedback">
@@ -299,7 +299,7 @@
                                             </td>
                                         </tr>
 
-                                           <tr class="border-top border-top-dashed mt-2">
+                                        <tr class="border-top border-top-dashed mt-2">
                                             <td colspan="2" class="text-end">
                                                 <h6>Due amount:</h6>
                                             </td>
@@ -308,9 +308,9 @@
                                                     <tbody>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row"></th>
-                                                            <td> 
+                                                            <td>
                                                                 <input type="number" name=""
-                                                                    value="{{ $invoice->total_amount -  $total_pay }}"
+                                                                    value="{{ $invoice->total_amount - $total_pay }}"
                                                                     class="form-control bg-light border-0" placeholder="0"
                                                                     readonly />
                                                             </td>
@@ -399,7 +399,7 @@
                             </div>
                         </div>
                     @else
-                    {{-- create invoice --}}
+                        {{-- create invoice --}}
                         <div class="card-body p-4">
                             <div class="table-responsive">
                                 <table class="invoice-table table table-borderless table-nowrap mb-0">
@@ -430,10 +430,11 @@
                                                             <option value="{{ $service->title }}"
                                                                 @if (old($service->title) == $service->title) selected @endif
                                                                 data-amount="{{ auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount }}">
-                                                               {{ $service->title }} ({{ auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount}}Tk)
+                                                                {{ $service->title }}
+                                                                ({{ auth()->user()->role->name == 'agent' ? $service->agent_amount : $service->customer_amount }}Tk)
                                                             </option>
                                                         @endforeach
-                                                        
+
                                                     </select>
                                                 </div>
                                             </td>
@@ -553,8 +554,8 @@
                                                             <th scope="row"></th>
                                                             <td>
                                                                 <input type="number" name="discount" value=""
-                                                                    class="form-control bg-light border-0" id="discount_amount"
-                                                                    placeholder="0" />
+                                                                    class="form-control bg-light border-0"
+                                                                    id="discount_amount" placeholder="0" />
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -610,11 +611,18 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div>
+                                <label for="">Remarks</label>
+                                <input type="text" name="remarks" class="form-control" id="">
+                            </div>
+
                             <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                                 <button type="submit" class="btn btn-success"><i
                                         class="ri-printer-line align-bottom me-1"></i> Save
                                 </button>
                             </div>
+
+
                         </div>
                     @endisset
 
@@ -723,79 +731,77 @@
 
 
 
-<script>
-    function calculateTotal() {
-        let total = 0;
-        
-        // Calculate the total from all product line prices
-        $('.product-line-price').each(function() {
-            let amount = parseFloat($(this).val()) || 0;
-            total += amount;
-        });
+    <script>
+        function calculateTotal() {
+            let total = 0;
 
-        // Get the discount and payment amounts
-        let discount = parseFloat($('#discount_amount').val()) || 0;
-        let payment = parseFloat($('#receive_payment_save').val()) || 0;
+            // Calculate the total from all product line prices
+            $('.product-line-price').each(function() {
+                let amount = parseFloat($(this).val()) || 0;
+                total += amount;
+            });
 
-        // Subtract the discount and payment from the total
-        total -= (discount + payment);
+            // Get the discount and payment amounts
+            let discount = parseFloat($('#discount_amount').val()) || 0;
+            let payment = parseFloat($('#receive_payment_save').val()) || 0;
 
-        // Ensure total is not negative
-        total = total < 0 ? 0 : total;
+            // Subtract the discount and payment from the total
+            total -= (discount + payment);
 
-        // Update the total display
-        $('#cart-total').val(total.toFixed(2));
-    }
+            // Ensure total is not negative
+            total = total < 0 ? 0 : total;
 
-    function calculateRow(row) {
-        let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
-        let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
-        let total = price * qty;
-        row.find('.product-line-price').val(total.toFixed(2));
-        calculateTotal();
-    }
+            // Update the total display
+            $('#cart-total').val(total.toFixed(2));
+        }
 
-    $(document).ready(function() {
-        // Initial calculation
-        calculateTotal();
-
-        // Service dropdown change
-        $('#newlink').on('change', 'select[name="items[]"]', function() {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Quantity change
-        $('#newlink').on('input', 'input[name="qty[]"]', function() {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Remove row
-        $('#newlink').on('click', 'a.btn-danger', function() {
-            $(this).closest('tr').remove();
+        function calculateRow(row) {
+            let price = parseFloat(row.find('select[name="items[]"] option:selected').data('amount')) || 0;
+            let qty = parseFloat(row.find('input[name="qty[]"]').val()) || 0;
+            let total = price * qty;
+            row.find('.product-line-price').val(total.toFixed(2));
             calculateTotal();
-        });
+        }
 
-        // Add new row
-        $('#add-item').on('click', function() {
-            let tr = $('#newlink tr:first').clone();
-            let currentId = parseInt(tr.attr('id'));
-            let newId = currentId + 1;
-            tr.attr('id', newId);
-            tr.find('.product-id').text(newId);
-            tr.find('input, textarea').val('');
-            tr.find('.product-line-price').val('0.00');
-            tr.appendTo('#newlink');
+        $(document).ready(function() {
+            // Initial calculation
             calculateTotal();
-        });
 
-        // Handle changes in discount and payment input fields
-        $('#discount_amount, #receive_payment_save').on('input', function() {
-            calculateTotal();
-        });
-    });
-</script>
+            // Service dropdown change
+            $('#newlink').on('change', 'select[name="items[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
 
-  
+            // Quantity change
+            $('#newlink').on('input', 'input[name="qty[]"]', function() {
+                let row = $(this).closest('tr');
+                calculateRow(row);
+            });
+
+            // Remove row
+            $('#newlink').on('click', 'a.btn-danger', function() {
+                $(this).closest('tr').remove();
+                calculateTotal();
+            });
+
+            // Add new row
+            $('#add-item').on('click', function() {
+                let tr = $('#newlink tr:first').clone();
+                let currentId = parseInt(tr.attr('id'));
+                let newId = currentId + 1;
+                tr.attr('id', newId);
+                tr.find('.product-id').text(newId);
+                tr.find('input, textarea').val('');
+                tr.find('.product-line-price').val('0.00');
+                tr.appendTo('#newlink');
+                calculateTotal();
+            });
+
+            // Handle changes in discount and payment input fields
+            $('#discount_amount, #receive_payment_save').on('input', function() {
+                calculateTotal();
+            });
+        });
+    </script>
 @endpush

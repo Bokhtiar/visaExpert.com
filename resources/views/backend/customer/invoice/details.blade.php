@@ -35,7 +35,7 @@
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <img src="{{ asset('backend/assets/images/visiting-card.jpg') }}" alt="Visiting Card"
                                         class="" height="180px" width="100%">
-                                </div> 
+                                </div>
                                 {{-- contact --}}
                                 <div class="col-md-4 col-lg-4 col-sm-4 my-auto">
                                     <p class="m-0" style="font-weight: 600; font-size: 20px">Visa Expert</p>
@@ -44,18 +44,20 @@
                                     <p class="m-0" style="font-weight: 600">Emial: helpline@visaxpert.net</p>
                                     <p class="m-0" style="font-weight: 600">Helpline: 09617447744</p>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="card-body p-4"> 
+                        <div class="card-body p-4">
                             {{-- content --}}
                             <div style="font-size: 14px; line-height: 16px; margin-bottom: 12px">
-                               Dear {{ $customers[0]->name }}, <br/>
-                                Thank you fo choosing Visa Expert. Your invoice has been confirmed on {{ $invoice->created_at->format('D, jS M Y - H:i') }}.
-                                Your Booking ID/User ID #{{ $customers[0]->id }}, & Payment status Paid as the payable amount {{ $invoice->total_amount - $invoice->discount }}(BDT)
+                                Dear {{ $customers[0]->name }}, <br />
+                                Thank you fo choosing Visa Expert. Your invoice has been confirmed on
+                                {{ $invoice->created_at->format('D, jS M Y - H:i') }}.
+                                Your Booking ID/User ID #{{ $customers[0]->id }}, & Payment status Paid as the payable
+                                amount {{ $invoice->total_amount - $invoice->discount }}(BDT)
                             </div>
-                            {{-- table --}} 
+                            {{-- table --}}
                             <div class="row g-3 mt-2">
                                 <div>
                                     <table class="table table-bordered">
@@ -260,7 +262,11 @@
                                 days from the
                                 issuing date and customer must collect the work before expiry the invoice.
                             </p>
-
+                            @if ($invoice->remarks)
+                                <p class="" style="font-size: 11px; line-height: 10px; margin-top: 15px">
+                                    <Strong> Remarks:</Strong> {{ $invoice->remarks }}
+                                </p>
+                            @endif
                             @hasPermission('Download Invoice')
                                 @can(\App\Permissions::DOWNLOAD_CUSTOMER_INVOICE)
                                     <div class="hstack gap-2 justify-content-end d-print-none mt-4">

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('invoice_number');
             $table->string('status');
             $table->double('total_amount', 8, 2);
+            $table->text('remarks')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
