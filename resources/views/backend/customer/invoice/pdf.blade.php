@@ -147,7 +147,7 @@
                         </td>
                         <td style="width: 34%; text-align: center; border: 0; vertical-align: top;">
                             <!-- Centered visiting card -->
-                            <img src="{{ public_path('backend/assets/images/visiting-card.jpg') }}" alt="Visiting Card"
+                            <img src="{{ public_path('backend/assets/images/visiting-card.jpeg') }}" alt="Visiting Card"
                                 height="200px" width="auto"> <!-- Increased height -->
                         </td>
                         <td style="width: 33%; vertical-align: top; border: 0; font-size: 16px; color:gray">

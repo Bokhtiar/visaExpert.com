@@ -129,6 +129,63 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
 
+                                <div class="row">
+                                    <div class="my-3 col-span-6">
+                                        <label for="duty_time_start" class="form-label">Duty Start Time</label>
+                                        <input id="duty_time_start" type="time"
+                                            class="form-control <?php $__errorArgs = ['duty_time_start'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="duty_time_start"
+                                            value="<?php echo e($user->duty_time_start ?? old('duty_time_start')); ?>" required autofocus>
+
+                                        <?php $__errorArgs = ['duty_time_start'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong><?php echo e($message); ?></strong>
+                                            </span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+
+                                    <div class="my-3 col-span-6">
+                                        <label for="duty_time_end" class="form-label">Duty Start Time</label>
+                                        <input id="duty_time_end" type="time"
+                                            class="form-control <?php $__errorArgs = ['duty_time_end'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="duty_time_end"
+                                            value="<?php echo e($user->duty_time_end ?? old('duty_time_end')); ?>" required autofocus>
+
+                                        <?php $__errorArgs = ['duty_time_end'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong><?php echo e($message); ?></strong>
+                                            </span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+
+                                </div>
+
                                 <div class="my-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input id="password" type="password"
@@ -224,7 +281,8 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
                                 <div class="form-check form-check-right mb-2">
-                                    <input class="form-check-input" type="checkbox" name="status" id="formCheckboxRight1"
+                                    <input class="form-check-input" type="checkbox" name="status"
+                                        id="formCheckboxRight1"
                                         <?php if(isset($user)): ?>
                                         <?php echo e($user->status ? 'checked' : ''); ?>
 
@@ -252,7 +310,7 @@ unset($__errorArgs, $__bag); ?>
             </form>
 
             
-             <?php if(isset($user)): ?>
+            <?php if(isset($user)): ?>
                 <div class="card-body">
                     <form id="roleForm" method="POST" 
                         action="<?php echo e(route('admin.permission-user.store')); ?>">
@@ -287,7 +345,8 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="text-center my-3">
-                            <strong>Manage permissions for role(Total Permission <?php echo e(App\Models\PermissionUser::where('user_id', Auth::id())->count()); ?> )</strong>
+                            <strong>Manage permissions for role(Total Permission
+                                <?php echo e(App\Models\PermissionUser::where('user_id', Auth::id())->count()); ?> )</strong>
                             <?php $__errorArgs = ['permissions'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -326,8 +385,8 @@ unset($__errorArgs, $__bag); ?>
                                                 <div class="form-check form-switch form-switch-md form-switch-danger mb-2"
                                                     dir="ltr">
                                                     <input type="checkbox" class="form-check-input"
-                                                        id="permission-<?php echo e($permission->id); ?>"
-                                                        value="<?php echo e($permission->id); ?>" name="permissions[]"
+                                                        id="permission-<?php echo e($permission->id); ?>" value="<?php echo e($permission->id); ?>"
+                                                        name="permissions[]"
                                                         <?php if(isset($specificUserPermission)): ?> <?php $__currentLoopData = $specificUserPermission; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rPermission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         
                                                             <?php echo e($permission->id == $rPermission->permission_id ? 'checked' : ''); ?>

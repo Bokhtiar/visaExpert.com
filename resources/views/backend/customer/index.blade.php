@@ -206,10 +206,7 @@
                                                                             <a class="btn btn-danger btn-sm"
                                                                                 href="{{ route('admin.customers-invoices.show', $invoice->id) }}">
                                                                                 Due
-
-                                                                                {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due') }}
-
-
+                                                                                {{ App\Models\PaymentLog::where('invoice_id', $invoice->id)->latest()->value('due') - $invoice->discount }}
                                                                             </a>
 
                                                                         </span>

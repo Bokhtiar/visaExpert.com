@@ -208,10 +208,7 @@
                                                                             <a class="btn btn-danger btn-sm"
                                                                                 href="<?php echo e(route('admin.customers-invoices.show', $invoice->id)); ?>">
                                                                                 Due
-
-                                                                                <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->sum('due')); ?>
-
-
+                                                                                <?php echo e(App\Models\PaymentLog::where('invoice_id', $invoice->id)->latest()->value('due') - $invoice->discount); ?>
 
                                                                             </a>
 

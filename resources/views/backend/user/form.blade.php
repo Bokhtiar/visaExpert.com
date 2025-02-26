@@ -89,6 +89,35 @@
                                     @enderror
                                 </div>
 
+                                <div class="row">
+                                    <div class="my-3 col-span-6">
+                                        <label for="duty_time_start" class="form-label">Duty Start Time</label>
+                                        <input id="duty_time_start" type="time"
+                                            class="form-control @error('duty_time_start') is-invalid @enderror" name="duty_time_start"
+                                            value="{{ $user->duty_time_start ?? old('duty_time_start') }}" required autofocus>
+
+                                        @error('duty_time_start')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="my-3 col-span-6">
+                                        <label for="duty_time_end" class="form-label">Duty Start Time</label>
+                                        <input id="duty_time_end" type="time"
+                                            class="form-control @error('duty_time_end') is-invalid @enderror" name="duty_time_end"
+                                            value="{{ $user->duty_time_end ?? old('duty_time_end') }}" required autofocus>
+
+                                        @error('duty_time_end')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                </div>
+
                                 <div class="my-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input id="password" type="password"
@@ -141,7 +170,8 @@
                                     @enderror
                                 </div>
                                 <div class="form-check form-check-right mb-2">
-                                    <input class="form-check-input" type="checkbox" name="status" id="formCheckboxRight1"
+                                    <input class="form-check-input" type="checkbox" name="status"
+                                        id="formCheckboxRight1"
                                         @isset($user)
                                         {{ $user->status ? 'checked' : '' }}
                                         @endisset>
@@ -161,7 +191,7 @@
             </form>
 
             {{-- permission user --}}
-             @isset($user)
+            @isset($user)
                 <div class="card-body">
                     <form id="roleForm" method="POST" {{-- action="{{ isset($role) ? route('admin.permission-user.update', $user->id) : route('admin.permission-user.store') }}"> --}}
                         action="{{ route('admin.permission-user.store') }}">
@@ -184,7 +214,8 @@
                         </div>
 
                         <div class="text-center my-3">
-                            <strong>Manage permissions for role(Total Permission {{ App\Models\PermissionUser::where('user_id', Auth::id())->count() }} )</strong>
+                            <strong>Manage permissions for role(Total Permission
+                                {{ App\Models\PermissionUser::where('user_id', Auth::id())->count() }} )</strong>
                             @error('permissions')
                                 <div class="p-2 text-danger">
                                     <strong>{{ $message }}</strong>
@@ -216,8 +247,8 @@
                                                 <div class="form-check form-switch form-switch-md form-switch-danger mb-2"
                                                     dir="ltr">
                                                     <input type="checkbox" class="form-check-input"
-                                                        id="permission-{{ $permission->id }}"
-                                                        value="{{ $permission->id }}" name="permissions[]"
+                                                        id="permission-{{ $permission->id }}" value="{{ $permission->id }}"
+                                                        name="permissions[]"
                                                         @if (isset($specificUserPermission)) @foreach ($specificUserPermission as $rPermission)
                                                         {{-- {{ dd($rPermission) }}
                                                         {{ dd($permission->id == $rPermission->permission_id) }} --}}

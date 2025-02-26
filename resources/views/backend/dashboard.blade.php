@@ -406,9 +406,6 @@
             </div>
         @endcan
 
-
-
-
         <section class="container py-4">
             <div class="row">
                 <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
@@ -419,6 +416,54 @@
                 </div>
             </div>
         </section>
+
+
+            {{-- invoice list --}}
+            <section class="">
+                <h5>Invoice List By Today</h5>
+                <table id="example" class="table table-borderless align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <td>Customer</td>
+                    <th>Invoice Number</th>
+                    <th>Payment Status</th>
+                    <th>Total Amount</th>
+                    <th>Discount</th>
+                    <th>Created by</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{-- {{dd($leaves)}} --}}
+                @forelse($invoices as $invoice)
+                    {{-- {{dd($leave)}} --}}
+                    <tr>
+                        <td>
+                            {{ $invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : '' }}
+                        </td>
+
+                        <td>{{ $invoice->invoice_number }}</td>
+                        <td>
+                            @if ($invoice->status == 'Paid')
+                                <span class="bg-success btn btn-sm">{{ $invoice->status }}</span>
+                            @else
+                                <span class="bg-danger btn btn-sm">{{ $invoice->status }}</span>
+                            @endif
+                        </td>
+                        <td>Tk {{ $invoice->total_amount }}</td>
+                        <td>{{ $invoice->discount }}</td>
+                        <td>{{ $invoice->user->name }}</td>
+                        <td>{{ $invoice->created_at }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td>No record Found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+            </section>
 
 
         {{-- bar chant --}}

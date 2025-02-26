@@ -17,7 +17,7 @@
                                 </div>
                                 
                                 <div class="col-md-6 col-lg-6 col-sm-6">
-                                    <img src="<?php echo e(asset('backend/assets/images/visiting-card.jpg')); ?>" alt="Visiting Card"
+                                    <img src="<?php echo e(asset('backend/assets/images/visiting-card.jpeg')); ?>" alt="Visiting Card"
                                         class="" height="180px" width="100%">
                                 </div>
                                 

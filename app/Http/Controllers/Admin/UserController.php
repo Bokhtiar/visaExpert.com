@@ -46,6 +46,8 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'status' => $request->filled('status'),
             'salary' => $request->salary,
+            'duty_time_start' => $request->duty_time_start,
+            'duty_time_end' => $request->duty_time_end,
         ]);
 
         logActivity(
@@ -90,6 +92,8 @@ class UserController extends Controller
             'password' => isset($request->password) ? Hash::make($request->password) : $user->password,
             'status' => $request->filled('status'),
             'salary' => $request->salary,
+            'duty_time_start' => $request->duty_time_start,
+            'duty_time_end' => $request->duty_time_end,
         ]);
 
         logActivity(

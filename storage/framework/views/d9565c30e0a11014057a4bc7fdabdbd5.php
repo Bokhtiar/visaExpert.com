@@ -349,7 +349,7 @@ $payAmountWithDiscount = $invoice->total_amount - $invoice->discount; ?>
 
                         <div>
                             <label for="">Remarks</label>
-                            <input type="text" name="remarks" class="form-control" id="">
+                            <input  value="<?php echo e($invoice->remarks); ?>" type="text" name="remarks" class="form-control" id="">
                         </div>
 
                         <div class="hstack gap-2 justify-content-end d-print-none mt-4">

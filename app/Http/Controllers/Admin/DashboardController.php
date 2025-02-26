@@ -104,9 +104,12 @@ class DashboardController extends Controller
             $previousMonthCount = $currentMonthCount;
         }
 
-     
 
-        return view('backend.dashboard', compact('dashboardData', 'barChartData', 'newCustomerChartData'));
+        $invoices = Invoice::whereDate('created_at', Carbon::today()) 
+        ->orderBy('created_at', 'desc') // Order by latest date first
+        ->get();
+
+        return view('backend.dashboard', compact('dashboardData', 'barChartData', 'newCustomerChartData', 'invoices'));
     } 
 
 }
