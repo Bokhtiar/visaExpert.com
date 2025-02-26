@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable()->unique();
             $table->string('password');
-            $table->string('duty_time_start')->nullable();
-            $table->string('duty_time_end')->nullable();
+            $table->string('duty_time_start')->default("09:00");
+            $table->string('duty_time_end')->default("18:00");
             $table->boolean('status')->default(false);
             $table->timestamp('last_login_at')->nullable();
             $table->boolean('is_deletable')->default(true);
