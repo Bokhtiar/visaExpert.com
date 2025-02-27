@@ -214,7 +214,7 @@
                     </table>
 
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px;">
-                 
+
                         <div style="margin-left: 67%">
                             <p style="margin: 0; padding: 5px 0;">
                                 <strong>Total Amount (BDT):</strong> <?php echo e($invoice->total_amount); ?>
@@ -258,6 +258,13 @@
                         days from the
                         issuing date and customer must collect the work before expiry the invoice.
                     </p>
+
+                    <?php if($invoice->remarks): ?>
+                        <p class="" style="font-size: 11px; line-height: 10px; margin-top: 15px">
+                            <Strong> Remarks:</Strong> <?php echo e($invoice->remarks); ?>
+
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -40,7 +40,7 @@
 
                             <form id="visaForm" action="{{ route('application.forms.store') }}" method="POST"
                                 enctype="multipart/form-data">
-                                @csrf
+                                @csrf 
 
                                 <div class="row mb-3">
                                     <div class="col-lg-3">

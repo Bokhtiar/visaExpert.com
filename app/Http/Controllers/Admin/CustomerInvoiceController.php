@@ -336,6 +336,8 @@ class CustomerInvoiceController extends Controller
                 'defaultMediaType' => 'print',
             ]);
 
+    
+
         logActivity(
             (Auth::user()->name . ' downloaded an invoice.'),
             $invoice->id,
@@ -343,8 +345,8 @@ class CustomerInvoiceController extends Controller
             'invoices'
         );
 
-        return $pdf->download('invoice.pdf');
-        // return $pdf->stream('invoice.pdf');
+        // return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
     }
 
 }
