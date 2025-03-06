@@ -418,59 +418,59 @@
         </section>
 
 
-            {{-- invoice list --}}
-            <section class="">
-                <h5>Invoice List By Today</h5>
-                <table id="example" class="table table-borderless align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <td>Customer</td>
-                    <th>Invoice Number</th>
-                    <th>Payment Status</th>
-                    <th>Total Amount</th>
-                    <th>Discount</th>
-                    <th>Created by</th>
-                    <th>Created Date</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                {{-- {{dd($leaves)}} --}}
-                @forelse($invoices as $invoice)
-                    {{-- {{dd($leave)}} --}}
+        {{-- invoice list --}}
+        <section class="">
+            <h5>Invoice List By Today</h5>
+            <table id="example" class="table table-borderless align-middle mb-0">
+                <thead class="table-light">
                     <tr>
-                        <td>
-                            {{ $invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : '' }}
-                        </td>
+                        <td>Customer</td>
+                        <th>Invoice Number</th>
+                        <th>Payment Status</th>
+                        <th>Total Amount</th>
+                        <th>Discount</th>
+                        <th>Created by</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                        <td>{{ $invoice->invoice_number }}</td>
-                        <td>
-                            @if ($invoice->status == 'Paid')
-                                <span class="bg-success btn btn-sm">{{ $invoice->status }}</span>
-                            @else
-                                <span class="bg-danger btn btn-sm">{{ $invoice->status }}</span>
-                            @endif
-                        </td>
-                        <td>Tk {{ $invoice->total_amount }}</td>
-                        <td>{{ $invoice->discount }}</td>
-                        <td>{{ $invoice->user->name }}</td>
-                        <td>{{ $invoice->created_at }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td>No record Found.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-            </section>
+                    {{-- {{dd($leaves)}} --}}
+                    @forelse($invoices as $invoice)
+                        {{-- {{dd($leave)}} --}}
+                        <tr>
+                            <td>
+                                {{ $invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : '' }}
+                            </td>
+
+                            <td>{{ $invoice->invoice_number }}</td>
+                            <td>
+                                @if ($invoice->status == 'Paid')
+                                    <span class="bg-success btn btn-sm">{{ $invoice->status }}</span>
+                                @else
+                                    <span class="bg-danger btn btn-sm">{{ $invoice->status }}</span>
+                                @endif
+                            </td>
+                            <td>Tk {{ $invoice->total_amount }}</td>
+                            <td>{{ $invoice->discount }}</td>
+                            <td>{{ $invoice->user->name }}</td>
+                            <td>{{ $invoice->created_at }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>No record Found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </section>
 
 
         {{-- bar chant --}}
 
     </div>
     @section('js')
-        <script>
+        {{-- <script>
             var ctx = document.getElementById('barChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -492,9 +492,35 @@
                     }
                 }
             });
+        </script> --}}
+
+        {{-- new customer per month --}}
+        <script>
+            var ctx = document.getElementById('barChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @json($barChartData['labels']),
+                    datasets: [{
+                        label: 'Monthly New Customers',
+                        data: @json($barChartData['data']),
+                        backgroundColor: @json($barChartData['colors']), // Use different colors
+                        borderColor: @json($barChartData['colors']), // Border colors match bars
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         </script>
 
-        <script>
+
+        {{-- <script>
             var ctx = document.getElementById('newCustomerBarChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -516,7 +542,64 @@
                     }
                 }
             });
+        </script> --}}
+        <script>
+            // Function to generate different colors for each month
+            function generateColorPalette(count) {
+                let colors = [];
+                let borderColors = [];
+                const predefinedColors = [
+                    'rgba(255, 99, 132, 0.6)', // Red
+                    'rgba(54, 162, 235, 0.6)', // Blue
+                    'rgba(255, 206, 86, 0.6)', // Yellow
+                    'rgba(75, 192, 192, 0.6)', // Green
+                    'rgba(153, 102, 255, 0.6)', // Purple
+                    'rgba(255, 159, 64, 0.6)' // Orange
+                ];
+
+                for (let i = 0; i < count; i++) {
+                    colors.push(predefinedColors[i % predefinedColors.length]); // Cycle through colors
+                    borderColors.push(colors[i].replace('0.6', '1')); // Make border fully opaque
+                }
+
+                return {
+                    backgroundColors: colors,
+                    borderColors: borderColors
+                };
+            }
+
+            var labels = @json($newCustomerChartData['monthLabels']);
+            var dataValues = @json($newCustomerChartData['newCustomerData']);
+
+            // Generate color palette for 6 months
+            var {
+                backgroundColors,
+                borderColors
+            } = generateColorPalette(dataValues.length);
+
+            var ctx = document.getElementById('newCustomerBarChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Company Performance (Active Customer)',
+                        data: dataValues,
+                        backgroundColor: backgroundColors, // Assign different colors
+                        borderColor: borderColors, // Border color for each bar
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         </script>
+
     @endsection
 
 @endsection

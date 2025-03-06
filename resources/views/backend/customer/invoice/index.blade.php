@@ -72,7 +72,7 @@
                                                 @forelse($invoices as $invoice)
                                                     {{-- {{dd($leave)}} --}}
                                                     <tr>
-                                                        <td>
+                                                        <td> 
                                                             {{ $invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : '' }}
                                                         </td>
 

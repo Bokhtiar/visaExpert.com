@@ -411,59 +411,62 @@
         </section>
 
 
-            
-            <section class="">
-                <h5>Invoice List By Today</h5>
-                <table id="example" class="table table-borderless align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <td>Customer</td>
-                    <th>Invoice Number</th>
-                    <th>Payment Status</th>
-                    <th>Total Amount</th>
-                    <th>Discount</th>
-                    <th>Created by</th>
-                    <th>Created Date</th>
-                </tr>
-            </thead>
-            <tbody>
+        
+        <section class="">
+            <h5>Invoice List By Today</h5>
+            <table id="example" class="table table-borderless align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <td>Customer</td>
+                        <th>Invoice Number</th>
+                        <th>Payment Status</th>
+                        <th>Total Amount</th>
+                        <th>Discount</th>
+                        <th>Created by</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                
-                <?php $__empty_1 = true; $__currentLoopData = $invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     
-                    <tr>
-                        <td>
-                            <?php echo e($invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : ''); ?>
+                    <?php $__empty_1 = true; $__currentLoopData = $invoices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $invoice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        
+                        <tr>
+                            <td>
+                                <?php echo e($invoice->customer ? $invoice->customer->name . ' (ID: ' . $invoice->customer->id . ')' : ''); ?>
 
-                        </td>
+                            </td>
 
-                        <td><?php echo e($invoice->invoice_number); ?></td>
-                        <td>
-                            <?php if($invoice->status == 'Paid'): ?>
-                                <span class="bg-success btn btn-sm"><?php echo e($invoice->status); ?></span>
-                            <?php else: ?>
-                                <span class="bg-danger btn btn-sm"><?php echo e($invoice->status); ?></span>
-                            <?php endif; ?>
-                        </td>
-                        <td>Tk <?php echo e($invoice->total_amount); ?></td>
-                        <td><?php echo e($invoice->discount); ?></td>
-                        <td><?php echo e($invoice->user->name); ?></td>
-                        <td><?php echo e($invoice->created_at); ?></td>
-                    </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <tr>
-                        <td>No record Found.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-            </section>
+                            <td><?php echo e($invoice->invoice_number); ?></td>
+                            <td>
+                                <?php if($invoice->status == 'Paid'): ?>
+                                    <span class="bg-success btn btn-sm"><?php echo e($invoice->status); ?></span>
+                                <?php else: ?>
+                                    <span class="bg-danger btn btn-sm"><?php echo e($invoice->status); ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td>Tk <?php echo e($invoice->total_amount); ?></td>
+                            <td><?php echo e($invoice->discount); ?></td>
+                            <td><?php echo e($invoice->user->name); ?></td>
+                            <td><?php echo e($invoice->created_at); ?></td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <tr>
+                            <td>No record Found.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </section>
 
 
         
 
     </div>
     <?php $__env->startSection('js'); ?>
+        
+
+        
         <script>
             var ctx = document.getElementById('barChart').getContext('2d');
             var myChart = new Chart(ctx, {
@@ -473,8 +476,8 @@
                     datasets: [{
                         label: 'Monthly New Customers',
                         data: <?php echo json_encode($barChartData['data'], 15, 512) ?>,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: <?php echo json_encode($barChartData['colors'], 15, 512) ?>, // Use different colors
+                        borderColor: <?php echo json_encode($barChartData['colors'], 15, 512) ?>, // Border colors match bars
                         borderWidth: 1
                     }]
                 },
@@ -488,29 +491,59 @@
             });
         </script>
 
+
+        
         <script>
-            var ctx = document.getElementById('newCustomerBarChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: <?php echo json_encode($newCustomerChartData['monthLabels'], 15, 512) ?>,
-                    datasets: [{
-                        label: 'New Customers Per Month',
-                        data: <?php echo json_encode($newCustomerChartData['newCustomerData'], 15, 512) ?>,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+    // Function to generate different colors for each month
+    function generateColorPalette(count) {
+        let colors = [];
+        let borderColors = [];
+        const predefinedColors = [
+            'rgba(255, 99, 132, 0.6)',  // Red
+            'rgba(54, 162, 235, 0.6)',  // Blue
+            'rgba(255, 206, 86, 0.6)',  // Yellow
+            'rgba(75, 192, 192, 0.6)',  // Green
+            'rgba(153, 102, 255, 0.6)', // Purple
+            'rgba(255, 159, 64, 0.6)'   // Orange
+        ];
+
+        for (let i = 0; i < count; i++) {
+            colors.push(predefinedColors[i % predefinedColors.length]); // Cycle through colors
+            borderColors.push(colors[i].replace('0.6', '1')); // Make border fully opaque
+        }
+
+        return { backgroundColors: colors, borderColors: borderColors };
+    }
+
+    var labels = <?php echo json_encode($newCustomerChartData['monthLabels'], 15, 512) ?>;
+    var dataValues = <?php echo json_encode($newCustomerChartData['newCustomerData'], 15, 512) ?>;
+
+    // Generate color palette for 6 months
+    var { backgroundColors, borderColors } = generateColorPalette(dataValues.length);
+
+    var ctx = document.getElementById('newCustomerBarChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Company Performance (Active Customer)',
+                data: dataValues,
+                backgroundColor: backgroundColors, // Assign different colors
+                borderColor: borderColors, // Border color for each bar
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
-            });
-        </script>
+            }
+        }
+    });
+</script>
+
     <?php $__env->stopSection(); ?>
 
 <?php $__env->stopSection(); ?>

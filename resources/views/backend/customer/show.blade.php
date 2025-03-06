@@ -62,12 +62,12 @@
                                     @hasPermission('Delete Customer')
                                         @can(\App\Permissions::DELETE_CUSTOMER)
                                             <button type="button" class="btn btn-sm btn-soft-success waves-effect waves-li"
-                                                onclick="deleteData({{ $customer->id }})">
+                                                onclick="deleteData({{ $cus->id }})">
                                                 <i class="ri-delete-bin-5-line align-bottom me-1"></i>
                                                 {{-- Delete Customer --}}
                                             </button>
-                                            <form id="delete-form-{{ $customer->id }}"
-                                                action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST"
+                                            <form id="delete-form-{{ $cus->id }}"
+                                                action="{{ route('admin.customers.destroy', $cus->id) }}" method="POST"
                                                 style="display: none;">
                                                 @csrf
                                                 @method('DELETE')

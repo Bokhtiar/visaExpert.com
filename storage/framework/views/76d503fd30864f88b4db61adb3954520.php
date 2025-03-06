@@ -45,7 +45,7 @@ unset($__sessionArgs); ?>
 
                             <form id="visaForm" action="<?php echo e(route('application.forms.store')); ?>" method="POST"
                                 enctype="multipart/form-data">
-                                <?php echo csrf_field(); ?>
+                                <?php echo csrf_field(); ?> 
 
                                 <div class="row mb-3">
                                     <div class="col-lg-3">
